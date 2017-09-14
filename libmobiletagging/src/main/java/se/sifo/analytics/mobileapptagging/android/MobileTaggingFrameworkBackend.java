@@ -66,6 +66,9 @@ class MobileTaggingFrameworkBackend extends MobileTaggingFramework {
                 frameworkInstance.dataRequestHandler.refreshCookies(context, PanelistHandler.getPanelistKey(context));
             }
         }
+
+        VolleyManager.getInstance().getRequestQueue(context);
+
         return frameworkInstance;
     }
 
@@ -200,6 +203,7 @@ class MobileTaggingFrameworkBackend extends MobileTaggingFramework {
             return userKey;
         }
 
+        @Deprecated
         public static List<Cookie> getCookies(Context c) {
             FileInputStream fi = getSifoInputStream(c,
                     TagStringsAndValues.SIFO_PANELIST_PACKAGE_NAME_V2,

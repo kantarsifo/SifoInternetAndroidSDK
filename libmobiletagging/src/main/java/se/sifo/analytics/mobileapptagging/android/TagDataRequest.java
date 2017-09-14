@@ -6,12 +6,27 @@
 
 package se.sifo.analytics.mobileapptagging.android;
 
+import android.util.Log;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONObject;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -188,39 +203,37 @@ public class TagDataRequest {
      * Init the server request to the specified URL. This function will start a new Thread.
      */
     void initRequest() {
-        // HTTP-connection setup
-        DefaultHttpClient client = new DefaultHttpClient();
+        final String userAgent = applicationName + "/" + applicationVersion + " " + System.getProperty("http.agent");
+        final String cookieHandlerString = CookieHandler.getCookieString(cookieStore.getCookies());
 
-        if (url != null && url.length() > 0) {
-            try {
-                String userAgent = applicationName + "/" + applicationVersion + " " + System.getProperty("http.agent");
-                URI uriMetrics = new URI(url);
-                httpRequest = new HttpGet(uriMetrics);
+        StringRequest postRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        dataRequestFail(null, error);
+                    }
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
 
-                //Sets a custom user-agent for HTTP requests
-                httpRequest.addHeader("User-Agent", userAgent);
-                httpRequest.addHeader("Cookie", CookieHandler.getCookieString(cookieStore.getCookies()));
-            } catch (Exception e) {
-                e.printStackTrace();
+                Map<String, String> params = new HashMap<>();
+                params.put("User-Agent", userAgent);
+                params.put("Cookie", cookieHandlerString);
+
+                return params;
             }
-        }
-        // HTTP-request execution
-        if (httpRequest != null) {
-            HttpResponse response = null;
-            try {
-                MobileTaggingFrameworkBackend.printToLog(
-                        "Tag request sent: " +
-                                "\nRequestID: " + getRequestID() +
-                                "\nCat encoded value:" + TagHandler.urlEncode(cat) +
-                                "\nCat plain value: " + cat +
-                                "\nId: " + id +
-                                "\nName:" + name +
-                                "\nURL:\n" + url);
-                // Execute HTTP-request
-                response = client.execute(httpRequest);
+
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
                 if (response != null) {
 
-                    if ((httpStatusCode = response.getStatusLine().getStatusCode()) == 200) {
+                    if ((httpStatusCode = response.statusCode) == 200) {
                         // Request was successful with code 200
                         dataRequestComplete();
                     } else {
@@ -231,11 +244,11 @@ public class TagDataRequest {
                     // Response was null, should not happen
                     MobileTaggingFrameworkBackend.errorToLog("Tag request response null");
                 }
-            } catch (Exception e) {
-                // Request failed with exception
-                dataRequestFail(response, e);
+                return super.parseNetworkResponse(response);
             }
-        }
+        };
+        VolleyManager.getInstance().getRequestQueue().add(postRequest);
+
     }
 
     /**
@@ -244,9 +257,9 @@ public class TagDataRequest {
      * @param response The response from the server.
      * @param e        The exception if one was thrown.
      */
-    private void dataRequestFail(HttpResponse response, Exception e) {
+    private void dataRequestFail(NetworkResponse response, Exception e) {
         if (response != null) {
-            MobileTaggingFrameworkBackend.errorToLog("Tag request failed with http status code:" + response.getStatusLine().getStatusCode() + "\nRequestID: " + getRequestID());
+            MobileTaggingFrameworkBackend.errorToLog("Tag request failed with http status code:" + response.statusCode + "\nRequestID: " + getRequestID());
         } else {
             MobileTaggingFrameworkBackend.errorToLog("Tag request failed with exception:" + "\n" + e.toString() + "\nRequestID: " + getRequestID());
         }
