@@ -23,6 +23,11 @@ public final class TagStringsAndValues {
     public static final int CPID_LENGTH_CODIGO = 32;
 
     /**
+     * The length of Customer identifier value where measurement provider is Mobitech Analytics
+     */
+    public static int CPID_LENGTH_MOBITECH = 6;
+
+    /**
      * The maximum allowed length of the Category String (cat).
      */
     public static final int MAX_LENGTH_CATEGORY = 255;
