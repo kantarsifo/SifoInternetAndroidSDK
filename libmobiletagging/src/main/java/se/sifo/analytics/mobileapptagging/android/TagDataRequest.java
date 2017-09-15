@@ -232,9 +232,17 @@ public class TagDataRequest {
             @Override
             protected Response<String> parseNetworkResponse(NetworkResponse response) {
                 if (response != null) {
-
                     if ((httpStatusCode = response.statusCode) == 200) {
                         // Request was successful with code 200
+                        MobileTaggingFrameworkBackend.printToLog(
+                                "Tag request sent: " +
+                                        "\nRequestID: " + getRequestID() +
+                                        "\nCat encoded value:" + TagHandler.urlEncode(cat) +
+                                        "\nCat plain value: " + cat +
+                                        "\nId: " + id +
+                                        "\nName:" + name +
+                                        "\nURL:\n" + url);
+
                         dataRequestComplete();
                     } else {
                         // Request finished with failure code
