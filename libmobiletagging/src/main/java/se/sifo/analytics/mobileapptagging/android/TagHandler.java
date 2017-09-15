@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.provider.Settings.Secure;
 import android.text.TextUtils;
+import android.util.Log;
 
 import org.apache.http.client.CookieStore;
 import org.apache.http.cookie.Cookie;
@@ -196,6 +197,7 @@ class TagHandler {
             String ref = urlEncode(this.ref.trim());
             cat = urlEncode(cat.trim());
             id = urlEncode(id.trim());
+            Log.v("appIddd", "appId :" + id);
 
             if (TagStringsAndValues.CODIGO_URL_BASE.equals(urlBase)) {
                 url = String.format("%ssiteId=%s&appClientId=%s&cp=%s&appId=%s&appName=%s&appRef=%s",

@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         MobileTaggingFramework.setLogPrintsActivated(true);
-        MobileTaggingFramework.createInstance(getApplicationContext(), Contants.cpid, "TestApplicationSifoText2", true);
+        MobileTaggingFramework.createInstance(getApplicationContext(), Contants.cpid, "TestApplicationSifoText2", false);
 
 
         setIds();
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Toast.makeText(getBaseContext(), items[i] , Toast.LENGTH_LONG).show();
                 if(MobileTaggingFramework.getInstance() != null){
-                    MobileTaggingFramework.getInstance().sendTag(i + "");
+                    MobileTaggingFramework.getInstance().sendTag(i + "item" , "appId");
                 }
             }
         });

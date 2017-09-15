@@ -10,7 +10,7 @@ android {
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
-
+        testApplicationId 'se.sifo.analytics.mobileapptagging.android.instrumenttest'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
@@ -24,9 +24,16 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile ("org.robolectric:robolectric:3.0-rc3")
+    testCompile ("org.mockito:mockito-core:1.9.5")
+    testCompile ("com.squareup.assertj:assertj-android:1.0.0") {
+        exclude group: 'com.android.support', module:'support-annotations'
+    }
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    androidTestCompile ("org.mockito:mockito-core:1.9.5")
+    androidTestCompile ("com.google.dexmaker:dexmaker-mockito:1.2")
     testCompile 'junit:junit:4.12'
     compile 'com.android.volley:volley:1.0.0'
 

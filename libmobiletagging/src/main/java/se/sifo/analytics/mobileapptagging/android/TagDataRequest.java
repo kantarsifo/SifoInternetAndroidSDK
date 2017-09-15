@@ -234,6 +234,7 @@ public class TagDataRequest {
                 if (response != null) {
                     if ((httpStatusCode = response.statusCode) == 200) {
                         // Request was successful with code 200
+                        Log.v("response", "response :" + response.statusCode);
                         MobileTaggingFrameworkBackend.printToLog(
                                 "Tag request sent: " +
                                         "\nRequestID: " + getRequestID() +
