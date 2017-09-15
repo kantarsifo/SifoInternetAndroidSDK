@@ -11,20 +11,10 @@ import android.util.Log;
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.CookieStore;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONObject;
-
-import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -83,14 +73,6 @@ public class TagDataRequest {
         return requestID;
     }
 
-    /**
-     * Ask this request to abort. Not guaranteed.
-     */
-    public void cancel() {
-        if (httpRequest != null) {
-            httpRequest.abort();
-        }
-    }
 
     /**
      * Get the HTTP status code for the request.
@@ -128,10 +110,6 @@ public class TagDataRequest {
      */
     private String url;
 
-    /**
-     * The Http connection.
-     */
-    private HttpGet httpRequest = null;
 
     /**
      * The callback listener to be called when request is finished.
@@ -158,8 +136,6 @@ public class TagDataRequest {
      */
     private String applicationVersion;
 
-    private CookieStore cookieStore;
-
     /**
      * Constructor, used internally by framework only.
      *
@@ -169,8 +145,8 @@ public class TagDataRequest {
      * @param url      The url that this request is calling.
      * @param callback The callback listener to be called when request is finished.
      */
-    TagDataRequest(String cat, String ref, String id, String name, String url, String applicatonName, String applicationVersion, CookieStore cookieStore, TagDataRequestCallbackListener callback) {
-        this(cat, id, name, url, applicatonName, applicationVersion, cookieStore, callback, null);
+    TagDataRequest(String cat, String ref, String id, String name, String url, String applicatonName, String applicationVersion, TagDataRequestCallbackListener callback) {
+        this(cat, id, name, url, applicatonName, applicationVersion, callback, null);
     }
 
     /**
@@ -181,7 +157,7 @@ public class TagDataRequest {
      * @param url                  The url that this request is calling.
      * @param userCallbackListener The callbacklistener defined by user.
      */
-    TagDataRequest(String cat, String id, String name, String url, String applicationName, String applicationVersion, CookieStore cookieStore, TagDataRequestCallbackListener callback, TagDataRequestCallbackListener userCallbackListener) {
+    TagDataRequest(String cat, String id, String name, String url, String applicationName, String applicationVersion, TagDataRequestCallbackListener callback, TagDataRequestCallbackListener userCallbackListener) {
         this.cat = cat;
         this.id = id;
         if (name != null) {
@@ -192,7 +168,6 @@ public class TagDataRequest {
         this.url = url;
         this.applicationName = applicationName;
         this.applicationVersion = applicationVersion;
-        this.cookieStore = cookieStore;
 
         requestID = UUID.randomUUID();
         callbackListener = callback;
@@ -204,7 +179,7 @@ public class TagDataRequest {
      */
     void initRequest() {
         final String userAgent = applicationName + "/" + applicationVersion + " " + System.getProperty("http.agent");
-        final String cookieHandlerString = CookieHandler.getCookieString(cookieStore.getCookies());
+        final String cookieHandlerString = CookieHandler.getCookieString(SifoCookieManager.getInstance().getCookieStore().getCookies());
 
         StringRequest postRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -234,7 +209,6 @@ public class TagDataRequest {
                 if (response != null) {
                     if ((httpStatusCode = response.statusCode) == 200) {
                         // Request was successful with code 200
-                        Log.v("response", "response :" + response.statusCode);
                         MobileTaggingFrameworkBackend.printToLog(
                                 "Tag request sent: " +
                                         "\nRequestID: " + getRequestID() +

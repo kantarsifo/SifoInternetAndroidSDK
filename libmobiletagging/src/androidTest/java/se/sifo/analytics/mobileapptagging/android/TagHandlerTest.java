@@ -5,9 +5,8 @@ import android.test.AndroidTestCase;
 import android.test.suitebuilder.annotation.SmallTest;
 import android.webkit.CookieManager;
 
-import org.apache.http.cookie.Cookie;
-import org.apache.http.impl.cookie.BasicClientCookie;
 
+import java.net.HttpCookie;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +18,7 @@ public class TagHandlerTest extends AndroidTestCase {
 
     private Context mAppCtx;
     private TagHandler mTagHandler;
-    private List<Cookie> mCookies;
+    private List<HttpCookie> mCookies;
 
     @Override
     public void setUp() throws Exception {
@@ -28,10 +27,10 @@ public class TagHandlerTest extends AndroidTestCase {
 
         mCookies = new ArrayList<>();
 
-        BasicClientCookie cookie1 = new BasicClientCookie("Key1", "Value1");
+        HttpCookie cookie1 = new HttpCookie("Key1", "Value1");
         cookie1.setDomain(DOMAIN_CODIGO);
 
-        BasicClientCookie cookie2 = new BasicClientCookie("Key2", "Value2");
+        HttpCookie cookie2 = new HttpCookie("Key2", "Value2");
         cookie2.setDomain(DOMAIN_CODIGO);
 
         mCookies.add(cookie1);

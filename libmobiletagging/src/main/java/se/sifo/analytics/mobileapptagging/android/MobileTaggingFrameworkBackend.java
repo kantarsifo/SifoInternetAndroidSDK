@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.util.Log;
 
-import org.apache.http.cookie.Cookie;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,8 +19,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.HttpCookie;
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Extension of the framework class containing some extended functions used
@@ -61,7 +62,7 @@ class MobileTaggingFrameworkBackend extends MobileTaggingFramework {
         } else {
             printToLog("Mobile Application Tagging Framework already initiated");
             printToLog("Refreshing panelist keys");
-            List<Cookie> cookies = PanelistHandler.getCookies(context);
+            List<HttpCookie> cookies = PanelistHandler.getCookies(context);
             if (cookies != null) {
                 frameworkInstance.dataRequestHandler.refreshCookies(context, cookies);
             } else {
@@ -75,7 +76,7 @@ class MobileTaggingFrameworkBackend extends MobileTaggingFramework {
     }
 
     private static boolean initTags(Context context, String cpID, String applicationName, boolean onlyPanelist) {
-        final List<Cookie> cookies = PanelistHandler.getCookies(context);
+        final List<HttpCookie> cookies = PanelistHandler.getCookies(context);
         if (cookies == null)
             return false;
 
@@ -135,7 +136,7 @@ class MobileTaggingFrameworkBackend extends MobileTaggingFramework {
      * Constructor used internally only.
      * Use createInstance() and getInstance() instead.
      */
-    public MobileTaggingFrameworkBackend(Context c, String cpId, String applicationName, List<Cookie> cookies) {
+    public MobileTaggingFrameworkBackend(Context c, String cpId, String applicationName, List<HttpCookie> cookies) {
         super();
         dataRequestHandler = new TagDataRequestHandler(c, cpId, applicationName, cookies);
     }
@@ -206,7 +207,7 @@ class MobileTaggingFrameworkBackend extends MobileTaggingFramework {
         }
 
         @Deprecated
-        public static List<Cookie> getCookies(Context c) {
+        public static List<HttpCookie> getCookies(Context c) {
             FileInputStream fi = getSifoInputStream(c,
                     TagStringsAndValues.SIFO_PANELIST_PACKAGE_NAME_V2,
                     TagStringsAndValues.SIFO_PANELIST_CREDENTIALS_FILENAME_V2);
@@ -233,9 +234,9 @@ class MobileTaggingFrameworkBackend extends MobileTaggingFramework {
             return fi;
         }
 
-        private static List<Cookie> readCookieStore(FileInputStream stream) {
+        private static List<HttpCookie> readCookieStore(FileInputStream stream) {
             String content = readFile(stream, "Error reading TNS Panelist cookies");
-            List<Cookie> cookieList = new ArrayList<Cookie>();
+            List<HttpCookie> cookieList = new ArrayList<>();
             try {
                 JSONArray jsonArray = new JSONArray(content);
                 for (int i = 0; i < jsonArray.length(); i++) {

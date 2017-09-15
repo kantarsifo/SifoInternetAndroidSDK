@@ -13,10 +13,10 @@ import android.provider.Settings.Secure;
 import android.text.TextUtils;
 import android.util.Log;
 
-import org.apache.http.client.CookieStore;
-import org.apache.http.cookie.Cookie;
 
 import java.io.UnsupportedEncodingException;
+import java.net.CookieStore;
+import java.net.HttpCookie;
 import java.net.URLEncoder;
 import java.util.List;
 
@@ -42,6 +42,7 @@ class TagHandler {
     private String ref;
     private String applicationName;
     private String applicationVersion;
+
     private CookieStore cookies;
 
 
@@ -65,7 +66,7 @@ class TagHandler {
 
         this.applicationName = ref;
 
-        List<Cookie> cookies = CookieHandler.createLegacyCookies(panelistKey);
+        List<HttpCookie> cookies = CookieHandler.createLegacyCookies(panelistKey);
         initCookies(c, cookies);
 
         //Get application version
@@ -84,7 +85,7 @@ class TagHandler {
      * @param ref
      * @param cookies The list of cookies to send with measurement requests
      */
-    public TagHandler(Context c, String cpId, String ref, List<Cookie> cookies) {
+    public TagHandler(Context c, String cpId, String ref, List<HttpCookie> cookies) {
         super();
 
         generateEuid(c);
@@ -111,11 +112,11 @@ class TagHandler {
     }
 
     public void refresh(Context context, String panelistKey) {
-        List<Cookie> cookies = CookieHandler.createLegacyCookies(panelistKey);
+        List<HttpCookie> cookies = CookieHandler.createLegacyCookies(panelistKey);
         initCookies(context, cookies);
     }
 
-    public void refresh(Context context, List<Cookie> cookies) {
+    public void refresh(Context context, List<HttpCookie> cookies) {
         initCookies(context, cookies);
     }
 
@@ -125,10 +126,11 @@ class TagHandler {
      * @See <a https://code.google.com/p/android/issues/detail?id=175124">android Issue tracking</a>
      * @See <a https://code.google.com/p/chromium/issues/detail?id=506369">chromium Issue tracking</a>
      */
-    private void initCookies(final Context context, final List<Cookie> cookieList) {
+    private void initCookies(final Context context, final List<HttpCookie> cookieList) {
         final SetupPanelListCookies setupPanelListCookies = new SetupPanelListCookies(context, cookieList);
         setupPanelListCookies.run();
     }
+
 
     private class SetupPanelListCookies implements Runnable {
 
@@ -138,11 +140,11 @@ class TagHandler {
 
         private final Handler handler = new Handler();
         private final Context context;
-        private final List<Cookie> cookieList;
+        private final List<HttpCookie> cookieList;
 
         private int retryCounter;
 
-        public SetupPanelListCookies(Context context, List<Cookie> cookieList) {
+        public SetupPanelListCookies(Context context, List<HttpCookie> cookieList) {
             this.context = context;
             this.cookieList = cookieList;
             this.retryCounter = 0;
@@ -319,7 +321,7 @@ class TagHandler {
     }
 
     public String getPanelistKey() {
-        for (Cookie c : cookies.getCookies()) {
+        for (HttpCookie c : cookies.getCookies()) {
             if (TagStringsAndValues.SIFO_PANELIST_COOKIE.equals(c.getName())) {
                 return c.getValue();
             }

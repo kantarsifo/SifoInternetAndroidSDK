@@ -1,12 +1,10 @@
 package se.sifo.analytics.mobileapptagging.android;
 
-import org.apache.http.cookie.Cookie;
-import org.apache.http.impl.cookie.BasicClientCookie;
-
 import android.test.AndroidTestCase;
 import android.test.suitebuilder.annotation.SmallTest;
 import android.webkit.CookieManager;
 
+import java.net.HttpCookie;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +15,7 @@ import static se.sifo.analytics.mobileapptagging.android.TagStringsAndValues.DOM
  */
 public class CookieHandlerTest extends AndroidTestCase {
 
-    List<Cookie> mCookieList;
+    List<HttpCookie> mCookieList;
 
     @Override
     protected void setUp() throws Exception {
@@ -25,10 +23,10 @@ public class CookieHandlerTest extends AndroidTestCase {
 
         mCookieList = new ArrayList<>();
 
-        BasicClientCookie cookie1 = new BasicClientCookie("Key1", "Value1");
+        HttpCookie cookie1 = new HttpCookie("Key1", "Value1");
         cookie1.setDomain(DOMAIN_CODIGO);
 
-        BasicClientCookie cookie2 = new BasicClientCookie("Key2", "Value2");
+        HttpCookie cookie2 = new HttpCookie("Key2", "Value2");
         cookie2.setDomain(DOMAIN_CODIGO);
 
         mCookieList.add(cookie1);
@@ -63,7 +61,7 @@ public class CookieHandlerTest extends AndroidTestCase {
 
         final CookieManager cookieManager = CookieManager.getInstance();
 
-        for(Cookie cookie : mCookieList) {
+        for(HttpCookie cookie : mCookieList) {
             cookieManager.setCookie(cookie.getDomain(), CookieHandler.getCookieDetailString(cookie));
         }
 

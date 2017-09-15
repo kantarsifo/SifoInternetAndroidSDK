@@ -8,8 +8,7 @@ package se.sifo.analytics.mobileapptagging.android;
 
 import android.content.Context;
 
-import org.apache.http.cookie.Cookie;
-
+import java.net.HttpCookie;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -65,7 +64,7 @@ class TagDataRequestHandler implements TagDataRequestCallbackListener {
      * @param cpId            The customer ID of the application.
      * @param applicationName The name of the application.
      */
-    public TagDataRequestHandler(Context c, String cpId, String applicationName, List<Cookie> cookies) {
+    public TagDataRequestHandler(Context c, String cpId, String applicationName, List<HttpCookie> cookies) {
         tagHandler = new TagHandler(c, cpId, applicationName, cookies);
         dataRequestQueue = new ArrayList<TagDataRequest>();
         threadPool = Executors.newScheduledThreadPool(MAX_NBR_OF_THREADS);
@@ -81,7 +80,7 @@ class TagDataRequestHandler implements TagDataRequestCallbackListener {
      */
     public TagDataRequestHandler(Context c, String cpId, String applicationName, String panelistKey) {
         tagHandler = new TagHandler(c, cpId, applicationName, panelistKey);
-        dataRequestQueue = new ArrayList<TagDataRequest>();
+        dataRequestQueue = new ArrayList<>();
         threadPool = Executors.newScheduledThreadPool(MAX_NBR_OF_THREADS);
     }
 
@@ -91,7 +90,7 @@ class TagDataRequestHandler implements TagDataRequestCallbackListener {
     }
 
 
-    public void refreshCookies(Context context, List<Cookie> cookies) {
+    public void refreshCookies(Context context, List<HttpCookie> cookies) {
         tagHandler.refresh(context, cookies);
     }
 
@@ -149,7 +148,6 @@ class TagDataRequestHandler implements TagDataRequestCallbackListener {
                     getURL(category, contentID, contentName),
                     tagHandler.getApplicationName(),
                     tagHandler.getApplicationVersion(),
-                    tagHandler.getCookies(),
                     this, userCallbackListener);
             synchronized (this) {
                 dataRequestQueue.add(request);
