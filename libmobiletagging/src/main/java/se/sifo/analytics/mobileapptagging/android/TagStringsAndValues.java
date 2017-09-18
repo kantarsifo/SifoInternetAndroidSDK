@@ -63,6 +63,16 @@ public final class TagStringsAndValues {
     public static final String CODIGO_URL_BASE = "http://trafficgateway.research-int.se/TrafficCollector?";
 
     /**
+     * The URL-base used to connect to the Mobiletech server.
+     */
+    public static final String MOBILETECH_URL_BASE_HTTPS = "https://bh.mobiletech.no/sifo/img?";
+
+    /**
+     * The URL-base used to connect to the Codigo server.
+     */
+    public static final String CODIGO_URL_BASE_HTTPS = "https://trafficgateway.research-int.se/TrafficCollector?";
+
+    /**
      * The URL-base used to connect to the Mobiletech-server.
      *
      * @deprecated The framework now uses multiple providers. For the default provider, see {@link #MOBILETECH_URL_BASE}.

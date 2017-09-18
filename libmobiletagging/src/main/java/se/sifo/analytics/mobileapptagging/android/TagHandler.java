@@ -63,9 +63,22 @@ class TagHandler {
         this.cpId = cpId;
         this.type = TagStringsAndValues.TYPE;
         this.ref = TagStringsAndValues.APP_NAME_PREFIX + ref;
-        this.urlBase = TagStringsAndValues.MOBILETECH_URL_BASE;
-        this.euidq = TagStringsAndValues.EUIDQ;
 
+        if (cpId.length() == TagStringsAndValues.CPID_LENGTH_CODIGO) {
+            if(MobileTaggingFrameworkBackend.isSendWithHttpsActivated()){
+                urlBase = TagStringsAndValues.CODIGO_URL_BASE_HTTPS;
+            }else{
+                urlBase = TagStringsAndValues.CODIGO_URL_BASE;
+            }
+        } else {
+            if(MobileTaggingFrameworkBackend.isSendWithHttpsActivated()){
+                urlBase = TagStringsAndValues.MOBILETECH_URL_BASE_HTTPS;
+            }else{
+                urlBase = TagStringsAndValues.MOBILETECH_URL_BASE;
+            }
+        }
+
+        this.euidq = TagStringsAndValues.EUIDQ;
         this.applicationName = ref;
 
         List<HttpCookie> cookies = CookieHandler.createLegacyCookies(panelistKey);
@@ -97,10 +110,19 @@ class TagHandler {
         this.ref = TagStringsAndValues.APP_NAME_PREFIX + ref;
 
         if (cpId.length() == TagStringsAndValues.CPID_LENGTH_CODIGO) {
-            urlBase = TagStringsAndValues.CODIGO_URL_BASE;
+            if(MobileTaggingFrameworkBackend.isSendWithHttpsActivated()){
+                urlBase = TagStringsAndValues.CODIGO_URL_BASE_HTTPS;
+            }else{
+                urlBase = TagStringsAndValues.CODIGO_URL_BASE;
+            }
         } else {
-            urlBase = TagStringsAndValues.MOBILETECH_URL_BASE;
+            if(MobileTaggingFrameworkBackend.isSendWithHttpsActivated()){
+                urlBase = TagStringsAndValues.MOBILETECH_URL_BASE_HTTPS;
+            }else{
+                urlBase = TagStringsAndValues.MOBILETECH_URL_BASE;
+            }
         }
+
         euidq = TagStringsAndValues.EUIDQ;
         this.applicationName = ref;
 

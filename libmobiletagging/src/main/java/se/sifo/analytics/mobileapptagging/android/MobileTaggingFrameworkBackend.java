@@ -123,6 +123,15 @@ class MobileTaggingFrameworkBackend extends MobileTaggingFramework {
     }
 
     /**
+     * Used by the framework to send data with https.
+     *
+     * @return True if sendWithHttps is activated, false otherwise.
+     */
+    public static boolean isSendWithHttpsActivated() {
+        return sendWithHttpsActivated;
+    }
+
+    /**
      * Constructor used internally only.
      * Use createInstance() and getInstance() instead.
      */

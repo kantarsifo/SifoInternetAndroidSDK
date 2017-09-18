@@ -311,6 +311,13 @@ public abstract class MobileTaggingFramework {
         logPrintsActivated = printToLog;
     }
 
+    /**
+     * Activate https url for send data. Default is false.
+     */
+    public static void setSendWithHttps(boolean https) {
+        sendWithHttpsActivated = https;
+    }
+
     /***** Advanced methods *****/
     /**
      * Advanced/debugging: Get all pending requests.
@@ -365,6 +372,11 @@ public abstract class MobileTaggingFramework {
      * Are logs enabled?
      */
     protected static boolean logPrintsActivated = false;
+
+    /**
+     * Send with https url
+     */
+    protected static boolean sendWithHttpsActivated = false;
 
     /**
      * Abstract class, cannot be instantiated

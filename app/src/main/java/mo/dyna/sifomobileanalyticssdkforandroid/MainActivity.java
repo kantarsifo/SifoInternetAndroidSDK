@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
         MobileTaggingFramework.setLogPrintsActivated(true);
         MobileTaggingFramework.createInstance(getApplicationContext(), Contants.cpid, "TestApplicationSifoText2", false);
+        MobileTaggingFramework.setSendWithHttps(true);
 
 
         setIds();
