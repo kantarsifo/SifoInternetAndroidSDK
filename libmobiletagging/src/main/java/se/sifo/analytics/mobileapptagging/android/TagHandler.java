@@ -64,19 +64,7 @@ class TagHandler {
         this.type = TagStringsAndValues.TYPE;
         this.ref = TagStringsAndValues.APP_NAME_PREFIX + ref;
 
-        if (cpId.length() == TagStringsAndValues.CPID_LENGTH_CODIGO) {
-            if(MobileTaggingFrameworkBackend.isSendWithHttpsActivated()){
-                urlBase = TagStringsAndValues.CODIGO_URL_BASE_HTTPS;
-            }else{
-                urlBase = TagStringsAndValues.CODIGO_URL_BASE;
-            }
-        } else {
-            if(MobileTaggingFrameworkBackend.isSendWithHttpsActivated()){
-                urlBase = TagStringsAndValues.MOBILETECH_URL_BASE_HTTPS;
-            }else{
-                urlBase = TagStringsAndValues.MOBILETECH_URL_BASE;
-            }
-        }
+        urlBase = decideUrl(cpId);
 
         this.euidq = TagStringsAndValues.EUIDQ;
         this.applicationName = ref;
@@ -109,19 +97,7 @@ class TagHandler {
         this.type = TagStringsAndValues.TYPE;
         this.ref = TagStringsAndValues.APP_NAME_PREFIX + ref;
 
-        if (cpId.length() == TagStringsAndValues.CPID_LENGTH_CODIGO) {
-            if(MobileTaggingFrameworkBackend.isSendWithHttpsActivated()){
-                urlBase = TagStringsAndValues.CODIGO_URL_BASE_HTTPS;
-            }else{
-                urlBase = TagStringsAndValues.CODIGO_URL_BASE;
-            }
-        } else {
-            if(MobileTaggingFrameworkBackend.isSendWithHttpsActivated()){
-                urlBase = TagStringsAndValues.MOBILETECH_URL_BASE_HTTPS;
-            }else{
-                urlBase = TagStringsAndValues.MOBILETECH_URL_BASE;
-            }
-        }
+        urlBase = decideUrl(cpId);
 
         euidq = TagStringsAndValues.EUIDQ;
         this.applicationName = ref;
@@ -378,6 +354,33 @@ class TagHandler {
             MobileTaggingFrameworkBackend.printToLog("URL-Encoding not supported");
             return s;
         }
+    }
+
+
+    /**
+     * To decide base url using the framework
+     *
+     * @return urlBase
+     */
+    public String decideUrl(String cpId){
+        String url;
+
+        if (cpId.length() == TagStringsAndValues.CPID_LENGTH_CODIGO) {
+            if(MobileTaggingFrameworkBackend.useHttpsActivated()){
+                url = TagStringsAndValues.CODIGO_URL_BASE_HTTPS;
+            }else{
+                url = TagStringsAndValues.CODIGO_URL_BASE;
+            }
+        } else {
+            if(MobileTaggingFrameworkBackend.useHttpsActivated()){
+                url = TagStringsAndValues.MOBILETECH_URL_BASE_HTTPS;
+            }else{
+                url = TagStringsAndValues.MOBILETECH_URL_BASE;
+            }
+        }
+
+        return url;
+
     }
 
 }

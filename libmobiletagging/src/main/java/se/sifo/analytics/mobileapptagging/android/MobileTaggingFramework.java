@@ -314,8 +314,8 @@ public abstract class MobileTaggingFramework {
     /**
      * Activate https url for send data. Default is false.
      */
-    public static void setSendWithHttps(boolean https) {
-        sendWithHttpsActivated = https;
+    public static void useHttps(boolean https) {
+        useHttpsActivated = https;
     }
 
     /***** Advanced methods *****/
@@ -374,9 +374,9 @@ public abstract class MobileTaggingFramework {
     protected static boolean logPrintsActivated = false;
 
     /**
-     * Send with https url
+     * Send data with https url
      */
-    protected static boolean sendWithHttpsActivated = false;
+    protected static boolean useHttpsActivated = false;
 
     /**
      * Abstract class, cannot be instantiated
