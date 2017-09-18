@@ -137,6 +137,11 @@ public class TagDataRequest {
     private String applicationVersion;
 
     /**
+     * The sdk name found set in the AndroidManifest.Xml
+     */
+    private int androidSDK;
+
+    /**
      * Constructor, used internally by framework only.
      *
      * @param cat      The catalog value (cat) to be sent in this request.
@@ -145,8 +150,8 @@ public class TagDataRequest {
      * @param url      The url that this request is calling.
      * @param callback The callback listener to be called when request is finished.
      */
-    TagDataRequest(String cat, String ref, String id, String name, String url, String applicatonName, String applicationVersion, TagDataRequestCallbackListener callback) {
-        this(cat, id, name, url, applicatonName, applicationVersion, callback, null);
+    TagDataRequest(String cat, String ref, String id, String name, String url, String applicatonName, String applicationVersion, int androidSDK, TagDataRequestCallbackListener callback) {
+        this(cat, id, name, url, applicatonName, applicationVersion, androidSDK, callback, null);
     }
 
     /**
@@ -157,7 +162,7 @@ public class TagDataRequest {
      * @param url                  The url that this request is calling.
      * @param userCallbackListener The callbacklistener defined by user.
      */
-    TagDataRequest(String cat, String id, String name, String url, String applicationName, String applicationVersion, TagDataRequestCallbackListener callback, TagDataRequestCallbackListener userCallbackListener) {
+    TagDataRequest(String cat, String id, String name, String url, String applicationName, String applicationVersion, int androidSDK, TagDataRequestCallbackListener callback, TagDataRequestCallbackListener userCallbackListener) {
         this.cat = cat;
         this.id = id;
         if (name != null) {
@@ -168,6 +173,7 @@ public class TagDataRequest {
         this.url = url;
         this.applicationName = applicationName;
         this.applicationVersion = applicationVersion;
+        this.androidSDK = androidSDK;
 
         requestID = UUID.randomUUID();
         callbackListener = callback;
@@ -178,7 +184,8 @@ public class TagDataRequest {
      * Init the server request to the specified URL. This function will start a new Thread.
      */
     void initRequest() {
-        final String userAgent = applicationName + "/" + applicationVersion + " " + System.getProperty("http.agent");
+        final String userAgent = applicationName + "/" + applicationVersion + " " + "SDK/" + androidSDK + " " + System.getProperty("http.agent");
+        Log.v("userAgent", "userAgent :" + userAgent);
         final String cookieHandlerString = CookieHandler.getCookieString(SifoCookieManager.getInstance().getCookieStore().getCookies());
 
         StringRequest postRequest = new StringRequest(Request.Method.GET, url,
@@ -209,6 +216,7 @@ public class TagDataRequest {
                 if (response != null) {
                     if ((httpStatusCode = response.statusCode) == 200) {
                         // Request was successful with code 200
+                        Log.v("response", "response :" + response.statusCode);
                         MobileTaggingFrameworkBackend.printToLog(
                                 "Tag request sent: " +
                                         "\nRequestID: " + getRequestID() +

@@ -148,6 +148,7 @@ class TagDataRequestHandler implements TagDataRequestCallbackListener {
                     getURL(category, contentID, contentName),
                     tagHandler.getApplicationName(),
                     tagHandler.getApplicationVersion(),
+                    tagHandler.getAndroidSDK(),
                     this, userCallbackListener);
             synchronized (this) {
                 dataRequestQueue.add(request);
