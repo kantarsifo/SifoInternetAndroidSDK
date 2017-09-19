@@ -74,11 +74,11 @@ class MobileTaggingFrameworkBackend extends MobileTaggingFramework {
         final Context context1 = context;
         Runnable runnable = new Runnable() {
             public void run() {
-                VolleyManager.getInstance().getRequestQueue(context1); // TODO: 19/09/2017 test it, it can be wrong and crash 
+                VolleyManager.getInstance().getRequestQueue(context1); // TODO: 19/09/2017 test it, it can be wrong and crash
             }
         };
-        Thread mythread = new Thread(runnable);
-        mythread.start();
+        Thread volleyThread = new Thread(runnable);
+        volleyThread.start();
 
         return frameworkInstance;
     }

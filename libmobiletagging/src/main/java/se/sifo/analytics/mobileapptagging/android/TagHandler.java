@@ -43,7 +43,6 @@ class TagHandler {
     private String ref;
     private String applicationName;
     private String applicationVersion;
-    private int androidSDK;
 
     private CookieStore cookies;
 
@@ -75,7 +74,6 @@ class TagHandler {
         //Get application version and android SDK
         try {
             this.applicationVersion = c.getPackageManager().getPackageInfo(c.getPackageName(), 0).versionName;
-            this.androidSDK = Build.VERSION.SDK_INT;
         } catch (Exception e) {
             MobileTaggingFrameworkBackend.fatalErrorToLog("Failed to retrieve application version, will not set be set in request header");
         }
@@ -107,7 +105,6 @@ class TagHandler {
         //Get application version and android SDK
         try {
             this.applicationVersion = c.getPackageManager().getPackageInfo(c.getPackageName(), 0).versionName;
-            this.androidSDK = Build.VERSION.SDK_INT;
         } catch (Exception e) {
             MobileTaggingFrameworkBackend.fatalErrorToLog("Failed to retrieve application version, will not set be set in request header");
         }
@@ -320,15 +317,6 @@ class TagHandler {
      */
     public String getApplicationVersion() {
         return applicationVersion;
-    }
-
-    /**
-     * Get the Android SDK of the Device using the framework
-     *
-     * @return The android sdk set in the manifest
-     */
-    public int getAndroidSDK(){
-        return androidSDK;
     }
 
     public String getPanelistKey() {
