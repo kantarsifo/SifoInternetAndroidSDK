@@ -1,5 +1,6 @@
 package mo.dyna.sifomobileanalyticssdkforandroid;
 
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -20,8 +21,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectDiskReads()
+                    .detectDiskWrites()
+                    .detectNetwork()   // or .detectAll() for all detectable problems
+                    .penaltyLog()
+                    .build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectLeakedSqlLiteObjects()
+                    .detectLeakedClosableObjects()
+                    .penaltyLog()
+                    .penaltyDeath()
+                    .build());
+
+
         MobileTaggingFramework.setLogPrintsActivated(true);
-        MobileTaggingFramework.useHttps(true);
+        MobileTaggingFramework.useHttps(false);
         MobileTaggingFramework.createInstance(getApplicationContext(), Contants.cpid, "TestApplicationSifoText2", false);
 
         setIds();

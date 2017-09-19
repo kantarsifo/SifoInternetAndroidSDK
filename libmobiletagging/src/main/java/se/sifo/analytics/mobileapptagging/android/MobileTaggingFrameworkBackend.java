@@ -34,7 +34,7 @@ class MobileTaggingFrameworkBackend extends MobileTaggingFramework {
     /**
      * Create an instance of the framework.
      */
-    public static MobileTaggingFrameworkBackend createInstance(Context context, String cpID, String applicationName, boolean onlyPanelist) {
+    public static MobileTaggingFrameworkBackend createInstance(final Context context, String cpID, String applicationName, boolean onlyPanelist) {
         if (context == null) {
             fatalErrorToLog("Mobile Application Tagging Framework Failed to initiate - context must not be null");
             return frameworkInstance;
@@ -70,7 +70,15 @@ class MobileTaggingFrameworkBackend extends MobileTaggingFramework {
             }
         }
 
-        VolleyManager.getInstance().getRequestQueue(context);
+
+        final Context context1 = context;
+        Runnable runnable = new Runnable() {
+            public void run() {
+                VolleyManager.getInstance().getRequestQueue(context1); // TODO: 19/09/2017 test it, it can be wrong and crash 
+            }
+        };
+        Thread mythread = new Thread(runnable);
+        mythread.start();
 
         return frameworkInstance;
     }

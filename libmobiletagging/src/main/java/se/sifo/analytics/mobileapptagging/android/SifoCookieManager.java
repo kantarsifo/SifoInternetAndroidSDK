@@ -4,8 +4,6 @@ package se.sifo.analytics.mobileapptagging.android;
  * Created by ahmetcengiz on 15/09/2017.
  */
 
-import android.util.Log;
-
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
@@ -30,7 +28,7 @@ class SifoCookieManager
 
     private SifoCookieManager() {
         mCookieManager = new CookieManager();
-        mCookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
+        mCookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL); // TODO: 19/09/2017 which one should use?
         CookieHandler.setDefault(mCookieManager);
     }
 
