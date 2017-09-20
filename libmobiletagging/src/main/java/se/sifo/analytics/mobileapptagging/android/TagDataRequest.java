@@ -179,8 +179,9 @@ public class TagDataRequest {
      */
     void initRequest() {
         final String userAgent = applicationName + "/" + applicationVersion + " " + System.getProperty("http.agent");
-        Log.v("userAgent", "userAgent :" + userAgent);
+        Log.v("initRequest", "userAgent :" + userAgent);
         final String cookieHandlerString = CookieHandler.getCookieString(SifoCookieManager.getInstance().getCookieStore().getCookies());
+        Log.v("initRequest", "cookies :" + cookieHandlerString);
 
         StringRequest postRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {

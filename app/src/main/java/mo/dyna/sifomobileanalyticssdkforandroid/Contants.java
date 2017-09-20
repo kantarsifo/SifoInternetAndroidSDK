@@ -7,4 +7,6 @@ package mo.dyna.sifomobileanalyticssdkforandroid;
 public class Contants {
     final static String cpid = "88901cc0d6e94d3c8821165786c095e5";
     final static String cpId2 = "f53c7a3d013d4b89a1c1e697dc724467";
+    public static final String MOBILETECH_CPID = "2383";
+    public static final String CODIGO_CPID = "f53c7a3d013d4b89a1c1e697dc724467";
 }

@@ -34,7 +34,7 @@ class MobileTaggingFrameworkBackend extends MobileTaggingFramework {
     /**
      * Create an instance of the framework.
      */
-    public static MobileTaggingFrameworkBackend createInstance(final Context context, String cpID, String applicationName, boolean onlyPanelist) {
+    public static MobileTaggingFrameworkBackend createInstance(final Context context, final String cpID, final String applicationName, final boolean onlyPanelist) {
         if (context == null) {
             fatalErrorToLog("Mobile Application Tagging Framework Failed to initiate - context must not be null");
             return frameworkInstance;
@@ -54,27 +54,38 @@ class MobileTaggingFrameworkBackend extends MobileTaggingFramework {
             } else if (applicationName.length() > TagStringsAndValues.MAX_LENGTH_APP_NAME) {
                 fatalErrorToLog("Mobile Application Tagging Framework Failed to initiate - Application Name must not be more than " + TagStringsAndValues.MAX_LENGTH_APP_NAME + " characters");
             } else {
-                boolean requestHandled = initTags(context, cpID, applicationName, onlyPanelist);
-                if (!requestHandled) {
-                    initLegacyTags(context, cpID, applicationName, onlyPanelist);
-                }
+
+                Runnable runnable = new Runnable() {
+                    public void run() {
+                        boolean requestHandled = initTags(context, cpID, applicationName, onlyPanelist);
+                        if (!requestHandled) {
+                            initLegacyTags(context, cpID, applicationName, onlyPanelist);
+                        }                    }
+                };
+                Thread initTagsThreat = new Thread(runnable);
+                initTagsThreat.start();
+
             }
         } else {
             printToLog("Mobile Application Tagging Framework already initiated");
             printToLog("Refreshing panelist keys");
-            List<HttpCookie> cookies = PanelistHandler.getCookies(context);
-            if (cookies != null) {
-                frameworkInstance.dataRequestHandler.refreshCookies(context, cookies);
-            } else {
-                frameworkInstance.dataRequestHandler.refreshCookies(context, PanelistHandler.getPanelistKey(context));
-            }
+            Runnable runnable = new Runnable() {
+                public void run() {
+                    List<HttpCookie> cookies = PanelistHandler.getCookies(context);
+                    if (cookies != null) {
+                        frameworkInstance.dataRequestHandler.refreshCookies(context, cookies);
+                    } else {
+                        frameworkInstance.dataRequestHandler.refreshCookies(context, PanelistHandler.getPanelistKey(context));
+                    }                 }
+            };
+            Thread refreshCookiesThread = new Thread(runnable);
+            refreshCookiesThread.start();
+
         }
 
-
-        final Context context1 = context;
         Runnable runnable = new Runnable() {
             public void run() {
-                VolleyManager.getInstance().getRequestQueue(context1); // TODO: 19/09/2017 test it, it can be wrong and crash
+                VolleyManager.getInstance().getRequestQueue(context); // TODO: 19/09/2017 test it, it can be wrong and crash
             }
         };
         Thread volleyThread = new Thread(runnable);
@@ -84,6 +95,7 @@ class MobileTaggingFrameworkBackend extends MobileTaggingFramework {
     }
 
     private static boolean initTags(Context context, String cpID, String applicationName, boolean onlyPanelist) {
+
         final List<HttpCookie> cookies = PanelistHandler.getCookies(context);
         if (cookies == null)
             return false;

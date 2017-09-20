@@ -126,6 +126,7 @@ class TagHandler {
      * @See <a https://code.google.com/p/chromium/issues/detail?id=506369">chromium Issue tracking</a>
      */
     private void initCookies(final Context context, final List<HttpCookie> cookieList) {
+
         final SetupPanelListCookies setupPanelListCookies = new SetupPanelListCookies(context, cookieList);
         setupPanelListCookies.run();
     }
@@ -137,7 +138,6 @@ class TagHandler {
         private static final int MAX_WEBVIEW_PACKAGE_RETRY = 6;
         private static final int TWO_SEC = 2000;
 
-        private final Handler handler = new Handler();
         private final Context context;
         private final List<HttpCookie> cookieList;
 
@@ -162,7 +162,6 @@ class TagHandler {
 
             } catch (PackageManager.NameNotFoundException e) {
                 MobileTaggingFrameworkBackend.errorToLog("Failed to setup panel list cookies - " + String.format("Retry counter=%s", retryCounter));
-                handler.postDelayed(this, TWO_SEC);
             }
         }
     }
