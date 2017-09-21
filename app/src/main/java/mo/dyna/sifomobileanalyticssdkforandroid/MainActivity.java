@@ -20,23 +20,33 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//
+//        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+//                .detectDiskReads()
+//                .detectDiskWrites()
+//                .detectNetwork()   // or .detectAll() for all detectable problems
+//                .penaltyLog()
+//                .build());
+//        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+//                .detectLeakedSqlLiteObjects()
+//                .detectLeakedClosableObjects()
+//                .penaltyLog()
+//                .penaltyDeath()
+//                .build());
 
-        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-                .detectDiskReads()
-                .detectDiskWrites()
-                .detectNetwork()   // or .detectAll() for all detectable problems
-                .penaltyLog()
-                .build());
-        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-                .detectLeakedSqlLiteObjects()
-                .detectLeakedClosableObjects()
-                .penaltyLog()
-                .penaltyDeath()
+//        MobileTaggingFramework.setLogPrintsActivated(true);
+//        MobileTaggingFramework.useHttps(true);
+//        MobileTaggingFramework.createInstance(getApplicationContext(), Contants.CODIGO_CPID, "TestAppMobileTaggingv3", false);
+
+
+        MobileTaggingFramework.createInstance(new MobileTaggingFramework.Builder(getApplicationContext())
+                .setCpId(null)
+                .setApplicationName("TestAppWithNewCreateInstance")
+                .panelistTrackingOnly(false)
+                .setLogPrintsActivated(false)
+                .useHttps(true)
                 .build());
 
-        MobileTaggingFramework.setLogPrintsActivated(true);
-        MobileTaggingFramework.useHttps(true);
-        MobileTaggingFramework.createInstance(getApplicationContext(), Contants.CODIGO_CPID, "TestAppMobileTaggingv3", false);
 
         setIds();
         makeList();
@@ -45,9 +55,9 @@ public class MainActivity extends AppCompatActivity {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getBaseContext(), items[i] , Toast.LENGTH_LONG).show();
-                if(MobileTaggingFramework.getInstance() != null){
-                    MobileTaggingFramework.getInstance().sendTag(i + "item" , "appId");
+                Toast.makeText(getBaseContext(), items[i], Toast.LENGTH_LONG).show();
+                if (MobileTaggingFramework.getInstance() != null) {
+                    MobileTaggingFramework.getInstance().sendTag(i + "item", "appId");
                 }
             }
         });
@@ -66,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupAdapter() {
-        mAdapter =  new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
+        mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
         mListView.setAdapter(mAdapter);
     }
 

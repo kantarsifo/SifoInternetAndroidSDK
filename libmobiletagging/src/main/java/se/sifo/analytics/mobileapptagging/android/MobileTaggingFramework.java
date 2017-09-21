@@ -8,6 +8,7 @@ package se.sifo.analytics.mobileapptagging.android;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
 
@@ -24,7 +25,7 @@ import java.util.List;
  *
  * @author Jakob Schyberg (jakob.schyberg@wecode.se)
  */
-public abstract class MobileTaggingFramework {
+public class MobileTaggingFramework {
 
     /**
      * Call this method upon application start, for example in the onCreate-method of
@@ -378,10 +379,75 @@ public abstract class MobileTaggingFramework {
      */
     protected static boolean useHttpsActivated = true;
 
-    /**
-     * Abstract class, cannot be instantiated
-     */
     protected MobileTaggingFramework() {
+    }
+
+
+    protected String cpId;
+    protected String appName;
+    protected boolean panelistTrackingOnly = false;
+    protected Context context;
+
+
+    ///////////v3
+    public MobileTaggingFramework(Builder builder){
+        this.context = builder.context;
+        this.cpId = builder.cpId;
+        this.appName = builder.appName;
+        this.panelistTrackingOnly = builder.panelistTrackingOnly;
+        useHttpsActivated = builder.useHttpsActived;
+        logPrintsActivated = builder.logPrintsActivated;
+    }
+
+
+
+    public static class Builder {
+        private final Context context;
+        private String cpId;
+        private String appName;
+        private boolean panelistTrackingOnly = false;
+        private boolean logPrintsActivated = false;
+        private boolean useHttpsActived = true;
+
+        public Builder(Context context) {
+            this.context = context;
+        }
+
+        public Builder setCpId(String cpId) {
+            this.cpId = cpId;
+            return this;
+        }
+
+        public Builder setApplicationName(String appName) {
+            this.appName = appName;
+            return this;
+        }
+
+        public Builder panelistTrackingOnly(boolean panelistTrackingOnly) {
+            this.panelistTrackingOnly = panelistTrackingOnly;
+            return this;
+        }
+
+
+        public Builder useHttps(boolean https) {
+            this.useHttpsActived = https;
+            return this;
+        }
+
+        public Builder setLogPrintsActivated(boolean logPrintsActivated) {
+            this.logPrintsActivated = logPrintsActivated;
+            return this;
+        }
+
+
+        public MobileTaggingFramework build(){
+            return new MobileTaggingFramework(this);
+        }
+    }
+
+
+    public static MobileTaggingFramework createInstance(MobileTaggingFramework builder){
+        return createInstance(builder.context, builder.cpId, builder.appName, builder.panelistTrackingOnly);
     }
 
 }
