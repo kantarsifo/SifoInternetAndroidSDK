@@ -12,7 +12,13 @@ import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
 
+import java.io.IOException;
+import java.net.HttpCookie;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URL;
 import java.util.List;
+import java.util.Map;
 
 /**
  * TNS SIFO Mobile Application Tagging Framework :
@@ -297,11 +303,10 @@ public class MobileTaggingFramework {
      *
      * @param webView The WebView that should use cookies from the framework.
      */
-    public void activateCookies(WebView webView) {
-        if (Build.VERSION.SDK_INT >= 21) {
-            CookieManager cookieManager = CookieManager.getInstance();
-            cookieManager.setAcceptThirdPartyCookies(webView, true);
-        }
+    public void activateCookies(URL webView) {
+//        CookieManager cookieManager = CookieManager.getInstance();
+//        cookieManager.setAcceptThirdPartyCookies(webView, true);
+        SifoCookieManager.getInstance();
     }
 
 
@@ -390,7 +395,7 @@ public class MobileTaggingFramework {
 
 
     ///////////v3
-    public MobileTaggingFramework(Builder builder){
+    public MobileTaggingFramework(Builder builder) {
         this.context = builder.context;
         this.cpId = builder.cpId;
         this.appName = builder.appName;
@@ -398,7 +403,6 @@ public class MobileTaggingFramework {
         useHttpsActivated = builder.useHttpsActived;
         logPrintsActivated = builder.logPrintsActivated;
     }
-
 
 
     public static class Builder {
@@ -440,13 +444,13 @@ public class MobileTaggingFramework {
         }
 
 
-        public MobileTaggingFramework build(){
+        public MobileTaggingFramework build() {
             return new MobileTaggingFramework(this);
         }
     }
 
 
-    public static MobileTaggingFramework createInstance(MobileTaggingFramework builder){
+    public static MobileTaggingFramework createInstance(MobileTaggingFramework builder) {
         return createInstance(builder.context, builder.cpId, builder.appName, builder.panelistTrackingOnly);
     }
 

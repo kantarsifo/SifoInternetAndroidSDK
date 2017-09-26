@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Sifo Mobile Analytics SDK for Android</string>
+
+    <string-array name="webview_sites">
+        <item>http://m.aftonbladet.se/</item>
+        <item>http://m.dn.se/</item>
+        <item>http://mobil.gp.se</item>
+    </string-array>
 </resources>
