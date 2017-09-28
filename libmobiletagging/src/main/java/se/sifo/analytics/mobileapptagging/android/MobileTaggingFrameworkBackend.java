@@ -45,8 +45,8 @@ class MobileTaggingFrameworkBackend extends MobileTaggingFramework {
                 fatalErrorToLog("Mobile Application Tagging Framework Failed to initiate - CPID must not be null");
             } else if (cpID.length() == 0) {
                 fatalErrorToLog("Mobile Application Tagging Framework Failed to initiate - CPID must not be empty");
-            } else if(!(cpID.length() == TagStringsAndValues.CPID_LENGTH_CODIGO || cpID.length() == TagStringsAndValues.CPID_LENGTH_MOBITECH)){
-                fatalErrorToLog("Mobile Application Tagging Framework Failed to initiate - CPID must be 6 digits or 32 characters");
+            } else if(!(cpID.length() <= TagStringsAndValues.CPID_LENGTH_CODIGO || cpID.length() == TagStringsAndValues.CPID_LENGTH_MOBITECH)){
+                fatalErrorToLog("Mobile Application Tagging Framework Failed to initiate - CPID must be 6 digits or less or 32 characters");
             } else if (applicationName == null) {
                 fatalErrorToLog("Mobile Application Tagging Framework Failed to initiate - Application Name must not be null");
             } else if (applicationName.length() == 0) {

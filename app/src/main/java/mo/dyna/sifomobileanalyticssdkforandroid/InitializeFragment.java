@@ -1,13 +1,10 @@
 package mo.dyna.sifomobileanalyticssdkforandroid;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +12,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import se.sifo.analytics.mobileapptagging.android.MobileTaggingFramework;
@@ -72,8 +68,13 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
 
         mAppNameET.setText("MyAppName");
         mCpIdET.setText(Contants.CODIGO_CPID);
+
         if (PublicSharedPreferences.getDefaults(Contants.CPID_PREFERENCE, getContext()) != null) {
             mCpIdET.setText(PublicSharedPreferences.getDefaults(Contants.CPID_PREFERENCE, getContext()));
+        }
+
+        if (PublicSharedPreferences.getDefaults(Contants.APP_NAME_PREFERENCE, getContext()) != null) {
+            mAppNameET.setText(PublicSharedPreferences.getDefaults(Contants.APP_NAME_PREFERENCE, getContext()));
         }
 
 
@@ -120,7 +121,7 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
             @Override
             public void onClick(final View view) {
                 if (mCpIdET.getText().length() > 0 && mAppNameET.getText().length() > 0 && mAppNameET.getText().length() > 0) {
-                    if (mCpIdET.getText().length() == 6 || mCpIdET.getText().length() == 32) {
+                    if (mCpIdET.getText().length() <= 6 || mCpIdET.getText().length() == 32) {
                         MobileTaggingFramework.createInstance(new MobileTaggingFramework.Builder(getActivity().getApplicationContext())
                                 .setCpId(mCpIdET.getText().toString())
                                 .setApplicationName(mAppNameET.getText().toString())
@@ -130,6 +131,7 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
                                 .build());
 
                         PublicSharedPreferences.setDefaults(Contants.CPID_PREFERENCE, mCpIdET.getText().toString(), getContext());
+                        PublicSharedPreferences.setDefaults(Contants.APP_NAME_PREFERENCE, mAppNameET.getText().toString(), getContext());
 
                         Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
