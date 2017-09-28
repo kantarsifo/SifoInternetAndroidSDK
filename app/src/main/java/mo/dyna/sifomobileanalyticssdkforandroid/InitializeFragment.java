@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -20,12 +21,11 @@ import android.widget.Toast;
 import se.sifo.analytics.mobileapptagging.android.MobileTaggingFramework;
 
 
-
 /**
  * Created by ahmetcengiz on 26/09/2017.
  */
 
-public class InitializeFragment extends Fragment implements CompoundButton.OnCheckedChangeListener{
+public class InitializeFragment extends Fragment implements CompoundButton.OnCheckedChangeListener {
     private EditText mAppNameET, mCpIdET;
     private CheckBox panelistOnly, useHttps, logEnabled;
     private ViewPagerListener mListener;
@@ -72,6 +72,10 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
 
         mAppNameET.setText("MyAppName");
         mCpIdET.setText(Contants.CODIGO_CPID);
+        if (PublicSharedPreferences.getDefaults(Contants.CPID_PREFERENCE, getContext()) != null) {
+            mCpIdET.setText(PublicSharedPreferences.getDefaults(Contants.CPID_PREFERENCE, getContext()));
+        }
+
 
         Button webViewBtn = (Button) v.findViewById(R.id.btn_webview);
         webViewBtn.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +84,7 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
                 if (MobileTaggingFramework.getInstance() != null) {
                     mListener.sendPageNumber(2);
                 } else {
-                    Toast.makeText(getContext(), "please initialize framework", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Framework must be initialized", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -92,8 +96,17 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
                 if (MobileTaggingFramework.getInstance() != null) {
                     mListener.sendPageNumber(1);
                 } else {
-                    Toast.makeText(getContext(), "please initialize framework", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Framework must be initialized", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        Button destroyButton = v.findViewById(R.id.destroy_button);
+        destroyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MobileTaggingFramework.destroyFramework();
+                initButton.getBackground().clearColorFilter();
             }
         });
 
@@ -105,22 +118,39 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
         initButton = v.findViewById(R.id.initialize_button);
         initButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                if (mCpIdET.getText().length() > 0 && mAppNameET.getText().length() > 0)
-                    MobileTaggingFramework.createInstance(new MobileTaggingFramework.Builder(getActivity().getApplicationContext())
-                            .setCpId(mCpIdET.getText().toString())
-                            .setApplicationName(mAppNameET.getText().toString())
-                            .panelistTrackingOnly(panelistOnly.isChecked())
-                            .setLogPrintsActivated(logEnabled.isChecked())
-                            .useHttps(useHttps.isChecked())
-                            .build());
+            public void onClick(final View view) {
+                if (mCpIdET.getText().length() > 0 && mAppNameET.getText().length() > 0 && mAppNameET.getText().length() > 0) {
+                    if (mCpIdET.getText().length() == 6 || mCpIdET.getText().length() == 32) {
+                        MobileTaggingFramework.createInstance(new MobileTaggingFramework.Builder(getActivity().getApplicationContext())
+                                .setCpId(mCpIdET.getText().toString())
+                                .setApplicationName(mAppNameET.getText().toString())
+                                .panelistTrackingOnly(panelistOnly.isChecked())
+                                .setLogPrintsActivated(logEnabled.isChecked())
+                                .useHttps(useHttps.isChecked())
+                                .build());
 
-                view.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY);
+                        PublicSharedPreferences.setDefaults(Contants.CPID_PREFERENCE, mCpIdET.getText().toString(), getContext());
+
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (MobileTaggingFramework.getInstance() != null) {
+                                    view.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY);
+                                }
+                            }
+                        }, 500);
+                    } else {
+                        Toast.makeText(getContext(), "cpId must be 6 or 32 character", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(getContext(), "cpId or application name can not be empty", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
 
-        if(MobileTaggingFramework.getInstance() != null){
+        if (MobileTaggingFramework.getInstance() != null) {
             initButton.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY);
         }
 
@@ -131,6 +161,5 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
         initButton.getBackground().clearColorFilter();
         MobileTaggingFramework.destroyFramework();
-
     }
 }

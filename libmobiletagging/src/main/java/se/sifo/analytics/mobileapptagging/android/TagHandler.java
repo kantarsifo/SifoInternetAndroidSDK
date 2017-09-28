@@ -199,7 +199,7 @@ class TagHandler {
             id = urlEncode(id.trim());
             Log.v("appIddd", "appId :" + id);
 
-            if (TagStringsAndValues.CODIGO_URL_BASE.equals(urlBase)) {
+            if (TagStringsAndValues.CODIGO_URL_BASE.equals(urlBase) || TagStringsAndValues.CODIGO_URL_BASE_HTTPS.equals(urlBase)) {
                 url = String.format("%ssiteId=%s&appClientId=%s&cp=%s&appId=%s&appName=%s&appRef=%s",
                         urlBase, cpId, euid, cat, id, type, ref);
             } else {

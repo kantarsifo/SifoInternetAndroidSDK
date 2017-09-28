@@ -9,10 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import se.sifo.analytics.mobileapptagging.android.MobileTaggingFramework;
+
 public class MainActivity extends AppCompatActivity {
     MyPagerAdapter adapter;
 
-    private ViewPager mViewPager;
+    private NonSwipeableViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,11 +24,12 @@ public class MainActivity extends AppCompatActivity {
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mViewPager = (ViewPager) findViewById(R.id.main_viewpager);
+        mViewPager = (NonSwipeableViewPager) findViewById(R.id.main_viewpager);
         adapter = new MyPagerAdapter(getSupportFragmentManager());
         mViewPager.setOffscreenPageLimit(3);
         mViewPager.setAdapter(adapter);
         mViewPager.setCurrentItem(0);
+
 
     }
 
