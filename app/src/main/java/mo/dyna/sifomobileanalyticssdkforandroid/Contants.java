@@ -9,4 +9,6 @@ public class Contants {
     final static String cpId2 = "f53c7a3d013d4b89a1c1e697dc724467";
     public static final String MOBILETECH_CPID = "2383";
     public static final String CODIGO_CPID = "f53c7a3d013d4b89a1c1e697dc724467";
+    public static final String LOG_TAG = "MobileTaggingTestLog";
+
 }

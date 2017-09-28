@@ -19,6 +19,20 @@
             </intent-filter>
         </activity>
 
+
+        <activity
+            android:name=".CategoryActivity"
+            android:label="@string/title_categories"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ContentActivity"
+            android:label="@string/title_content_id"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".NameActivity"
+            android:label="@string/title_content_name"
+            android:parentActivityName=".MainActivity" />
+
     </application>
 
 </manifest>

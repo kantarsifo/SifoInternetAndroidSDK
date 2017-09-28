@@ -454,4 +454,7 @@ public class MobileTaggingFramework {
         return createInstance(builder.context, builder.cpId, builder.appName, builder.panelistTrackingOnly);
     }
 
+    public static void destroyFramework(){
+        frameworkInstance = null;
+    }
 }

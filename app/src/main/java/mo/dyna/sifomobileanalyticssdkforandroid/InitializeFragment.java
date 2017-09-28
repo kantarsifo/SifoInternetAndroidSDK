@@ -1,6 +1,8 @@
 package mo.dyna.sifomobileanalyticssdkforandroid;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,10 +25,11 @@ import se.sifo.analytics.mobileapptagging.android.MobileTaggingFramework;
  * Created by ahmetcengiz on 26/09/2017.
  */
 
-public class InitializeFragment extends Fragment {
+public class InitializeFragment extends Fragment implements CompoundButton.OnCheckedChangeListener{
     private EditText mAppNameET, mCpIdET;
     private CheckBox panelistOnly, useHttps, logEnabled;
     private ViewPagerListener mListener;
+    private Button initButton;
 
     public InitializeFragment() {
 
@@ -59,6 +63,7 @@ public class InitializeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.initialize_fragment, container, false);
+        MobileTaggingFramework.destroyFramework();
         mAppNameET = v.findViewById(R.id.appNameET);
         mCpIdET = v.findViewById(R.id.cpIdET);
         panelistOnly = v.findViewById(R.id.panelistOnly);
@@ -84,18 +89,24 @@ public class InitializeFragment extends Fragment {
         nativeViewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.sendPageNumber(1);
+                if (MobileTaggingFramework.getInstance() != null) {
+                    mListener.sendPageNumber(1);
+                } else {
+                    Toast.makeText(getContext(), "please initialize framework", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
-        Button initButton = v.findViewById(R.id.initialize_button);
+
+        panelistOnly.setOnCheckedChangeListener(this);
+        useHttps.setOnCheckedChangeListener(this);
+        logEnabled.setOnCheckedChangeListener(this);
+
+        initButton = v.findViewById(R.id.initialize_button);
         initButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mCpIdET.getText().length() > 0 && mAppNameET.getText().length() > 0)
-                    Log.v("checkbox", "panelistOnly :" + panelistOnly.isChecked());
-                    Log.v("checkbox", "useHttos :" + useHttps.isChecked());
-                    Log.v("checkbox", "logEnabled :" + logEnabled.isChecked());
                     MobileTaggingFramework.createInstance(new MobileTaggingFramework.Builder(getActivity().getApplicationContext())
                             .setCpId(mCpIdET.getText().toString())
                             .setApplicationName(mAppNameET.getText().toString())
@@ -104,9 +115,22 @@ public class InitializeFragment extends Fragment {
                             .useHttps(useHttps.isChecked())
                             .build());
 
+                view.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY);
+
             }
         });
 
+        if(MobileTaggingFramework.getInstance() != null){
+            initButton.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY);
+        }
+
         return v;
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+        initButton.getBackground().clearColorFilter();
+        MobileTaggingFramework.destroyFramework();
+
     }
 }

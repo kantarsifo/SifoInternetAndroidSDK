@@ -1,5 +1,6 @@
 package mo.dyna.sifomobileanalyticssdkforandroid;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -43,11 +44,8 @@ public class NativeFragment extends Fragment {
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getContext(), items[i], Toast.LENGTH_SHORT).show();
-                if (MobileTaggingFramework.getInstance() != null) {
-                    MobileTaggingFramework.getInstance().sendTag(i + "item", "appId");
-                }
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                sendTag((String) parent.getItemAtPosition(position));
             }
         });
         return v;
@@ -67,5 +65,16 @@ public class NativeFragment extends Fragment {
     private void setupAdapter() {
         mAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, items);
         mListView.setAdapter(mAdapter);
+    }
+
+
+    private void sendTag(String category) {
+        if (MobileTaggingFramework.getInstance() != null) {
+            ApplicationImpl.tagInfo().setCategory(0, category);
+            MobileTaggingFramework.getInstance().sendTag(category);
+            Toast.makeText(getActivity(), getString(R.string.toast_sent_tag, category), Toast.LENGTH_SHORT).show();
+
+            startActivity(new Intent(getActivity(), CategoryActivity.class));
+        }
     }
 }
