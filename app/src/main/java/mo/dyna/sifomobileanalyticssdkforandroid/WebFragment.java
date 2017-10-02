@@ -12,10 +12,8 @@ import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import se.sifo.analytics.mobileapptagging.android.TSMobileAnalytics;
 
-import se.sifo.analytics.mobileapptagging.android.MobileTaggingFramework;
 
 /**
  * Created by ahmetcengiz on 26/09/2017.
@@ -49,12 +47,8 @@ public class WebFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 loadUrl((String) parent.getItemAtPosition(position));
-                if (MobileTaggingFramework.getInstance() != null) {
-                    try {
-                        MobileTaggingFramework.getInstance().activateCookies(new URL((String) parent.getItemAtPosition(position)));
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    }
+                if (TSMobileAnalytics.getInstance() != null) {
+                    TSMobileAnalytics.getInstance().activateCookies();
                 }
             }
         });

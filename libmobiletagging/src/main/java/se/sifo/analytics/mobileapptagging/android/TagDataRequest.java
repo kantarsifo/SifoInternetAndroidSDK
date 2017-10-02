@@ -212,7 +212,7 @@ public class TagDataRequest {
                     if ((httpStatusCode = response.statusCode) == 200) {
                         // Request was successful with code 200
                         Log.v("response", "response :" + response.statusCode);
-                        MobileTaggingFrameworkBackend.printToLog(
+                        TSMobileAnalyticsBackend.printToLog(
                                 "Tag request sent: " +
                                         "\nRequestID: " + getRequestID() +
                                         "\nCat encoded value:" + TagHandler.urlEncode(cat) +
@@ -228,7 +228,7 @@ public class TagDataRequest {
                     }
                 } else {
                     // Response was null, should not happen
-                    MobileTaggingFrameworkBackend.errorToLog("Tag request response null");
+                    TSMobileAnalyticsBackend.errorToLog("Tag request response null");
                 }
                 return super.parseNetworkResponse(response);
             }
@@ -245,9 +245,9 @@ public class TagDataRequest {
      */
     private void dataRequestFail(NetworkResponse response, Exception e) {
         if (response != null) {
-            MobileTaggingFrameworkBackend.errorToLog("Tag request failed with http status code:" + response.statusCode + "\nRequestID: " + getRequestID());
+            TSMobileAnalyticsBackend.errorToLog("Tag request failed with http status code:" + response.statusCode + "\nRequestID: " + getRequestID());
         } else {
-            MobileTaggingFrameworkBackend.errorToLog("Tag request failed with exception:" + "\n" + e.toString() + "\nRequestID: " + getRequestID());
+            TSMobileAnalyticsBackend.errorToLog("Tag request failed with exception:" + "\n" + e.toString() + "\nRequestID: " + getRequestID());
         }
 
         // Tell our callback-listeners that the request failed
@@ -261,7 +261,7 @@ public class TagDataRequest {
      * Handle a successful request.
      */
     private void dataRequestComplete() {
-        MobileTaggingFrameworkBackend.printToLog("Tag request completed with success: " + "\nRequestID: " + getRequestID());
+        TSMobileAnalyticsBackend.printToLog("Tag request completed with success: " + "\nRequestID: " + getRequestID());
 
         // Tell our callback listeners that the request was successful
         callbackListener.onDataRequestComplete(this);

@@ -128,19 +128,19 @@ class TagDataRequestHandler implements TagDataRequestCallbackListener {
 
         if (category == null) {
             result = TagStringsAndValues.ERROR_CATEGORY_NULL;
-            MobileTaggingFrameworkBackend.fatalErrorToLog("Failed to send tag - category may not be null");
+            TSMobileAnalyticsBackend.fatalErrorToLog("Failed to send tag - category may not be null");
         } else if (category.length() > TagStringsAndValues.MAX_LENGTH_CATEGORY) {
             result = TagStringsAndValues.ERROR_CATEGORY_TOO_LONG;
-            MobileTaggingFrameworkBackend.fatalErrorToLog("Failed to send tag - category may not be more than " + TagStringsAndValues.MAX_LENGTH_CATEGORY + " characters");
+            TSMobileAnalyticsBackend.fatalErrorToLog("Failed to send tag - category may not be more than " + TagStringsAndValues.MAX_LENGTH_CATEGORY + " characters");
         } else if (contentID == null) {
             result = TagStringsAndValues.ERROR_CONTENT_ID_NULL;
-            MobileTaggingFrameworkBackend.fatalErrorToLog("Failed to send tag - contentID may not be null");
+            TSMobileAnalyticsBackend.fatalErrorToLog("Failed to send tag - contentID may not be null");
         } else if (contentID.length() > TagStringsAndValues.MAX_LENGTH_CONTENT_ID) {
             result = TagStringsAndValues.ERROR_CONTENT_ID_TOO_LONG;
-            MobileTaggingFrameworkBackend.fatalErrorToLog("Failed to send tag - contentID may not be more than " + TagStringsAndValues.MAX_LENGTH_CONTENT_ID + " characters");
+            TSMobileAnalyticsBackend.fatalErrorToLog("Failed to send tag - contentID may not be more than " + TagStringsAndValues.MAX_LENGTH_CONTENT_ID + " characters");
         } else if (contentName != null && contentName.length() > TagStringsAndValues.MAX_LENGTH_CONTENT_NAME) {
             result = TagStringsAndValues.ERROR_CONTENT_NAME_TOO_LONG;
-            MobileTaggingFrameworkBackend.fatalErrorToLog("Failed to send tag - contentName may not be more than " + TagStringsAndValues.MAX_LENGTH_CONTENT_NAME + " characters");
+            TSMobileAnalyticsBackend.fatalErrorToLog("Failed to send tag - contentName may not be more than " + TagStringsAndValues.MAX_LENGTH_CONTENT_NAME + " characters");
         }
 
         if (result == TagStringsAndValues.RESULT_SUCCESS) {

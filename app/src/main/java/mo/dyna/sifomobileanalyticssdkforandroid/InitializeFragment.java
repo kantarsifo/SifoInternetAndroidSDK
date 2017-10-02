@@ -14,7 +14,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import se.sifo.analytics.mobileapptagging.android.MobileTaggingFramework;
+import se.sifo.analytics.mobileapptagging.android.TSMobileAnalytics;
 
 
 /**
@@ -59,7 +59,7 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.initialize_fragment, container, false);
-        MobileTaggingFramework.destroyFramework();
+        TSMobileAnalytics.destroyFramework();
         mAppNameET = v.findViewById(R.id.appNameET);
         mCpIdET = v.findViewById(R.id.cpIdET);
         panelistOnly = v.findViewById(R.id.panelistOnly);
@@ -82,7 +82,7 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
         webViewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (MobileTaggingFramework.getInstance() != null) {
+                if (TSMobileAnalytics.getInstance() != null) {
                     mListener.sendPageNumber(2);
                 } else {
                     Toast.makeText(getContext(), "Framework must be initialized", Toast.LENGTH_SHORT).show();
@@ -94,7 +94,7 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
         nativeViewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (MobileTaggingFramework.getInstance() != null) {
+                if (TSMobileAnalytics.getInstance() != null) {
                     mListener.sendPageNumber(1);
                 } else {
                     Toast.makeText(getContext(), "Framework must be initialized", Toast.LENGTH_SHORT).show();
@@ -106,7 +106,7 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
         destroyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MobileTaggingFramework.destroyFramework();
+                TSMobileAnalytics.destroyFramework();
                 initButton.getBackground().clearColorFilter();
             }
         });
@@ -122,7 +122,7 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
             public void onClick(final View view) {
                 if (mCpIdET.getText().length() > 0 && mAppNameET.getText().length() > 0 && mAppNameET.getText().length() > 0) {
                     if (mCpIdET.getText().length() <= 6 || mCpIdET.getText().length() == 32) {
-                        MobileTaggingFramework.createInstance(new MobileTaggingFramework.Builder(getActivity().getApplicationContext())
+                        TSMobileAnalytics.createInstance(new TSMobileAnalytics.Builder(getActivity().getApplicationContext())
                                 .setCpId(mCpIdET.getText().toString())
                                 .setApplicationName(mAppNameET.getText().toString())
                                 .panelistTrackingOnly(panelistOnly.isChecked())
@@ -137,7 +137,7 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                if (MobileTaggingFramework.getInstance() != null) {
+                                if (TSMobileAnalytics.getInstance() != null) {
                                     view.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY);
                                 }
                             }
@@ -152,7 +152,7 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
             }
         });
 
-        if (MobileTaggingFramework.getInstance() != null) {
+        if (TSMobileAnalytics.getInstance() != null) {
             initButton.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY);
         }
 
@@ -162,6 +162,6 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
         initButton.getBackground().clearColorFilter();
-        MobileTaggingFramework.destroyFramework();
+        TSMobileAnalytics.destroyFramework();
     }
 }

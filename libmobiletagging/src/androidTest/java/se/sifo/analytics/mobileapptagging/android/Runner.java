@@ -25,7 +25,7 @@ public class Runner extends InstrumentationTestRunner {
 		suite.addTestSuite(TagHandlerTest.class);
 		suite.addTestSuite(CookieHandlerTest.class);
 		suite.addTestSuite(TagDataRequestHandlerTest.class);
-		suite.addTestSuite(MobileTaggingFrameworkTest.class);
+		suite.addTestSuite(TSMobileAnalyticsTest.class);
 		return suite;
 	}
 

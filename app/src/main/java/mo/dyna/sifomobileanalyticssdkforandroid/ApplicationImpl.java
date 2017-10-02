@@ -1,13 +1,9 @@
 package mo.dyna.sifomobileanalyticssdkforandroid;
 
 import android.app.Application;
-import android.content.ComponentName;
-import android.content.pm.PackageManager;
 import android.util.Log;
 
-import mo.dyna.sifomobileanalyticssdkforandroid.BuildConfig;
-import mo.dyna.sifomobileanalyticssdkforandroid.Contants;
-import se.sifo.analytics.mobileapptagging.android.MobileTaggingFramework;
+import se.sifo.analytics.mobileapptagging.android.TSMobileAnalytics;
 import se.sifo.analytics.mobileapptagging.android.TagDataRequest;
 import se.sifo.analytics.mobileapptagging.android.TagDataRequestCallbackListener;
 
@@ -41,9 +37,9 @@ public class ApplicationImpl extends Application implements TagDataRequestCallba
                 "\nId: " + request.getID());
 
         Log.d(Contants.LOG_TAG, "Number of successful requests: "
-                + MobileTaggingFramework.getInstance().getNbrOfSuccessfulRequests());
+                + TSMobileAnalytics.getInstance().getNbrOfSuccessfulRequests());
         Log.d(Contants.LOG_TAG, "***********************************");
-        Log.d(Contants.LOG_TAG, "Request queue size: " + MobileTaggingFramework.getInstance().getRequestQueue().size());
+        Log.d(Contants.LOG_TAG, "Request queue size: " + TSMobileAnalytics.getInstance().getRequestQueue().size());
     }
 
     @Override
@@ -57,11 +53,11 @@ public class ApplicationImpl extends Application implements TagDataRequestCallba
                 "\nId: " + request.getID());
 
         Log.w(Contants.LOG_TAG, "Number of successful requests: "
-                + MobileTaggingFramework.getInstance().getNbrOfSuccessfulRequests());
+                + TSMobileAnalytics.getInstance().getNbrOfSuccessfulRequests());
         Log.w(Contants.LOG_TAG, "Number of failed requests: "
-                + MobileTaggingFramework.getInstance().getNbrOfFailedRequests());
+                + TSMobileAnalytics.getInstance().getNbrOfFailedRequests());
         Log.w(Contants.LOG_TAG, "***********************************");
-        Log.w(Contants.LOG_TAG, "Request queue size: " + MobileTaggingFramework.getInstance().getRequestQueue().size());
+        Log.w(Contants.LOG_TAG, "Request queue size: " + TSMobileAnalytics.getInstance().getRequestQueue().size());
     }
 
 

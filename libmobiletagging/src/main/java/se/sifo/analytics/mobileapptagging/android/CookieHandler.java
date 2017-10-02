@@ -47,7 +47,7 @@ class CookieHandler {
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
-//            MobileTaggingFrameworkBackend.printToLog("--Cookie added: " + cookieValue);
+//            TSMobileAnalyticsBackend.printToLog("--Cookie added: " + cookieValue);
         }
 
         return SifoCookieManager.getInstance().getCookieStore();

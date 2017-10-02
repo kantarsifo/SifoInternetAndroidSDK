@@ -3,15 +3,15 @@ package mo.dyna.sifomobileanalyticssdkforandroid;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import se.sifo.analytics.mobileapptagging.android.MobileTaggingFramework;
+import se.sifo.analytics.mobileapptagging.android.TSMobileAnalytics;
 
 /**
  * Created by Peter on 2015-04-17.
@@ -56,13 +56,16 @@ public class NameActivity extends AppCompatActivity {
     }
 
     private void sendTag(String name) {
-        if (MobileTaggingFramework.getInstance() != null) {
+        if (TSMobileAnalytics.getInstance() != null) {
             ApplicationImpl.tagInfo().setName(name);
-            MobileTaggingFramework.getInstance().sendTag(
+            TSMobileAnalytics.getInstance().sendTag(
                     ApplicationImpl.tagInfo().getCategories(),
                     ApplicationImpl.tagInfo().getName(),
                     ApplicationImpl.tagInfo().getContentId());
             Toast.makeText(this, getString(R.string.toast_sent_tag, name), Toast.LENGTH_SHORT).show();
+
+            Log.v("CountRequest", "success count :" + TSMobileAnalytics.getInstance().getNbrOfSuccessfulRequests());
+            Log.v("CountRequest", "fail count :" + TSMobileAnalytics.getInstance().getNbrOfFailedRequests());
         }
     }
 }

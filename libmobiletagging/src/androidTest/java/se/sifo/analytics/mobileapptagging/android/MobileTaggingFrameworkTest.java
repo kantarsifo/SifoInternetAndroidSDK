@@ -22,7 +22,7 @@ import static se.sifo.analytics.mobileapptagging.android.Constants.PACKAGE_NAME;
 import static se.sifo.analytics.mobileapptagging.android.TagStringsAndValues.DOMAIN_CODIGO;
 import static se.sifo.analytics.mobileapptagging.android.Utils.convertStreamToFile;
 
-public class MobileTaggingFrameworkTest extends InstrumentationTestCase {
+public class TSMobileAnalyticsTest extends InstrumentationTestCase {
 
     @Mock
     Context fakeContext;
@@ -68,8 +68,8 @@ public class MobileTaggingFrameworkTest extends InstrumentationTestCase {
     }
 
     @SmallTest
-    public void testMobileTaggingFramework_createInstanceDoesNotDeleteThirdPartyCookies() {
-        MobileTaggingFramework.createInstance(fakeContext,
+    public void testTSMobileAnalytics_createInstanceDoesNotDeleteThirdPartyCookies() {
+        TSMobileAnalytics.createInstance(fakeContext,
                 CODIGO_CPID,
                 APP_NAME);
 
@@ -78,14 +78,14 @@ public class MobileTaggingFrameworkTest extends InstrumentationTestCase {
     }
 
     @SmallTest
-    public void testMobileTaggingFramework_createInstanceSetFrameworkCookiesInCookieManager() {
+    public void testTSMobileAnalytics_createInstanceSetFrameworkCookiesInCookieManager() {
         final String thirdPartyDomain = "third.party.site";
         final String cookieValue = "ThirdPartyCookie1=ThirdPartyValue1";
 
         CookieManager cookieManager = CookieManager.getInstance();
         cookieManager.setCookie(thirdPartyDomain, cookieValue);
 
-        MobileTaggingFramework.createInstance(fakeContext,
+        TSMobileAnalytics.createInstance(fakeContext,
                 CODIGO_CPID,
                 APP_NAME);
 
@@ -94,13 +94,13 @@ public class MobileTaggingFrameworkTest extends InstrumentationTestCase {
     }
 
     @SmallTest
-    public void testMobileTaggingFramework_deletesOldFrameworkCookies() {
+    public void testTSMobileAnalytics_deletesOldFrameworkCookies() {
 
         final CookieManager cookieManager = CookieManager.getInstance();
 
         cookieManager.setCookie(DOMAIN_CODIGO, "OldKey1=OldValue1");
 
-        MobileTaggingFramework.createInstance(fakeContext,
+        TSMobileAnalytics.createInstance(fakeContext,
                 CODIGO_CPID,
                 APP_NAME);
 

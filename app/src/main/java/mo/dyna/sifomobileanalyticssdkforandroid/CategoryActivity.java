@@ -11,7 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import se.sifo.analytics.mobileapptagging.android.MobileTaggingFramework;
+import se.sifo.analytics.mobileapptagging.android.TSMobileAnalytics;
 
 /**
  * Created by Peter on 2015-04-17.
@@ -56,9 +56,9 @@ public class CategoryActivity extends ActionBarActivity {
     }
 
     private void sendTag(String category) {
-        if (MobileTaggingFramework.getInstance() != null) {
+        if (TSMobileAnalytics.getInstance() != null) {
             ApplicationImpl.tagInfo().setCategory(1, category);
-            MobileTaggingFramework.getInstance().sendTag(ApplicationImpl.tagInfo().getCategories(), "", "");
+            TSMobileAnalytics.getInstance().sendTag(ApplicationImpl.tagInfo().getCategories(), "", "");
             Toast.makeText(this, getString(R.string.toast_sent_tag, category), Toast.LENGTH_SHORT).show();
 
             startActivity(new Intent(this, ContentActivity.class));

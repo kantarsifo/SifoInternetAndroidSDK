@@ -24,12 +24,12 @@ import java.util.List;
  *
  * @author Jakob Schyberg (jakob.schyberg@wecode.se)
  */
-public class MobileTaggingFramework {
+public class TSMobileAnalytics {
 
     /**
      * Default constructor
      */
-    protected MobileTaggingFramework() {
+    protected TSMobileAnalytics() {
     }
 
 
@@ -51,15 +51,15 @@ public class MobileTaggingFramework {
      *                        This value will be sent in tags using the "type"-attribute. Max 243 characters.
      * @return The framework instance created with your values. Returns null if creation failed due to invalid parameters.
      */
-    public static MobileTaggingFramework createInstance(Context context, String cpID, String applicationName) {
-        return MobileTaggingFrameworkBackend.createInstance(context, cpID, applicationName, false);
+    public static TSMobileAnalytics createInstance(Context context, String cpID, String applicationName) {
+        return TSMobileAnalyticsBackend.createInstance(context, cpID, applicationName, false);
     }
 
     /**
      * Call this method upon application start if you only want to measure TNS-Sifo Panelist users
      */
-    public static MobileTaggingFramework createInstance(Context context, String cpID, String applicationName, boolean panelistTrackingOnly) {
-        return MobileTaggingFrameworkBackend.createInstance(context, cpID, applicationName, panelistTrackingOnly);
+    public static TSMobileAnalytics createInstance(Context context, String cpID, String applicationName, boolean panelistTrackingOnly) {
+        return TSMobileAnalyticsBackend.createInstance(context, cpID, applicationName, panelistTrackingOnly);
     }
 
     /**
@@ -67,7 +67,7 @@ public class MobileTaggingFramework {
      * @param builder
      * @return
      */
-    public static MobileTaggingFramework createInstance(MobileTaggingFramework builder) {
+    public static TSMobileAnalytics createInstance(TSMobileAnalytics builder) {
         return createInstance(builder.context, builder.cpId, builder.appName, builder.panelistTrackingOnly);
     }
 
@@ -77,7 +77,7 @@ public class MobileTaggingFramework {
      *
      * @return The framework instance with your values specified in createInstance, null if not created.
      */
-    public static MobileTaggingFramework getInstance() {
+    public static TSMobileAnalytics getInstance() {
         return frameworkInstance;
     }
 
@@ -339,7 +339,7 @@ public class MobileTaggingFramework {
     /**
      * Activate LogCat prints for the framework.
      * @deprecated This library uses Builder to initialize
-     * Please use {@link #MobileTaggingFramework(Builder)} instead
+     * Please use {@link #TSMobileAnalytics(Builder)} instead
      * Default is false
      */
     @Deprecated
@@ -350,7 +350,7 @@ public class MobileTaggingFramework {
     /**
      * Activate https url for send data. Default is true.
      * @deprecated This library uses Builder to initialize
-     * Please use {@link #MobileTaggingFramework(Builder)} instead
+     * Please use {@link #TSMobileAnalytics(Builder)} instead
      * Default is false
      */
     public static void useHttps(boolean https) {
@@ -400,7 +400,7 @@ public class MobileTaggingFramework {
     /**
      * Our framework instance.
      */
-    protected static MobileTaggingFrameworkBackend frameworkInstance = null;
+    protected static TSMobileAnalyticsBackend frameworkInstance = null;
 
     /**
      * Our TagDataRequestHandler.
@@ -430,7 +430,7 @@ public class MobileTaggingFramework {
     protected String appName;
 
     /**
-     * You only want to meassure TNS-Sifo Panelist users, set true with {@link #MobileTaggingFramework(Builder)}
+     * You only want to meassure TNS-Sifo Panelist users, set true with {@link #TSMobileAnalytics(Builder)}
      */
     protected boolean panelistTrackingOnly = false;
 
@@ -444,11 +444,11 @@ public class MobileTaggingFramework {
 
 
     /**
-     * MobileTaggingFramework constructor with Builder class
+     * TSMobileAnalytics constructor with Builder class
      * @param builder
      * You can use also {@link #createInstance(Context, String, String, boolean)}
      */
-    public MobileTaggingFramework(Builder builder) {
+    public TSMobileAnalytics(Builder builder) {
         this.context = builder.context;
         this.cpId = builder.cpId;
         this.appName = builder.appName;
@@ -460,7 +460,7 @@ public class MobileTaggingFramework {
 
     /**
      * Builder class for initialize framework
-     * Use it as param with {link {@link #MobileTaggingFramework(Builder)}}
+     * Use it as param with {link {@link #TSMobileAnalytics(Builder)}}
      */
     public static class Builder {
         private final Context context;
@@ -533,10 +533,10 @@ public class MobileTaggingFramework {
 
         /**
          *
-         * @return return constructor of MobileTaggingFramework {@link #MobileTaggingFramework(Builder)}
+         * @return return constructor of TSMobileAnalytics {@link #TSMobileAnalytics(Builder)}
          */
-        public MobileTaggingFramework build() {
-            return new MobileTaggingFramework(this);
+        public TSMobileAnalytics build() {
+            return new TSMobileAnalytics(this);
         }
     }
 

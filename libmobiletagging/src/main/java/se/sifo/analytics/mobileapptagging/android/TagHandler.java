@@ -75,7 +75,7 @@ class TagHandler {
         try {
             this.applicationVersion = c.getPackageManager().getPackageInfo(c.getPackageName(), 0).versionName;
         } catch (Exception e) {
-            MobileTaggingFrameworkBackend.fatalErrorToLog("Failed to retrieve application version, will not set be set in request header");
+            TSMobileAnalyticsBackend.fatalErrorToLog("Failed to retrieve application version, will not set be set in request header");
         }
     }
 
@@ -106,7 +106,7 @@ class TagHandler {
         try {
             this.applicationVersion = c.getPackageManager().getPackageInfo(c.getPackageName(), 0).versionName;
         } catch (Exception e) {
-            MobileTaggingFrameworkBackend.fatalErrorToLog("Failed to retrieve application version, will not set be set in request header");
+            TSMobileAnalyticsBackend.fatalErrorToLog("Failed to retrieve application version, will not set be set in request header");
         }
     }
 
@@ -161,7 +161,7 @@ class TagHandler {
                 cookies = CookieHandler.setupPanelistCookies(context, cookieList, urlBase);
 
             } catch (PackageManager.NameNotFoundException e) {
-                MobileTaggingFrameworkBackend.errorToLog("Failed to setup panel list cookies - " + String.format("Retry counter=%s", retryCounter));
+                TSMobileAnalyticsBackend.errorToLog("Failed to setup panel list cookies - " + String.format("Retry counter=%s", retryCounter));
             }
         }
     }
@@ -178,19 +178,19 @@ class TagHandler {
         String url;
         if (cat == null) {
             result = false;
-            MobileTaggingFrameworkBackend.fatalErrorToLog("Failed to create URL - category may not be null");
+            TSMobileAnalyticsBackend.fatalErrorToLog("Failed to create URL - category may not be null");
         } else if (cat.length() > TagStringsAndValues.MAX_LENGTH_CATEGORY) {
             result = false;
-            MobileTaggingFrameworkBackend.fatalErrorToLog("Failed to create URL - category may not be more than " + TagStringsAndValues.MAX_LENGTH_CATEGORY + " characters");
+            TSMobileAnalyticsBackend.fatalErrorToLog("Failed to create URL - category may not be more than " + TagStringsAndValues.MAX_LENGTH_CATEGORY + " characters");
         } else if (id == null) {
             result = false;
-            MobileTaggingFrameworkBackend.fatalErrorToLog("Failed to create URL - contentID may not be null");
+            TSMobileAnalyticsBackend.fatalErrorToLog("Failed to create URL - contentID may not be null");
         } else if (id.length() > TagStringsAndValues.MAX_LENGTH_CONTENT_ID) {
             result = false;
-            MobileTaggingFrameworkBackend.fatalErrorToLog("Failed to create URL - contentID may not be more than " + TagStringsAndValues.MAX_LENGTH_CONTENT_ID + " characters");
+            TSMobileAnalyticsBackend.fatalErrorToLog("Failed to create URL - contentID may not be more than " + TagStringsAndValues.MAX_LENGTH_CONTENT_ID + " characters");
         } else if (name != null && name.length() > TagStringsAndValues.MAX_LENGTH_CONTENT_NAME) {
             result = false;
-            MobileTaggingFrameworkBackend.fatalErrorToLog("Failed to create URL - contentName may not be more than " + TagStringsAndValues.MAX_LENGTH_CONTENT_NAME + " characters");
+            TSMobileAnalyticsBackend.fatalErrorToLog("Failed to create URL - contentName may not be more than " + TagStringsAndValues.MAX_LENGTH_CONTENT_NAME + " characters");
         }
 
         if (result) {
@@ -338,7 +338,7 @@ class TagHandler {
             return URLEncoder.encode(s, TagStringsAndValues.URL_ENCODING);
         } catch (UnsupportedEncodingException e) {
             // Since encoding UTF-8 is supported by android this should not happen
-            MobileTaggingFrameworkBackend.printToLog("URL-Encoding not supported");
+            TSMobileAnalyticsBackend.printToLog("URL-Encoding not supported");
             return s;
         }
     }
@@ -353,13 +353,13 @@ class TagHandler {
         String url;
 
         if (cpId.length() == TagStringsAndValues.CPID_LENGTH_CODIGO) {
-            if(MobileTaggingFrameworkBackend.useHttpsActivated()){
+            if(TSMobileAnalyticsBackend.useHttpsActivated()){
                 url = TagStringsAndValues.CODIGO_URL_BASE_HTTPS;
             }else{
                 url = TagStringsAndValues.CODIGO_URL_BASE;
             }
         } else {
-            if(MobileTaggingFrameworkBackend.useHttpsActivated()){
+            if(TSMobileAnalyticsBackend.useHttpsActivated()){
                 url = TagStringsAndValues.MOBILETECH_URL_BASE_HTTPS;
             }else{
                 url = TagStringsAndValues.MOBILETECH_URL_BASE;

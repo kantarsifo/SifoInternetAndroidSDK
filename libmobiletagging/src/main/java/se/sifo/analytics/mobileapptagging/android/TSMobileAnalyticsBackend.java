@@ -30,11 +30,11 @@ import java.util.List;
  *
  * @author Jakob Schyberg (jakob.schyberg@wecode.se)
  */
-class MobileTaggingFrameworkBackend extends MobileTaggingFramework {
+class TSMobileAnalyticsBackend extends TSMobileAnalytics {
     /**
      * Create an instance of the framework.
      */
-    public static MobileTaggingFrameworkBackend createInstance(final Context context, final String cpID, final String applicationName, final boolean onlyPanelist) {
+    public static TSMobileAnalyticsBackend createInstance(final Context context, final String cpID, final String applicationName, final boolean onlyPanelist) {
         if (context == null) {
             fatalErrorToLog("Mobile Application Tagging Framework Failed to initiate - context must not be null");
             return frameworkInstance;
@@ -103,7 +103,7 @@ class MobileTaggingFrameworkBackend extends MobileTaggingFramework {
         if (onlyPanelist && cookies.isEmpty()) {
             fatalErrorToLog("Mobile Application Tagging Framework Failed to initiate - Cookies file was empty, panelist id not found");
         } else {
-            frameworkInstance = new MobileTaggingFrameworkBackend(context, cpID, applicationName, cookies);
+            frameworkInstance = new TSMobileAnalyticsBackend(context, cpID, applicationName, cookies);
             printToLog("Mobile Application Tagging Framework initiated with the following values \nCPID: " + cpID + "\nApplication name: " + applicationName + "\nOnly panelist tracking : " + onlyPanelist);
         }
         return true;
@@ -117,7 +117,7 @@ class MobileTaggingFrameworkBackend extends MobileTaggingFramework {
         } else if (onlyPanelist && panelistKey.equals(TagStringsAndValues.NO_PANELIST_ID)) {
             fatalErrorToLog("Mobile Application Tagging Framework Failed to initiate - Panelist Id was not found, it must exist if only panelist tracking is active");
         } else {
-            frameworkInstance = new MobileTaggingFrameworkBackend(context, cpID, applicationName, panelistKey);
+            frameworkInstance = new TSMobileAnalyticsBackend(context, cpID, applicationName, panelistKey);
             //TODO print panelist setting
             printToLog("Mobile Application Tagging Framework initiated with the following values \nCPID: " + cpID + "\nApplication name: " + applicationName + "\nOnly panelist tracking : " + onlyPanelist);
         }
@@ -129,7 +129,7 @@ class MobileTaggingFrameworkBackend extends MobileTaggingFramework {
      * @return The framework instance.
      */
 
-    public static MobileTaggingFrameworkBackend getInstance() {
+    public static TSMobileAnalyticsBackend getInstance() {
         return frameworkInstance;
     }
 
@@ -155,7 +155,7 @@ class MobileTaggingFrameworkBackend extends MobileTaggingFramework {
      * Constructor used internally only.
      * Use createInstance() and getInstance() instead.
      */
-    public MobileTaggingFrameworkBackend(Context c, String cpId, String applicationName, String panelistId) {
+    public TSMobileAnalyticsBackend(Context c, String cpId, String applicationName, String panelistId) {
         super();
         dataRequestHandler = new TagDataRequestHandler(c, cpId, applicationName, panelistId);
     }
@@ -165,7 +165,7 @@ class MobileTaggingFrameworkBackend extends MobileTaggingFramework {
      * Constructor used internally only.
      * Use createInstance() and getInstance() instead.
      */
-    public MobileTaggingFrameworkBackend(Context c, String cpId, String applicationName, List<HttpCookie> cookies) {
+    public TSMobileAnalyticsBackend(Context c, String cpId, String applicationName, List<HttpCookie> cookies) {
         super();
         dataRequestHandler = new TagDataRequestHandler(c, cpId, applicationName, cookies);
     }
@@ -273,7 +273,7 @@ class MobileTaggingFrameworkBackend extends MobileTaggingFramework {
                 }
 
             } catch (JSONException e) {
-                MobileTaggingFrameworkBackend.printToLog("Error parsing TNS Panelist JSON data");
+                TSMobileAnalyticsBackend.printToLog("Error parsing TNS Panelist JSON data");
             }
             return cookieList;
         }
@@ -300,14 +300,14 @@ class MobileTaggingFrameworkBackend extends MobileTaggingFramework {
                 }
                 return buffer.toString();
             } catch (Exception e) {
-                MobileTaggingFrameworkBackend.printToLog(errorString);
+                TSMobileAnalyticsBackend.printToLog(errorString);
             } finally {
                 if (input != null) {
                     try {
                         input.close();
                     } catch (IOException e) {
                         //Should never happen
-                        MobileTaggingFrameworkBackend.printToLog("Error Closing InputStream");
+                        TSMobileAnalyticsBackend.printToLog("Error Closing InputStream");
                     }
                 }
             }
