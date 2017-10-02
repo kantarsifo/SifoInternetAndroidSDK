@@ -8,20 +8,13 @@ package se.sifo.analytics.mobileapptagging.android;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
 
-import java.io.IOException;
-import java.net.HttpCookie;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
 import java.util.List;
-import java.util.Map;
 
 /**
- * TNS SIFO Mobile Application Tagging Framework :
+ * TNS Sifo Mobile Analytics SDK for Android:
  * MobileApplicationTaggingFramework.java :
  * <p/>
  * This framework will help you to measure usage of your application using TNS SIFO:s services.
@@ -34,6 +27,13 @@ import java.util.Map;
 public class MobileTaggingFramework {
 
     /**
+     * Default constructor
+     */
+    protected MobileTaggingFramework() {
+    }
+
+
+    /**
      * Call this method upon application start, for example in the onCreate-method of
      * the main Activity, to initialize the framework.
      * <p/>
@@ -43,6 +43,7 @@ public class MobileTaggingFramework {
      * If any of the parameters are invalid, null will be returned and getInstance() will also return null.
      *
      * @param context         The context of this application, used to get device ID for unique Tagging.
+     *                        It will also necessary to initialize volley library
      *                        You can obtain this value using the method getApplicationContext() in the Android Activity-class.
      * @param cpID            The ID to identify you as a client/customer on the server. This value will be sent in tags
      *                        using the "cpid"-attribute. Only digits allowed. Max 6 characters.
@@ -55,10 +56,19 @@ public class MobileTaggingFramework {
     }
 
     /**
-     * Call this method upon application start if you only want to meassure TNS-Sifo Panelist users
+     * Call this method upon application start if you only want to measure TNS-Sifo Panelist users
      */
     public static MobileTaggingFramework createInstance(Context context, String cpID, String applicationName, boolean panelistTrackingOnly) {
         return MobileTaggingFrameworkBackend.createInstance(context, cpID, applicationName, panelistTrackingOnly);
+    }
+
+    /**
+     * Call this method to initialize framework with Builder class
+     * @param builder
+     * @return
+     */
+    public static MobileTaggingFramework createInstance(MobileTaggingFramework builder) {
+        return createInstance(builder.context, builder.cpId, builder.appName, builder.panelistTrackingOnly);
     }
 
     /**
@@ -139,6 +149,7 @@ public class MobileTaggingFramework {
      * @return The String holding the created URL. NULL if unsuccessful.
      * @deprecated Please use {@link #sendTag(String, String, String)}.
      */
+    @Deprecated
     public int sendTag(String categories, String deprecated, String contentID, String contentName) {
         return dataRequestHandler.performMetricsRequest(categories, contentID, contentName);
     }
@@ -170,6 +181,7 @@ public class MobileTaggingFramework {
      * @return The String holding the created URL. NULL if unsuccessful.
      * @deprecated Please use {@link #sendTag(String[], String, String)}.
      */
+    @Deprecated
     public int sendTag(String[] categories, String deprecated, String contentID, String contentName) {
         return dataRequestHandler.performMetricsRequest(categories, contentID, contentName);
     }
@@ -302,23 +314,44 @@ public class MobileTaggingFramework {
      * to pass on the proper cookies. This is especially important from API 21 onwards.
      *
      * @param webView The WebView that should use cookies from the framework.
+     * @deprecated Framework uses java.net.Cookie library now
+     * Please use {@link #activateCookies()} instead.
      */
-    public void activateCookies(URL webView) {
-//        CookieManager cookieManager = CookieManager.getInstance();
-//        cookieManager.setAcceptThirdPartyCookies(webView, true);
+    @Deprecated
+    public void activateCookies(WebView webView) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            CookieManager cookieManager = CookieManager.getInstance();
+            cookieManager.setAcceptThirdPartyCookies(webView, true);
+        }
+    }
+
+    // TODO: 29/09/2017 test this method
+    /**
+     * Activate framework cookies for WebViews.
+     * If SifoCookieManager is null, create new one with cookiePolicy.(ACCEPT_ALL)
+     * <p/>
+     */
+    public void activateCookies() {
         SifoCookieManager.getInstance();
     }
 
 
     /**
      * Activate LogCat prints for the framework.
+     * @deprecated This library uses Builder to initialize
+     * Please use {@link #MobileTaggingFramework(Builder)} instead
+     * Default is false
      */
+    @Deprecated
     public static void setLogPrintsActivated(boolean printToLog) {
         logPrintsActivated = printToLog;
     }
 
     /**
      * Activate https url for send data. Default is true.
+     * @deprecated This library uses Builder to initialize
+     * Please use {@link #MobileTaggingFramework(Builder)} instead
+     * Default is false
      */
     public static void useHttps(boolean https) {
         useHttpsActivated = https;
@@ -384,77 +417,135 @@ public class MobileTaggingFramework {
      */
     protected static boolean useHttpsActivated = true;
 
-    protected MobileTaggingFramework() {
-    }
-
-
+    /**
+     * The ID to identify you as a client/customer on the server. This value will be sent in tags
+     * using the "cpid"-attribute. It can be 6 digits or less for using MOBITECH or 32 digits for using CODIGO.
+     */
     protected String cpId;
+
+    /**
+     * The name of the application. Only specify the name, the interface will add platform.
+     * This value will be sent in tags using the "type"-attribute. Max 243 characters.
+     */
     protected String appName;
+
+    /**
+     * You only want to meassure TNS-Sifo Panelist users, set true with {@link #MobileTaggingFramework(Builder)}
+     */
     protected boolean panelistTrackingOnly = false;
+
+    /**
+     * The context of this application, used to get device ID for unique Tagging.
+     *      *                        It will also necessary to initialize volley library
+
+     * You can obtain this value using the method getApplicationContext() in the Android Activity-class.
+     */
     protected Context context;
 
 
-    ///////////v3
+    /**
+     * MobileTaggingFramework constructor with Builder class
+     * @param builder
+     * You can use also {@link #createInstance(Context, String, String, boolean)}
+     */
     public MobileTaggingFramework(Builder builder) {
         this.context = builder.context;
         this.cpId = builder.cpId;
         this.appName = builder.appName;
         this.panelistTrackingOnly = builder.panelistTrackingOnly;
-        useHttpsActivated = builder.useHttpsActived;
+        useHttpsActivated = builder.useHttpsActivated;
         logPrintsActivated = builder.logPrintsActivated;
     }
 
 
+    /**
+     * Builder class for initialize framework
+     * Use it as param with {link {@link #MobileTaggingFramework(Builder)}}
+     */
     public static class Builder {
         private final Context context;
         private String cpId;
         private String appName;
         private boolean panelistTrackingOnly = false;
         private boolean logPrintsActivated = false;
-        private boolean useHttpsActived = true;
+        private boolean useHttpsActivated = true;
 
+        /**
+         * Constructor of Builder class
+         * @param context The context of this application, used to get device ID for unique Tagging.
+         *                It will also necessary to initialize volley library
+         *                You can obtain this value using the method getApplicationContext() in the Android Activity-class.
+         */
         public Builder(Context context) {
             this.context = context;
         }
 
+        /**
+         *
+         * @param cpId
+         * @return
+         */
         public Builder setCpId(String cpId) {
             this.cpId = cpId;
             return this;
         }
 
+        /**
+         *
+         * @param appName
+         * @return
+         */
         public Builder setApplicationName(String appName) {
             this.appName = appName;
             return this;
         }
 
+        /**
+         *
+         * @param panelistTrackingOnly
+         * @return
+         */
         public Builder panelistTrackingOnly(boolean panelistTrackingOnly) {
             this.panelistTrackingOnly = panelistTrackingOnly;
             return this;
         }
 
-
+        /**
+         *
+         * @param https
+         * @return
+         */
         public Builder useHttps(boolean https) {
-            this.useHttpsActived = https;
+            this.useHttpsActivated = https;
             return this;
         }
 
+        /**
+         *
+         * @param logPrintsActivated
+         * @return
+         */
         public Builder setLogPrintsActivated(boolean logPrintsActivated) {
             this.logPrintsActivated = logPrintsActivated;
             return this;
         }
 
 
+        /**
+         *
+         * @return return constructor of MobileTaggingFramework {@link #MobileTaggingFramework(Builder)}
+         */
         public MobileTaggingFramework build() {
             return new MobileTaggingFramework(this);
         }
     }
 
-
-    public static MobileTaggingFramework createInstance(MobileTaggingFramework builder) {
-        return createInstance(builder.context, builder.cpId, builder.appName, builder.panelistTrackingOnly);
-    }
-
-    public static void destroyFramework(){
+    /**
+     * Destroy method of framework
+     * Use for when you want to initialize framework with new params
+     * @return frameworkInstance = null
+     */
+    public static void destroyFramework() {
         frameworkInstance = null;
     }
 }

@@ -235,7 +235,6 @@ class MobileTaggingFrameworkBackend extends MobileTaggingFramework {
             return userKey;
         }
 
-        @Deprecated // TODO: 19/09/2017 why is it deprecated
         public static List<HttpCookie> getCookies(Context c) {
             FileInputStream fi = getSifoInputStream(c,
                     TagStringsAndValues.SIFO_PANELIST_PACKAGE_NAME_V2,
