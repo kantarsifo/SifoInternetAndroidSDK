@@ -63,6 +63,7 @@ public class TSMobileAnalytics {
 
     /**
      * Call this method to initialize framework with Builder class
+     *
      * @param builder
      * @return
      */
@@ -335,6 +336,7 @@ public class TSMobileAnalytics {
 
     /**
      * Activate LogCat prints for the framework.
+     *
      * @deprecated This library uses Builder to initialize
      * Please use {@link #TSMobileAnalytics(Builder)} instead
      * Default is false
@@ -346,6 +348,7 @@ public class TSMobileAnalytics {
 
     /**
      * Activate https url for send data. Default is true.
+     *
      * @deprecated This library uses Builder to initialize
      * Please use {@link #TSMobileAnalytics(Builder)} instead
      * Default is false
@@ -440,6 +443,7 @@ public class TSMobileAnalytics {
 
     /**
      * TSMobileAnalytics constructor with Builder class
+     *
      * @param builder
      */
     public TSMobileAnalytics(Builder builder) {
@@ -451,10 +455,19 @@ public class TSMobileAnalytics {
         logPrintsActivated = builder.logPrintsActivated;
     }
 
+    /**
+     * Destroy method of framework
+     * Use for when you want to initialize framework with new params
+     *
+     * @return frameworkInstance = null
+     */
+    public static void destroyFramework() {
+        frameworkInstance = null;
+    }
+
 
     /**
-     * Builder class for initialize framework
-     * Use it as param with {link {@link #TSMobileAnalytics(Builder)}}
+     * Builder class for initialize framework.
      */
     public static class Builder {
         private final Context context;
@@ -464,8 +477,10 @@ public class TSMobileAnalytics {
         private boolean logPrintsActivated = false;
         private boolean useHttpsActivated = true;
 
+
         /**
          * Constructor of Builder class
+         *
          * @param context The context of this application, used to get device ID for unique Tagging.
          *                You can obtain this value using the method getApplicationContext() in the Android Activity-class.
          */
@@ -515,6 +530,7 @@ public class TSMobileAnalytics {
 
         /**
          * Enable logging.
+         *
          * @param logPrintsActivated Set this to true to enable logging.
          * @return
          */
@@ -525,20 +541,10 @@ public class TSMobileAnalytics {
 
 
         /**
-         *
          * @return return constructor of TSMobileAnalytics {@link #TSMobileAnalytics(Builder)}
          */
         public TSMobileAnalytics build() {
             return new TSMobileAnalytics(this);
         }
-    }
-
-    /**
-     * Destroy method of framework
-     * Use for when you want to initialize framework with new params
-     * @return frameworkInstance = null
-     */
-    public static void destroyFramework() {
-        frameworkInstance = null;
     }
 }

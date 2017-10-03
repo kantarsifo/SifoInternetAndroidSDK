@@ -121,11 +121,11 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
             @Override
             public void onClick(final View view) {
                 if (mCpIdET.getText().length() > 0 && mAppNameET.getText().length() > 0 && mAppNameET.getText().length() > 0) {
-                    if (mCpIdET.getText().length() <= 6 || mCpIdET.getText().length() == 32) {
+                    if (mCpIdET.getText().length() == 4 || mCpIdET.getText().length() == 32) {
                         TSMobileAnalytics.createInstance(new TSMobileAnalytics.Builder(getActivity().getApplicationContext())
                                 .setCpId(mCpIdET.getText().toString())
                                 .setApplicationName(mAppNameET.getText().toString())
-                                .panelistTrackingOnly(panelistOnly.isChecked())
+                                .setPanelistTrackingOnly(panelistOnly.isChecked())
                                 .setLogPrintsActivated(logEnabled.isChecked())
                                 .useHttps(useHttps.isChecked())
                                 .build());
@@ -143,7 +143,7 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
                             }
                         }, 500);
                     } else {
-                        Toast.makeText(getContext(), "cpId must be 6 or 32 character", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "cpId must be 4 or 32 character", Toast.LENGTH_SHORT).show();
                     }
                 }else{
                     Toast.makeText(getContext(), "cpId or application name can not be empty", Toast.LENGTH_SHORT).show();
