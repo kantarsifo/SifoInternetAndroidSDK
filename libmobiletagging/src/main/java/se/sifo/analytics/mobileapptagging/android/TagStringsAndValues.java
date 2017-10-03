@@ -15,7 +15,7 @@ public final class TagStringsAndValues {
     /**
      * The maximum length of the Customer identifier value (CPID).
      */
-    public static final int MAX_LENGTH_CPID = 6;
+    public static final int MAX_LENGTH_CPID = 4;
 
     /**
      * The length of Customer identifier value where measurement provider is Codigo Analytics

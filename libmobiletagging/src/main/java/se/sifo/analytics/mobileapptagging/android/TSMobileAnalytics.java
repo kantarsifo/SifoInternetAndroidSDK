@@ -15,10 +15,10 @@ import java.util.List;
 
 /**
  * TNS Sifo Mobile Analytics SDK for Android:
- * MobileApplicationTaggingFramework.java :
+ * TSMobileAnalytics.java :
  * <p/>
  * This framework will help you to measure usage of your application using TNS SIFO:s services.
- * In order to measure traffic, your application needs to send HTTP-requests to a server provided by Mobiletech,
+ * In order to measure traffic, your application needs to send HTTP/s-requests to a server provided by Mobiletech or CODIGO,
  * using URLs following a specified pattern with information about your application.
  * The framework can help you with the whole process, both creating these URLs, as well as sending them to the server.
  *
@@ -37,16 +37,15 @@ public class TSMobileAnalytics {
      * Call this method upon application start, for example in the onCreate-method of
      * the main Activity, to initialize the framework.
      * <p/>
-     * The CPID must not be more than 6 characters, it must not be empty and may only contain digits.
+     * The CPID must 4 or 32 digits, it must not be empty.
      * The Application name must not be more than 243 characters.
      * The parameters must not be null.
      * If any of the parameters are invalid, null will be returned and getInstance() will also return null.
      *
      * @param context         The context of this application, used to get device ID for unique Tagging.
-     *                        It will also necessary to initialize volley library
      *                        You can obtain this value using the method getApplicationContext() in the Android Activity-class.
-     * @param cpID            The ID to identify you as a client/customer on the server. This value will be sent in tags
-     *                        using the "cpid"-attribute. Only digits allowed. Max 6 characters.
+     * @param cpID            The customer ID provided by TNS Sifo, Mobiletech or Codigo Analytics.
+     *                        This information will be included in the attribute called “cpid” in the tags sent to the server.
      * @param applicationName The name of the application. Only specify the name, the interface will add platform.
      *                        This value will be sent in tags using the "type"-attribute. Max 243 characters.
      * @return The framework instance created with your values. Returns null if creation failed due to invalid parameters.
@@ -82,7 +81,7 @@ public class TSMobileAnalytics {
     }
 
     /**
-     * Call to immediately send a tag to the server using the framework�s http-functionality.
+     * Call to immediately send a tag to the server using the framework�s http/s-functionality.
      * <p/>
      * Use when a page is displayed, for example in the onResume-method of an Activity.
      * Strings will be encoded using Latin1 (ISO8859-1) and characters not supported in this character
@@ -102,7 +101,7 @@ public class TSMobileAnalytics {
     }
 
     /**
-     * Call to immediately send a tag to the server using the framework�s http-functionality.
+     * Call to immediately send a tag to the server using the framework�s http/s-functionality.
      * <p/>
      * Use when a page is displayed, for example in the onResume-method of an Activity.
      * Strings will be encoded using Latin1 (ISO8859-1) and characters not supported in this character set will not be stored properly on the server.
@@ -123,7 +122,7 @@ public class TSMobileAnalytics {
     }
 
     /**
-     * Call to immediately send a tag to the server using the framework�s http-functionality.
+     * Call to immediately send a tag to the server using the framework�s http/s-functionality.
      * <p/>
      * Use when a page is displayed, for example in the onResume-method of an Activity.
      * Strings will be encoded using Latin1 (ISO8859-1) and characters not supported in this character set will not be stored properly on the server.
@@ -155,7 +154,7 @@ public class TSMobileAnalytics {
     }
 
     /**
-     * Call to immediately send a tag to the server using the framework�s http-functionality.
+     * Call to immediately send a tag to the server using the framework�s http/s-functionality.
      * <p/>
      * Use when a page is displayed, for example in the onResume-method of an Activity.
      * Strings will be encoded using Latin1 (ISO8859-1) and characters not supported in this character set will not be stored properly on the server.
@@ -189,8 +188,8 @@ public class TSMobileAnalytics {
     /**
      * Create a URL to use to send a tag to the server, if you want to make the request manually.
      * <p/>
-     * You only need to use this method if you are making the HTTP-request yourself. If you want the framework
-     * to make the HTTP-request for you, you only need to use the "sendTag"-method.
+     * You only need to use this method if you are making the HTTP/s-request yourself. If you want the framework
+     * to make the HTTP/s-request for you, you only need to use the "sendTag"-method.
      * <p/>
      * The category parameter must not be more than 255 characters.
      * The input strings must not me null.
@@ -211,8 +210,8 @@ public class TSMobileAnalytics {
     /**
      * Create a URL to use to send a tag to the server, if you want to make the request manually.
      * <p/>
-     * You only need to use this method if you are making the HTTP-request yourself. If you want the framework
-     * to make the HTTP-request for you, you only need to use the "sendTag"-method.
+     * You only need to use this method if you are making the HTTP/s-request yourself. If you want the framework
+     * to make the HTTP/s-request for you, you only need to use the "sendTag"-method.
      * <p/>
      * The category parameter must not be more than 255 characters.
      * The contentID must not be more than 255 characters.
@@ -235,8 +234,8 @@ public class TSMobileAnalytics {
     /**
      * Create a URL to use to send a tag to the server, if you want to make the request manually.
      * <p/>
-     * You only need to use this method if you are making the HTTP-request yourself. If you want the framework
-     * to make the HTTP-request for you, you only need to use the "sendTag"-method.
+     * You only need to use this method if you are making the HTTP/s-request yourself. If you want the framework
+     * to make the HTTP/s-request for you, you only need to use the "sendTag"-method.
      * <p/>
      * The category parameter must not be more than 255 characters.
      * The contentID must not be more than 255 characters.
@@ -272,8 +271,8 @@ public class TSMobileAnalytics {
     /**
      * Create a URL to use to send a tag to the server, if you want to make the request manually.
      * <p/>
-     * You only need to use this method if you are making the HTTP-request yourself. If you want the framework
-     * to make the HTTP-request for you, you only need to use the "sendTag"-method.
+     * You only need to use this method if you are making the HTTP/s-request yourself. If you want the framework
+     * to make the HTTP/s-request for you, you only need to use the "sendTag"-method.
      * <p/>
      * The category list must not contain more than 4 objects and they must not be more than 62 characters each.
      * The contentID must not be more than 255 characters.
@@ -325,16 +324,14 @@ public class TSMobileAnalytics {
         }
     }
 
-    // TODO: 29/09/2017 test this method
     /**
-     * Activate framework cookies for WebViews.
+     * Activate third-party cookies.
      * If SifoCookieManager is null, create new one with cookiePolicy.(ACCEPT_ALL)
      * <p/>
      */
     public void activateCookies() {
-        SifoCookieManager.getInstance();
+        SifoCookieManager.getInstance().activeCookies();
     }
-
 
     /**
      * Activate LogCat prints for the framework.
@@ -418,8 +415,8 @@ public class TSMobileAnalytics {
     protected static boolean useHttpsActivated = true;
 
     /**
-     * The ID to identify you as a client/customer on the server. This value will be sent in tags
-     * using the "cpid"-attribute. It can be 6 digits or less for using MOBITECH or 32 digits for using CODIGO.
+     * The customer ID provided by TNS Sifo, Mobiletech or Codigo Analytics.
+     * This information will be included in the attribute called “cpid” in the tags sent to the server.
      */
     protected String cpId;
 
@@ -436,8 +433,6 @@ public class TSMobileAnalytics {
 
     /**
      * The context of this application, used to get device ID for unique Tagging.
-     *      *                        It will also necessary to initialize volley library
-
      * You can obtain this value using the method getApplicationContext() in the Android Activity-class.
      */
     protected Context context;
@@ -446,7 +441,6 @@ public class TSMobileAnalytics {
     /**
      * TSMobileAnalytics constructor with Builder class
      * @param builder
-     * You can use also {@link #createInstance(Context, String, String, boolean)}
      */
     public TSMobileAnalytics(Builder builder) {
         this.context = builder.context;
@@ -473,7 +467,6 @@ public class TSMobileAnalytics {
         /**
          * Constructor of Builder class
          * @param context The context of this application, used to get device ID for unique Tagging.
-         *                It will also necessary to initialize volley library
          *                You can obtain this value using the method getApplicationContext() in the Android Activity-class.
          */
         public Builder(Context context) {
@@ -481,8 +474,8 @@ public class TSMobileAnalytics {
         }
 
         /**
-         *
-         * @param cpId
+         * @param cpId The customer ID provided by TNS Sifo, Mobiletech or Codigo Analytics.
+         *             This information will be included in the attribute called “cpid” in the tags sent to the server.
          * @return
          */
         public Builder setCpId(String cpId) {
@@ -491,8 +484,8 @@ public class TSMobileAnalytics {
         }
 
         /**
-         *
-         * @param appName
+         * @param appName The name of the application. Only specify the name, the interface will add platform.
+         *                This value will be sent in tags using the "type"-attribute. Max 243 characters.
          * @return
          */
         public Builder setApplicationName(String appName) {
@@ -501,18 +494,18 @@ public class TSMobileAnalytics {
         }
 
         /**
-         *
-         * @param panelistTrackingOnly
+         * @param panelistTrackingOnly Set this to true if you wish to track SIFO panelists only.
+         *                             Default is false.
          * @return
          */
-        public Builder panelistTrackingOnly(boolean panelistTrackingOnly) {
+        public Builder setPanelistTrackingOnly(boolean panelistTrackingOnly) {
             this.panelistTrackingOnly = panelistTrackingOnly;
             return this;
         }
 
         /**
-         *
-         * @param https
+         * @param https Set this to true if you wish to sent data with HTTPS.
+         *              Default is true.
          * @return
          */
         public Builder useHttps(boolean https) {
@@ -521,8 +514,8 @@ public class TSMobileAnalytics {
         }
 
         /**
-         *
-         * @param logPrintsActivated
+         * Enable logging.
+         * @param logPrintsActivated Set this to true to enable logging.
          * @return
          */
         public Builder setLogPrintsActivated(boolean logPrintsActivated) {

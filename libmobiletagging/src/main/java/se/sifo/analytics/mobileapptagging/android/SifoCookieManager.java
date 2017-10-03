@@ -28,7 +28,12 @@ class SifoCookieManager
 
     private SifoCookieManager() {
         mCookieManager = new CookieManager();
-        mCookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL); // TODO: 19/09/2017 which one should use?
+        mCookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ORIGINAL_SERVER);
+        CookieHandler.setDefault(mCookieManager);
+    }
+
+    public void activeCookies(){
+        mCookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
         CookieHandler.setDefault(mCookieManager);
     }
 
