@@ -11,5 +11,8 @@ public class Contants {
     static final String LOG_TAG = "MobileTaggingTestLog";
 
     static String CPID_PREFERENCE = "cpid";
-    public static String APP_NAME_PREFERENCE = "app_name";
+    static String APP_NAME_PREFERENCE = "app_name";
+    static String USE_HTTPS_PREFERENCE = "use_https";
+    static String PANELIST_TRACKING_ONLY_PREFERENCE = "panelist_tracking_only";
+    static String LOG_ENABLED_PREFERENCE = "log";
 }

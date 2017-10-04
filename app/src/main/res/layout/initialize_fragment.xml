@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:padding="10dp">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -118,6 +117,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:weightSum="2">
+
+        <TextView
+            android:id="@+id/success_request"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="success request: 0"
+            android:layout_weight="1"
+            android:textColor="@android:color/holo_green_light"
+            />
+
+
+
+        <TextView
+            android:id="@+id/fail_request"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="fail request: 0"
+            android:layout_weight="1"
+            android:textColor="@android:color/holo_red_light"/>
+
+    </LinearLayout>
 
 
 </LinearLayout>
