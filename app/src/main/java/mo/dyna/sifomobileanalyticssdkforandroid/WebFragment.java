@@ -35,7 +35,6 @@ public class WebFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.web_fragment, container, false);
-        Log.v("onCreateView", "onCreteView");
         WebViewClient webViewClient = new WebViewClient();
         mWebView = v.findViewById(R.id.webview);
         mWebView.setWebViewClient(webViewClient);

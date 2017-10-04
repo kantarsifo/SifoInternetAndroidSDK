@@ -35,19 +35,6 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
         mListener = listener;
     }
 
-    private String title;
-    private int page;
-
-    // newInstance constructor for creating fragment with arguments
-    public static InitializeFragment newInstance(int page, String title) {
-        InitializeFragment fragmentFirst = new InitializeFragment();
-        Bundle args = new Bundle();
-        args.putInt("someInt", page);
-        args.putString("someTitle", title);
-        fragmentFirst.setArguments(args);
-        return fragmentFirst;
-    }
-
     // Store instance variables based on arguments passed
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -10,16 +10,14 @@ import android.content.Context;
 import android.os.Build;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
-
 import java.util.List;
 
 /**
  * TNS Sifo Mobile Analytics SDK for Android:
- * TSMobileAnalytics.java :
+ * TSMobileAnalytics.java:
  * <p/>
- * This framework will help you to measure usage of your application using TNS SIFO:s services.
- * In order to measure traffic, your application needs to send HTTP/s-requests to a server provided by Mobiletech or CODIGO,
- * using URLs following a specified pattern with information about your application.
+ * This framework will help you to measure usage of your application using TNS SIFO's services.
+ * In order to measure traffic, your application needs to send HTTP/s-requests to a server provided by Mobiletech or Codigo Analytics.
  * The framework can help you with the whole process, both creating these URLs, as well as sending them to the server.
  *
  * @author Jakob Schyberg (jakob.schyberg@wecode.se)
@@ -27,11 +25,10 @@ import java.util.List;
 public class TSMobileAnalytics {
 
     /**
-     * Default constructor
+     * Default constructor.
      */
     protected TSMobileAnalytics() {
     }
-
 
     /**
      * Call this method upon application start, for example in the onCreate-method of
@@ -55,17 +52,17 @@ public class TSMobileAnalytics {
     }
 
     /**
-     * Call this method upon application start if you only want to measure TNS-Sifo Panelist users
+     * Call this method upon application start if you only want to measure TNS-Sifo Panelist users.
      */
     public static TSMobileAnalytics createInstance(Context context, String cpID, String applicationName, boolean panelistTrackingOnly) {
         return TSMobileAnalyticsBackend.createInstance(context, cpID, applicationName, panelistTrackingOnly);
     }
 
     /**
-     * Call this method to initialize framework with Builder class
+     * Call this method to initialize framework with Builder class.
      *
-     * @param builder
-     * @return
+     * @param builder new {@link TSMobileAnalytics.Builder}
+     * @return The framework instance created with your values. Returns null if creation failed due to invalid parameters.
      */
     public static TSMobileAnalytics createInstance(TSMobileAnalytics builder) {
         return createInstance(builder.context, builder.cpId, builder.appName, builder.panelistTrackingOnly);
@@ -82,7 +79,7 @@ public class TSMobileAnalytics {
     }
 
     /**
-     * Call to immediately send a tag to the server using the framework�s http/s-functionality.
+     * Call to immediately send a tag to the server using the framework's http/s-functionality.
      * <p/>
      * Use when a page is displayed, for example in the onResume-method of an Activity.
      * Strings will be encoded using Latin1 (ISO8859-1) and characters not supported in this character
@@ -102,7 +99,7 @@ public class TSMobileAnalytics {
     }
 
     /**
-     * Call to immediately send a tag to the server using the framework�s http/s-functionality.
+     * Call to immediately send a tag to the server using the framework's http/s-functionality.
      * <p/>
      * Use when a page is displayed, for example in the onResume-method of an Activity.
      * Strings will be encoded using Latin1 (ISO8859-1) and characters not supported in this character set will not be stored properly on the server.
@@ -123,7 +120,7 @@ public class TSMobileAnalytics {
     }
 
     /**
-     * Call to immediately send a tag to the server using the framework�s http/s-functionality.
+     * Call to immediately send a tag to the server using the framework's http/s-functionality.
      * <p/>
      * Use when a page is displayed, for example in the onResume-method of an Activity.
      * Strings will be encoded using Latin1 (ISO8859-1) and characters not supported in this character set will not be stored properly on the server.
@@ -155,7 +152,7 @@ public class TSMobileAnalytics {
     }
 
     /**
-     * Call to immediately send a tag to the server using the framework�s http/s-functionality.
+     * Call to immediately send a tag to the server using the framework's http/s-functionality.
      * <p/>
      * Use when a page is displayed, for example in the onResume-method of an Activity.
      * Strings will be encoded using Latin1 (ISO8859-1) and characters not supported in this character set will not be stored properly on the server.
@@ -327,8 +324,6 @@ public class TSMobileAnalytics {
 
     /**
      * Activate third-party cookies.
-     * If SifoCookieManager is null, create new one with cookiePolicy.(ACCEPT_ALL)
-     * <p/>
      */
     public void activateCookies() {
         SifoCookieManager.getInstance().activeCookies();
@@ -337,9 +332,9 @@ public class TSMobileAnalytics {
     /**
      * Activate LogCat prints for the framework.
      *
-     * @deprecated This library uses Builder to initialize
-     * Please use {@link #TSMobileAnalytics(Builder)} instead
-     * Default is false
+     * @deprecated This library uses Builder to initialize.
+     * Please use {@link #TSMobileAnalytics(Builder)} instead.
+     * Default is false.
      */
     @Deprecated
     public static void setLogPrintsActivated(boolean printToLog) {
@@ -349,9 +344,8 @@ public class TSMobileAnalytics {
     /**
      * Activate https url for send data. Default is true.
      *
-     * @deprecated This library uses Builder to initialize
-     * Please use {@link #TSMobileAnalytics(Builder)} instead
-     * Default is false
+     * @deprecated This library uses Builder to initialize.
+     * Please use {@link #TSMobileAnalytics(Builder)} instead.
      */
     public static void useHttps(boolean https) {
         useHttpsActivated = https;
@@ -413,7 +407,7 @@ public class TSMobileAnalytics {
     protected static boolean logPrintsActivated = false;
 
     /**
-     * Send data with https url
+     * Send data with https url.
      */
     protected static boolean useHttpsActivated = true;
 
@@ -430,7 +424,7 @@ public class TSMobileAnalytics {
     protected String appName;
 
     /**
-     * You only want to meassure TNS-Sifo Panelist users, set true with {@link #TSMobileAnalytics(Builder)}
+     * You only want to measure TNS-Sifo Panelist users, set true with {@link #TSMobileAnalytics(Builder)}
      */
     protected boolean panelistTrackingOnly = false;
 
@@ -442,9 +436,9 @@ public class TSMobileAnalytics {
 
 
     /**
-     * TSMobileAnalytics constructor with Builder class
+     * TSMobileAnalytics constructor with Builder class.
      *
-     * @param builder
+     * @param builder new Builder object to specify params
      */
     public TSMobileAnalytics(Builder builder) {
         this.context = builder.context;
@@ -456,10 +450,8 @@ public class TSMobileAnalytics {
     }
 
     /**
-     * Destroy method of framework
-     * Use for when you want to initialize framework with new params
-     *
-     * @return frameworkInstance = null
+     * Destroy method of current framework.
+     * Use this to destroy current framework.
      */
     public static void destroyFramework() {
         frameworkInstance = null;
@@ -479,7 +471,7 @@ public class TSMobileAnalytics {
 
 
         /**
-         * Constructor of Builder class
+         * Construct a new Builder object to set params.
          *
          * @param context The context of this application, used to get device ID for unique Tagging.
          *                You can obtain this value using the method getApplicationContext() in the Android Activity-class.
@@ -489,9 +481,11 @@ public class TSMobileAnalytics {
         }
 
         /**
+         * Specify the cpId you want to set(required).
+         *
          * @param cpId The customer ID provided by TNS Sifo, Mobiletech or Codigo Analytics.
          *             This information will be included in the attribute called “cpid” in the tags sent to the server.
-         * @return
+         * @return the current builder object.
          */
         public Builder setCpId(String cpId) {
             this.cpId = cpId;
@@ -499,9 +493,11 @@ public class TSMobileAnalytics {
         }
 
         /**
+         * Specify the application name you want to set(required).
+         *
          * @param appName The name of the application. Only specify the name, the interface will add platform.
          *                This value will be sent in tags using the "type"-attribute. Max 243 characters.
-         * @return
+         * @return the current builder object.
          */
         public Builder setApplicationName(String appName) {
             this.appName = appName;
@@ -509,9 +505,10 @@ public class TSMobileAnalytics {
         }
 
         /**
+         * Specify the panelistTrackingOnly you want to set(not required, default value is false).
+         *
          * @param panelistTrackingOnly Set this to true if you wish to track SIFO panelists only.
-         *                             Default is false.
-         * @return
+         * @return the current builder object.
          */
         public Builder setPanelistTrackingOnly(boolean panelistTrackingOnly) {
             this.panelistTrackingOnly = panelistTrackingOnly;
@@ -519,9 +516,11 @@ public class TSMobileAnalytics {
         }
 
         /**
+         * Enable or disable sending data with HTTPS.
+         *
          * @param https Set this to true if you wish to sent data with HTTPS.
          *              Default is true.
-         * @return
+         * @return the current builder object.
          */
         public Builder useHttps(boolean https) {
             this.useHttpsActivated = https;
@@ -532,7 +531,8 @@ public class TSMobileAnalytics {
          * Enable logging.
          *
          * @param logPrintsActivated Set this to true to enable logging.
-         * @return
+         *
+         * @return the current builder object.
          */
         public Builder setLogPrintsActivated(boolean logPrintsActivated) {
             this.logPrintsActivated = logPrintsActivated;
@@ -541,7 +541,7 @@ public class TSMobileAnalytics {
 
 
         /**
-         * @return return constructor of TSMobileAnalytics {@link #TSMobileAnalytics(Builder)}
+         * @return return constructor of TSMobileAnalytics {@link #TSMobileAnalytics(Builder)}.
          */
         public TSMobileAnalytics build() {
             return new TSMobileAnalytics(this);
