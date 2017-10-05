@@ -66,13 +66,14 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
             Log.v("requestqueue", "queue :" + TSMobileAnalytics.getInstance().getRequestQueue().size());
         }
 
-        //set dummy data
+        //set starter data
         mAppNameET.setText("MyAppName");
         mCpIdET.setText(Contants.CODIGO_CPID);
 
-        //get preference setup
+        //get settings of last initialized framework
         getPreferenceSetup();
 
+        //show webview to test
         Button webViewBtn = (Button) v.findViewById(R.id.btn_webview);
         webViewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +86,7 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
             }
         });
 
+        //show list view to test
         Button nativeViewBtn = v.findViewById(R.id.btn_native);
         nativeViewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,30 +107,12 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
             }
         });
 
-        TextWatcher textWatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        //to detect cpId or application name is changed
+        setAddTextChangeListeners();
 
-            }
+        //to detect framework's params is changed(useHttp, panelistTrackingOnly, logEnabled)
+        setOnCheckedChangeListeners();
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                destroyCurrentFramework();
-            }
-        };
-
-        mCpIdET.addTextChangedListener(textWatcher);
-        mAppNameET.addTextChangedListener(textWatcher);
-
-
-        panelistOnly.setOnCheckedChangeListener(this);
-        useHttps.setOnCheckedChangeListener(this);
-        logEnabled.setOnCheckedChangeListener(this);
 
         initButton = v.findViewById(R.id.initialize_button);
         initButton.setOnClickListener(new View.OnClickListener() {
@@ -136,16 +120,17 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
             public void onClick(final View view) {
                 if (mCpIdET.getText().length() > 0 && mAppNameET.getText().length() > 0 && mAppNameET.getText().length() > 0) {
                     if (mCpIdET.getText().length() == 4 || mCpIdET.getText().length() == 32) {
-                        TSMobileAnalytics.createInstance(new TSMobileAnalytics.Builder(getActivity().getApplicationContext())
-                                .setCpId(mCpIdET.getText().toString())
-                                .setApplicationName(mAppNameET.getText().toString())
-                                .setPanelistTrackingOnly(panelistOnly.isChecked())
-                                .setLogPrintsActivated(logEnabled.isChecked())
-                                .useHttps(useHttps.isChecked())
-                                .build());
 
+                        //initialize framework with builder
+                        initializeFrameworkWithBuilder();
+
+                        //or use this one
+                        //initializeFrameworkWithCreateInstance();
+
+                        //save setting of last initialized framework
                         setPreferenceSetup();
 
+                        //print setting of current framework
                         printParams();
 
                         Handler handler = new Handler();
@@ -171,6 +156,58 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
         }
 
         return v;
+    }
+
+    /**
+     * Initialize method of framework v2.
+     */
+    @Deprecated
+    private void initializeFrameworkWithCreateInstance() {
+        TSMobileAnalytics.setLogPrintsActivated(logEnabled.isChecked());
+        TSMobileAnalytics.useHttps(useHttps.isChecked());
+        TSMobileAnalytics.createInstance(getActivity().getApplicationContext(), mCpIdET.getText().toString(), mAppNameET.getText().toString(), panelistOnly.isChecked());
+    }
+
+    /**
+     * Initialize method of framework v3.
+     * In your app, you can use it onCreate method.
+     */
+    private void initializeFrameworkWithBuilder() {
+        TSMobileAnalytics.createInstance(new TSMobileAnalytics.Builder(getActivity().getApplicationContext())
+                .setCpId(mCpIdET.getText().toString())
+                .setApplicationName(mAppNameET.getText().toString())
+                .setPanelistTrackingOnly(panelistOnly.isChecked())
+                .setLogPrintsActivated(logEnabled.isChecked())
+                .useHttps(useHttps.isChecked())
+                .build());
+    }
+
+    private void setOnCheckedChangeListeners() {
+        panelistOnly.setOnCheckedChangeListener(this);
+        useHttps.setOnCheckedChangeListener(this);
+        logEnabled.setOnCheckedChangeListener(this);
+    }
+
+    private void setAddTextChangeListeners() {
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                destroyCurrentFramework();
+            }
+        };
+
+        mCpIdET.addTextChangedListener(textWatcher);
+        mAppNameET.addTextChangedListener(textWatcher);
     }
 
 
@@ -206,12 +243,15 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
         logEnabled.setChecked(PublicSharedPreferences.getBoolean(Contants.LOG_ENABLED_PREFERENCE, getContext()));
     }
 
+    /**
+     * Destroy current framework
+     * In your app, you DON'T have to pay attention to use this method.
+     */
     private void destroyCurrentFramework() {
         successTV.setText("success request: " + 0);
         failTV.setText("success request: " + 0);
         initButton.getBackground().clearColorFilter();
         TSMobileAnalytics.destroyFramework();
-
     }
 
     private void printParams() {

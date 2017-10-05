@@ -58,7 +58,7 @@ public class NativeFragment extends Fragment {
     private void makeList() {
         items = new String[30];
         for (int i = 0; i < 30; i++) {
-            items[i] = i + " item";
+            items[i] = i + " category";
         }
     }
 
@@ -68,6 +68,13 @@ public class NativeFragment extends Fragment {
     }
 
 
+    /**
+     * Use this to send tag TSMobileAnalytics.getInstance().sendTag(category).
+     * @param category The current category or name of the page that the user is browsing.
+     *                 This value tells us what the user is doing right now.
+     *                 If he is reading an article about sports in your application, the value might be “sports”.
+     *                 If he is browsing a set of football scores, the value might be “sports/scores/football”.
+     */
     private void sendTag(String category) {
         if (TSMobileAnalytics.getInstance() != null) {
             ApplicationImpl.tagInfo().setCategory(0, category);
