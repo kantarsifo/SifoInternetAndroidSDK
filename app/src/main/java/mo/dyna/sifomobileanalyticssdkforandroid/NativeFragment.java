@@ -52,7 +52,7 @@ public class NativeFragment extends Fragment {
     }
 
     private void setIds(View v) {
-        mListView = v.findViewById(R.id.list);
+        mListView = (ListView) v.findViewById(R.id.list);
     }
 
     private void makeList() {

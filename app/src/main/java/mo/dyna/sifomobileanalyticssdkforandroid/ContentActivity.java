@@ -4,8 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,7 +16,7 @@ import se.sifo.analytics.mobileapptagging.android.TSMobileAnalytics;
 /**
  * Created by Peter on 2015-04-17.
  */
-public class ContentActivity extends ActionBarActivity {
+public class ContentActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

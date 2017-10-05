@@ -51,13 +51,13 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.initialize_fragment, container, false);
-        mAppNameET = v.findViewById(R.id.appNameET);
-        mCpIdET = v.findViewById(R.id.cpIdET);
-        panelistOnly = v.findViewById(R.id.panelistOnly);
-        useHttps = v.findViewById(R.id.useHttps);
-        logEnabled = v.findViewById(R.id.logEnabled);
-        successTV = v.findViewById(R.id.success_request);
-        failTV = v.findViewById(R.id.fail_request);
+        mAppNameET = (EditText) v.findViewById(R.id.appNameET);
+        mCpIdET = (EditText) v.findViewById(R.id.cpIdET);
+        panelistOnly = (CheckBox) v.findViewById(R.id.panelistOnly);
+        useHttps = (CheckBox) v.findViewById(R.id.useHttps);
+        logEnabled = (CheckBox) v.findViewById(R.id.logEnabled);
+        successTV = (TextView) v.findViewById(R.id.success_request);
+        failTV = (TextView) v.findViewById(R.id.fail_request);
 
         //set current framework analytic
         if (TSMobileAnalytics.getInstance() != null) {
@@ -87,7 +87,7 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
         });
 
         //show list view to test
-        Button nativeViewBtn = v.findViewById(R.id.btn_native);
+        Button nativeViewBtn = (Button) v.findViewById(R.id.btn_native);
         nativeViewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,7 +99,7 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
             }
         });
 
-        Button destroyButton = v.findViewById(R.id.destroy_button);
+        Button destroyButton = (Button) v.findViewById(R.id.destroy_button);
         destroyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,7 +114,7 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
         setOnCheckedChangeListeners();
 
 
-        initButton = v.findViewById(R.id.initialize_button);
+        initButton = (Button) v.findViewById(R.id.initialize_button);
         initButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {

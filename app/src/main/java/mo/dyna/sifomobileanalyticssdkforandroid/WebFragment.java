@@ -36,12 +36,12 @@ public class WebFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.web_fragment, container, false);
         WebViewClient webViewClient = new WebViewClient();
-        mWebView = v.findViewById(R.id.webview);
+        mWebView = (WebView) v.findViewById(R.id.webview);
         mWebView.setWebViewClient(webViewClient);
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
 
-        ListView listView = v.findViewById(R.id.list);
+        ListView listView = (ListView) v.findViewById(R.id.list);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

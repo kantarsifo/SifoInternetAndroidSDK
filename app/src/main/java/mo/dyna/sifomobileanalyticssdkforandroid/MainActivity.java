@@ -47,16 +47,16 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             switch (position) {
-                case 0: // Fragment # 0 - This will show FirstFragment
+                case 0:
                     return new InitializeFragment(new ViewPagerListener() {
                         @Override
                         public void sendPageNumber(int page) {
                             mViewPager.setCurrentItem(page);
                         }
                     });
-                case 1: // Fragment # 0 - This will show FirstFragment different title
+                case 1:
                     return new NativeFragment();
-                case 2: // Fragment # 0 - This will show FirstFragment different title
+                case 2:
                     return WebFragment.newInstance();
                 default:
                     return null;
