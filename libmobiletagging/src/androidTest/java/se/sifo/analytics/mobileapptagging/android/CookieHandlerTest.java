@@ -2,9 +2,10 @@ package se.sifo.analytics.mobileapptagging.android;
 
 import android.test.AndroidTestCase;
 import android.test.suitebuilder.annotation.SmallTest;
-import android.webkit.CookieManager;
 
 import java.net.HttpCookie;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,63 +38,65 @@ public class CookieHandlerTest extends AndroidTestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
 
-        CookieManager cookieManager = CookieManager.getInstance();
-        cookieManager.removeAllCookie();
+        SifoCookieManager.getInstance().clearCookies();
     }
 
     @SmallTest
     public void testSetupPanelistCookies_doesNotDeleteThirdPartyCookies() {
 
-        final String thirdPartyDomain = "third.party.site";
+        final String thirdPartyDomain = "http://thirdpartysite.com";
         final String cookieValue = "ThirdPartyCookie1=ThirdPartyValue1";
+        HttpCookie cookie = new HttpCookie(thirdPartyDomain, cookieValue);
 
-        CookieManager cookieManager = CookieManager.getInstance();
-        cookieManager.setCookie(thirdPartyDomain, cookieValue);
+        SifoCookieManager cookieManager = SifoCookieManager.getInstance();
+
+            cookieManager.getCookieStore().add(URI.create(thirdPartyDomain), cookie);
+
 
         CookieHandler.setupPanelistCookies(getContext(), mCookieList, DOMAIN_CODIGO);
 
-        assertEquals(cookieValue,
-                cookieManager.getCookie(thirdPartyDomain));
+            assertEquals(cookieValue,
+                    cookieManager.getCookieStore().get(URI.create(thirdPartyDomain)).toString());
+
     }
 
     @SmallTest
     public void testSetupPanelistCookies_deletesOldFrameworkCookies() {
 
-        final CookieManager cookieManager = CookieManager.getInstance();
+        final SifoCookieManager cookieManager = SifoCookieManager.getInstance();
 
         for(HttpCookie cookie : mCookieList) {
-            cookieManager.setCookie(cookie.getDomain(), CookieHandler.getCookieDetailString(cookie));
+            cookieManager.getCookieStore().add(URI.create(cookie.getDomain()), cookie);
         }
+        HttpCookie cookie = new HttpCookie("OldKey1", "OldValue1");
 
-        cookieManager.setCookie(DOMAIN_CODIGO, "OldKey1=OldValue1");
+        cookieManager.getCookieStore().add(URI.create(DOMAIN_CODIGO), cookie);
 
         CookieHandler.setupPanelistCookies(getContext(), mCookieList, DOMAIN_CODIGO);
 
-        assertEquals("Key1=Value1; Key2=Value2", cookieManager.getCookie(DOMAIN_CODIGO));
+        assertEquals("Key1=Value1; Key2=Value2", cookieManager.getCookieStore().get(URI.create(DOMAIN_CODIGO)).toString());
     }
 
     @SmallTest
     public void testClearCookiesFor() {
         final String domain = "bh.mobiletech.se";
-        final CookieManager cookieManager = CookieManager.getInstance();
+        final SifoCookieManager cookieManager = SifoCookieManager.getInstance();
 
-        cookieManager.setCookie(domain, "MyKey1=MyValue1");
+        cookieManager.getCookieStore().add(URI.create(domain), new HttpCookie("MyKey1","MyValue1"));
 
         CookieHandler.clearCookiesFor(domain);
 
-        assertNull(cookieManager.getCookie(domain));
+        assertNull(cookieManager.getCookieStore().get(URI.create(domain)).toString());
     }
 
     @SmallTest
     public void testRemoveCookieByExpiredDate() {
-        CookieManager cookieManager = CookieManager.getInstance();
+        SifoCookieManager cookieManager = SifoCookieManager.getInstance();
         String url = "bh.mobiletech.no";
-        String value = "cookieName=my cookie";
 
-        cookieManager.setCookie(url, value);
-        final String cookieString = "cookieName=;expires=Mon, 17 Oct 2011 10:47:11 UTC;";
-        cookieManager.setCookie(url, cookieString);
+        cookieManager.getCookieStore().add(URI.create(url), new HttpCookie("cookieName", "my cookie"));
+        cookieManager.getCookieStore().add(URI.create(url), new HttpCookie("cookieName=;expires", "Mon, 17 Oct 2011 10:47:11 UTC;"));
 
-        assertNull(cookieManager.getCookie(url));
+        assertNull(cookieManager.getCookieStore().get(URI.create(url)).toString());
     }
 }

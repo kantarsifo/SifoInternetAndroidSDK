@@ -4,13 +4,14 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.test.InstrumentationTestCase;
 import android.test.suitebuilder.annotation.SmallTest;
-import android.webkit.CookieManager;
 
 import org.mockito.Mock;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.net.HttpCookie;
+import java.net.URI;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -64,7 +65,7 @@ public class TSMobileAnalyticsTest extends InstrumentationTestCase {
     @Override
     protected void tearDown() throws Exception {
         super.tearDown();
-        CookieManager.getInstance().removeAllCookie();
+        SifoCookieManager.getInstance().clearCookies();
     }
 
     @SmallTest
@@ -73,8 +74,8 @@ public class TSMobileAnalyticsTest extends InstrumentationTestCase {
                 CODIGO_CPID,
                 APP_NAME);
 
-        assertNotNull(CookieManager.getInstance()
-                .getCookie(TagStringsAndValues.DOMAIN_CODIGO));
+        assertNotNull(SifoCookieManager.getInstance()
+                .getCookieStore().get(URI.create(TagStringsAndValues.DOMAIN_CODIGO)).toString());
     }
 
     @SmallTest
@@ -82,37 +83,37 @@ public class TSMobileAnalyticsTest extends InstrumentationTestCase {
         final String thirdPartyDomain = "third.party.site";
         final String cookieValue = "ThirdPartyCookie1=ThirdPartyValue1";
 
-        CookieManager cookieManager = CookieManager.getInstance();
-        cookieManager.setCookie(thirdPartyDomain, cookieValue);
+        SifoCookieManager cookieManager = SifoCookieManager.getInstance();
+        cookieManager.getCookieStore().add(URI.create(thirdPartyDomain), new HttpCookie("ThirdPartyCookie1","ThirdPartyValue1"));
 
         TSMobileAnalytics.createInstance(fakeContext,
                 CODIGO_CPID,
                 APP_NAME);
 
         assertEquals(cookieValue,
-                cookieManager.getCookie(thirdPartyDomain));
+                cookieManager.getCookieStore().get(URI.create(thirdPartyDomain)).toString());
     }
 
     @SmallTest
     public void testTSMobileAnalytics_deletesOldFrameworkCookies() {
 
-        final CookieManager cookieManager = CookieManager.getInstance();
+        final SifoCookieManager cookieManager = SifoCookieManager.getInstance();
 
-        cookieManager.setCookie(DOMAIN_CODIGO, "OldKey1=OldValue1");
+        cookieManager.getCookieStore().add(URI.create(DOMAIN_CODIGO), new HttpCookie("OldKey1","OldValue1"));
 
         TSMobileAnalytics.createInstance(fakeContext,
                 CODIGO_CPID,
                 APP_NAME);
 
-        assertFalse(cookieManager.getCookie(DOMAIN_CODIGO).contains("OldKey1=OldValue1"));
+        assertFalse(cookieManager.getCookieStore().getCookies().contains("OldKey1=OldValue1"));
     }
 
     @SmallTest
     public void testSetAndGetACookie() {
-        CookieManager cookieManager = CookieManager.getInstance();
+        SifoCookieManager cookieManager = SifoCookieManager.getInstance();
         String url = "bh.mobiletech.no";
         String value = "my cookie";
-        cookieManager.setCookie(url, value);
-        assertEquals(cookieManager.getCookie(url), value);
+        cookieManager.getCookieStore().add(URI.create(url), new HttpCookie("my cookie",value));
+        assertEquals(value, cookieManager.getCookieStore().get(URI.create(url)));
     }
 }

@@ -3,10 +3,9 @@ package se.sifo.analytics.mobileapptagging.android;
 import android.content.Context;
 import android.test.AndroidTestCase;
 import android.test.suitebuilder.annotation.SmallTest;
-import android.webkit.CookieManager;
-
 
 import java.net.HttpCookie;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,23 +46,23 @@ public class TagDataRequestHandlerTest extends AndroidTestCase {
         final String thirdPartyDomain = "third.party.site";
         final String cookieValue = "ThirdPartyCookie1=ThirdPartyValue1";
 
-        CookieManager cookieManager = CookieManager.getInstance();
-        cookieManager.setCookie(thirdPartyDomain, cookieValue);
+        SifoCookieManager cookieManager = SifoCookieManager.getInstance();
+        cookieManager.getCookieStore().add(URI.create(thirdPartyDomain), new HttpCookie("ThirdPartyCookie1","ThirdPartyValue1"));
 
         mTagDataRequestHandler.refreshCookies(mAppCtx, mCookies);
 
         assertEquals(cookieValue,
-                cookieManager.getCookie(thirdPartyDomain));
+                cookieManager.getCookieStore().get(URI.create(thirdPartyDomain)).toString());
     }
 
     @SmallTest
     public void testRefreshCookies_deletesOldFrameworkCookies() {
-        CookieManager cookieManager = CookieManager.getInstance();
-        cookieManager.setCookie(DOMAIN_CODIGO, "OldKey1=OldValue1");
+        SifoCookieManager cookieManager = SifoCookieManager.getInstance();
+        cookieManager.getCookieStore().add(URI.create(DOMAIN_CODIGO), new HttpCookie("OldKey1","OldValue1"));
 
         mTagDataRequestHandler.refreshCookies(mAppCtx, mCookies);
 
         assertEquals("Key1=Value1; Key2=Value2",
-                cookieManager.getCookie(DOMAIN_CODIGO));
+                cookieManager.getCookieStore().get(URI.create(DOMAIN_CODIGO)).toString());
     }
 }
