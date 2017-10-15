@@ -1,13 +1,10 @@
 package se.sifo.analytics.mobileapptagging.android;
 
 import android.content.Context;
-import android.text.TextUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.CookieManager;
-import java.net.CookiePolicy;
 import java.net.CookieStore;
 import java.net.HttpCookie;
 import java.net.URI;

@@ -1,6 +1,6 @@
 /*************************************************
- * TNS SIFO Mobile Application Tagging Framework *
- * (c) Copyright 2012 TNS SIFO, Sweden,          *
+ * Kantar Sifo Mobile Analytics Framework        *
+ * (c) Copyright 2017 Kantar Sifo, Sweden,       *
  * All rights reserved.                          *
  *************************************************/
 
@@ -13,14 +13,12 @@ import android.webkit.WebView;
 import java.util.List;
 
 /**
- * TNS Sifo Mobile Analytics SDK for Android:
+ * Kantar Sifo Mobile Analytics Framework for Android:
  * TSMobileAnalytics.java:
  * <p/>
- * This framework will help you to measure usage of your application using TNS SIFO's services.
+ * This framework will help you to measure usage of your application using Kantar Sifo's services.
  * In order to measure traffic, your application needs to send HTTP/s-requests to a server provided by Mobiletech or Codigo Analytics.
  * The framework can help you with the whole process, both creating these URLs, as well as sending them to the server.
- *
- * @author Jakob Schyberg (jakob.schyberg@wecode.se)
  */
 public class TSMobileAnalytics {
 
@@ -34,14 +32,14 @@ public class TSMobileAnalytics {
      * Call this method upon application start, for example in the onCreate-method of
      * the main Activity, to initialize the framework.
      * <p/>
-     * The CPID must 4 or 32 digits, it must not be empty.
+     * The CPID must be 4 or 32 digits, it must not be empty.
      * The Application name must not be more than 243 characters.
      * The parameters must not be null.
      * If any of the parameters are invalid, null will be returned and getInstance() will also return null.
      *
      * @param context         The context of this application, used to get device ID for unique Tagging.
      *                        You can obtain this value using the method getApplicationContext() in the Android Activity-class.
-     * @param cpID            The customer ID provided by TNS Sifo, Mobiletech or Codigo Analytics.
+     * @param cpID            The customer ID provided by Kantar Sifo, Mobiletech or Codigo Analytics.
      *                        This information will be included in the attribute called “cpid” in the tags sent to the server.
      * @param applicationName The name of the application. Only specify the name, the interface will add platform.
      *                        This value will be sent in tags using the "type"-attribute. Max 243 characters.
@@ -52,7 +50,7 @@ public class TSMobileAnalytics {
     }
 
     /**
-     * Call this method upon application start if you only want to measure TNS-Sifo Panelist users.
+     * Call this method upon application start if you only want to measure Kantar Sifo Panelist users.
      */
     public static TSMobileAnalytics createInstance(Context context, String cpID, String applicationName, boolean panelistTrackingOnly) {
         return TSMobileAnalyticsBackend.createInstance(context, cpID, applicationName, panelistTrackingOnly);

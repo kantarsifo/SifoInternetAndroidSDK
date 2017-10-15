@@ -23,12 +23,12 @@ public interface TagDataRequestCallbackListener {
 	 * and the server has responded with result code 200.
 	 * @param request An object with information about the request.
 	 */
-	public void onDataRequestComplete(TagDataRequest request);
+    void onDataRequestComplete(TagDataRequest request);
 	
 	/**
 	 * This method is called when a tag request has failed.
 	 * No new attempt will be made and it will not be received by the server.
 	 * @param request An object with information about the request.
 	 */
-	public void onDataRequestFailed(TagDataRequest request);
+    void onDataRequestFailed(TagDataRequest request);
 }
