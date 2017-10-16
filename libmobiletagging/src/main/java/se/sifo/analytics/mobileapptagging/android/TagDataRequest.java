@@ -178,10 +178,7 @@ public class TagDataRequest {
      * Init the server request to the specified URL. This function will start a new Thread.
      */
     void initRequest() {
-        final String userAgent = applicationName + "/" + applicationVersion + " " + System.getProperty("http.agent");
-        Log.v("initRequest", "userAgent :" + userAgent);
-        final String cookieHandlerString = CookieHandler.getCookieString(SifoCookieManager.getInstance().getCookieStore().getCookies());
-        Log.v("initRequest", "cookies :" + cookieHandlerString);
+
 
         StringRequest postRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -198,7 +195,10 @@ public class TagDataRequest {
         ) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-
+                String userAgent = applicationName + "/" + applicationVersion + " " + System.getProperty("http.agent");
+                Log.v("initRequest", "userAgent :" + userAgent);
+                String cookieHandlerString = CookieHandler.getCookieString(SifoCookieManager.getInstance().getCookieStore().getCookies());
+                Log.v("initRequest", "cookies :" + cookieHandlerString);
                 Map<String, String> params = new HashMap<>();
                 params.put("User-Agent", userAgent);
                 params.put("Cookie", cookieHandlerString);

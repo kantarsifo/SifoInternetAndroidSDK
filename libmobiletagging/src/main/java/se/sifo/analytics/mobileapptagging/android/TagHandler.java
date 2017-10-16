@@ -197,7 +197,6 @@ class TagHandler {
             String ref = urlEncode(this.ref.trim());
             cat = urlEncode(cat.trim());
             id = urlEncode(id.trim());
-            Log.v("appIddd", "appId :" + id);
 
             if (TagStringsAndValues.CODIGO_URL_BASE.equals(urlBase) || TagStringsAndValues.CODIGO_URL_BASE_HTTPS.equals(urlBase)) {
                 url = String.format("%ssiteId=%s&appClientId=%s&cp=%s&appId=%s&appName=%s&appRef=%s",

@@ -78,8 +78,8 @@ public class NameActivity extends AppCompatActivity {
             ApplicationImpl.tagInfo().setName(name);
             TSMobileAnalytics.getInstance().sendTag(
                     ApplicationImpl.tagInfo().getCategories(),
-                    ApplicationImpl.tagInfo().getName(),
-                    ApplicationImpl.tagInfo().getContentId());
+                    contentName,
+                    contentId);
             Toast.makeText(this, getString(R.string.toast_sent_tag, name), Toast.LENGTH_SHORT).show();
         }
     }
