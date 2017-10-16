@@ -195,7 +195,7 @@ public class TagDataRequest {
         ) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                String userAgent = applicationName + "/" + applicationVersion + " " + System.getProperty("http.agent");
+                String userAgent = applicationName + " " + "session_id=" + "sdk_android_" + applicationVersion + " " + System.getProperty("http.agent");
                 Log.v("initRequest", "userAgent :" + userAgent);
                 String cookieHandlerString = CookieHandler.getCookieString(SifoCookieManager.getInstance().getCookieStore().getCookies());
                 Log.v("initRequest", "cookies :" + cookieHandlerString);

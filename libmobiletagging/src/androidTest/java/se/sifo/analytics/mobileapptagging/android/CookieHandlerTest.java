@@ -56,7 +56,7 @@ public class CookieHandlerTest extends AndroidTestCase {
         CookieHandler.setupPanelistCookies(getContext(), mCookieList, DOMAIN_CODIGO);
 
             assertEquals(cookieValue,
-                    cookieManager.getCookieStore().get(URI.create(thirdPartyDomain)).toString());
+                    cookieManager.getCookieStore().get(URI.create(thirdPartyDomain)));
 
     }
 
@@ -84,9 +84,9 @@ public class CookieHandlerTest extends AndroidTestCase {
 
         cookieManager.getCookieStore().add(URI.create(domain), new HttpCookie("MyKey1","MyValue1"));
 
-        CookieHandler.clearCookiesFor(domain);
+        cookieManager.clearCookies();
 
-        assertNull(cookieManager.getCookieStore().get(URI.create(domain)).toString());
+        assertEquals(0, cookieManager.getCookieStore().get(URI.create(domain)).size());
     }
 
     @SmallTest
@@ -97,6 +97,6 @@ public class CookieHandlerTest extends AndroidTestCase {
         cookieManager.getCookieStore().add(URI.create(url), new HttpCookie("cookieName", "my cookie"));
         cookieManager.getCookieStore().add(URI.create(url), new HttpCookie("cookieName=;expires", "Mon, 17 Oct 2011 10:47:11 UTC;"));
 
-        assertNull(cookieManager.getCookieStore().get(URI.create(url)).toString());
+        assertNull(cookieManager.getCookieStore().get(URI.create(url)));
     }
 }
