@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.provider.Settings.Secure;
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.io.UnsupportedEncodingException;
 import java.net.CookieStore;

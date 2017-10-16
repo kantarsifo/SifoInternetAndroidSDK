@@ -1,10 +1,8 @@
 package se.sifo.analytics.mobileapptagging.android;
 
 import android.content.Context;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.net.CookieStore;
 import java.net.HttpCookie;
 import java.net.URI;
@@ -38,6 +36,7 @@ class CookieHandler {
      */
     static CookieStore setupPanelistCookies(Context context, List<HttpCookie> cookies, String urlBase) {
         SifoCookieManager.getInstance().clearCookies();
+
         for (HttpCookie cookie : cookies) {
             try {
                 SifoCookieManager.getInstance().getCookieStore().add(new URI(cookie.getDomain()), cookie);
@@ -46,6 +45,7 @@ class CookieHandler {
             }
             TSMobileAnalyticsBackend.printToLog("--Cookie added: " + cookie);
         }
+
 
         return SifoCookieManager.getInstance().getCookieStore();
     }

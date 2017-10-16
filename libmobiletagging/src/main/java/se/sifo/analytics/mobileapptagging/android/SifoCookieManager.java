@@ -28,7 +28,7 @@ class SifoCookieManager
 
     private SifoCookieManager() {
         mCookieManager = new CookieManager();
-        mCookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ORIGINAL_SERVER);
+        mCookieManager.setCookiePolicy(CookiePolicy.ACCEPT_NONE);
         CookieHandler.setDefault(mCookieManager);
     }
 

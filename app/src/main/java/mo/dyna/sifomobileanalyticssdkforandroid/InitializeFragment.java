@@ -18,6 +18,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.net.CookieHandler;
+import java.net.CookieManager;
+
 import se.sifo.analytics.mobileapptagging.android.TSMobileAnalytics;
 
 
@@ -261,5 +264,6 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
         Log.v("printParams", "logEnabled :" + logEnabled.isChecked());
         Log.v("printParams", "panelistTrackingOnly :" + panelistOnly.isChecked());
     }
+
 
 }

@@ -6,8 +6,6 @@
 
 package se.sifo.analytics.mobileapptagging.android;
 
-import android.util.Log;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -179,7 +177,6 @@ public class TagDataRequest {
      */
     void initRequest() {
 
-
         StringRequest postRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -196,9 +193,7 @@ public class TagDataRequest {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 String userAgent = applicationName + " " + "session_id=" + "sdk_android_" + applicationVersion + " " + System.getProperty("http.agent");
-                Log.v("initRequest", "userAgent :" + userAgent);
                 String cookieHandlerString = CookieHandler.getCookieString(SifoCookieManager.getInstance().getCookieStore().getCookies());
-                Log.v("initRequest", "cookies :" + cookieHandlerString);
                 Map<String, String> params = new HashMap<>();
                 params.put("User-Agent", userAgent);
                 params.put("Cookie", cookieHandlerString);
@@ -211,7 +206,6 @@ public class TagDataRequest {
                 if (response != null) {
                     if ((httpStatusCode = response.statusCode) == 200) {
                         // Request was successful with code 200
-                        Log.v("response", "response :" + response.statusCode);
                         TSMobileAnalyticsBackend.printToLog(
                                 "Tag request sent: " +
                                         "\nRequestID: " + getRequestID() +
