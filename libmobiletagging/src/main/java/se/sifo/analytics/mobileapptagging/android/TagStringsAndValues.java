@@ -33,11 +33,6 @@ public final class TagStringsAndValues {
     public static final int MAX_LENGTH_CATEGORY = 255;
 
     /**
-     * The maximum allowed length of the Extra String (ref).
-     */
-    public static final int MAX_LENGTH_EXTRA = 100;
-
-    /**
      * The maximum allowed length of the Application Name String (ref).
      */
     public static final int MAX_LENGTH_APP_NAME = 243;
@@ -71,15 +66,6 @@ public final class TagStringsAndValues {
      * The URL-base used to connect to the Codigo server.
      */
     public static final String CODIGO_URL_BASE_HTTPS = "https://trafficgateway.research-int.se/TrafficCollector?";
-
-    /**
-     * The URL-base used to connect to the Mobiletech-server.
-     *
-     * @deprecated The framework now uses multiple providers. For the default provider, see {@link #MOBILETECH_URL_BASE}.
-     */
-    @Deprecated
-    public static final String URL_BASE = MOBILETECH_URL_BASE;
-
 
     /**
      * The value to be used for the EUIDQ-parameter in tag requests.
