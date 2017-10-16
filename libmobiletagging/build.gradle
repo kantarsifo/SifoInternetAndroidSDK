@@ -7,7 +7,7 @@ android {
     defaultConfig {
         minSdkVersion 9
         targetSdkVersion 25
-        versionCode 1
+        versionCode 3
         versionName "3.0"
         testApplicationId 'se.sifo.analytics.mobileapptagging.android.instrumenttest'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"

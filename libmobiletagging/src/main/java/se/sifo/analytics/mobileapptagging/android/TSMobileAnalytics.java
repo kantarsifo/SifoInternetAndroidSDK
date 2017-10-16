@@ -23,6 +23,14 @@ import java.util.List;
 public class TSMobileAnalytics {
 
     /**
+     * Note for developer: update it when you change your library version
+     * @return library version
+     */
+    public String getLibraryVersion(){
+        return "3.0.0";
+    }
+
+    /**
      * Default constructor.
      */
     protected TSMobileAnalytics() {

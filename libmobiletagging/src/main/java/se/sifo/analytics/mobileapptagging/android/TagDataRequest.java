@@ -6,6 +6,8 @@
 
 package se.sifo.analytics.mobileapptagging.android;
 
+import android.util.Log;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -165,6 +167,7 @@ public class TagDataRequest {
         }
         this.url = url;
         this.applicationName = applicationName;
+        Log.v("applicationVersion", "applicationVersion :" + applicationVersion);
         this.applicationVersion = applicationVersion;
 
         requestID = UUID.randomUUID();
@@ -176,6 +179,7 @@ public class TagDataRequest {
      * Init the server request to the specified URL. This function will start a new Thread.
      */
     void initRequest() {
+        Log.v("cookieStore", "cookieStore :" + SifoCookieManager.getInstance().getCookieStore().getCookies().toString());
 
         StringRequest postRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -192,11 +196,12 @@ public class TagDataRequest {
         ) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                String userAgent = applicationName + " " + "session_id=" + "sdk_android_" + applicationVersion + " " + System.getProperty("http.agent");
+                String userAgent = applicationName + "/" + applicationVersion +  " " + "session_id=" + "sdk_android_" + TSMobileAnalytics.getInstance().getLibraryVersion() + " " + System.getProperty("http.agent");
                 String cookieHandlerString = CookieHandler.getCookieString(SifoCookieManager.getInstance().getCookieStore().getCookies());
                 Map<String, String> params = new HashMap<>();
                 params.put("User-Agent", userAgent);
                 params.put("Cookie", cookieHandlerString);
+                Log.v("cookieStore", "cookieHandlerString :" + cookieHandlerString);
 
                 return params;
             }
