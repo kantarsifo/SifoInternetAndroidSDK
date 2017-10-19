@@ -149,15 +149,6 @@ public class TSMobileAnalytics {
     }
 
     /**
-     * @return The String holding the created URL. NULL if unsuccessful.
-     * @deprecated Please use {@link #sendTag(String, String, String)}.
-     */
-    @Deprecated
-    public int sendTag(String categories, String deprecated, String contentID, String contentName) {
-        return dataRequestHandler.performMetricsRequest(categories, contentID, contentName);
-    }
-
-    /**
      * Call to immediately send a tag to the server using the framework's http/s-functionality.
      * <p/>
      * Use when a page is displayed, for example in the onResume-method of an Activity.
@@ -181,154 +172,6 @@ public class TSMobileAnalytics {
     }
 
     /**
-     * @return The String holding the created URL. NULL if unsuccessful.
-     * @deprecated Please use {@link #sendTag(String[], String, String)}.
-     */
-    @Deprecated
-    public int sendTag(String[] categories, String deprecated, String contentID, String contentName) {
-        return dataRequestHandler.performMetricsRequest(categories, contentID, contentName);
-    }
-
-    /**
-     * Create a URL to use to send a tag to the server, if you want to make the request manually.
-     * <p/>
-     * You only need to use this method if you are making the HTTP/s-request yourself. If you want the framework
-     * to make the HTTP/s-request for you, you only need to use the "sendTag"-method.
-     * <p/>
-     * The category parameter must not be more than 255 characters.
-     * The input strings must not me null.
-     * If any of the parameters are invalid null will be returned.
-     *
-     * @param category The name of category or page to be tagged. This value will be sent using
-     *                 the "cat"-attribute. Max 255 characters.
-     * @return The String holding the created URL. NULL if unsuccessful.
-     * @deprecated This doesn't take into account some important cookies
-     * and support is planned to be dropped in future versions.
-     * Please use {@link #sendTag(String)} instead.
-     */
-    @Deprecated
-    public String getURL(String category) {
-        return dataRequestHandler.getURL(category);
-    }
-
-    /**
-     * Create a URL to use to send a tag to the server, if you want to make the request manually.
-     * <p/>
-     * You only need to use this method if you are making the HTTP/s-request yourself. If you want the framework
-     * to make the HTTP/s-request for you, you only need to use the "sendTag"-method.
-     * <p/>
-     * The category parameter must not be more than 255 characters.
-     * The contentID must not be more than 255 characters.
-     * The input strings must not be null.
-     * If any of the parameters are invalid null will be returned.
-     *
-     * @param category  The name of category or page to be tagged. This value will be sent using
-     *                  the "cat"-attribute. Max 255 characters.
-     * @param contentID Value to identify specific content within the category, such as a specific article. Max 255 characters.
-     * @return The String holding the created URL. NULL if unsuccessful.
-     * @deprecated This doesn't take into account some important cookies
-     * and support is planned to be dropped in future versions.
-     * Please use {@link #sendTag(String, String)} instead.
-     */
-    @Deprecated
-    public String getURL(String category, String contentID) {
-        return dataRequestHandler.getURL(category, contentID);
-    }
-
-    /**
-     * Create a URL to use to send a tag to the server, if you want to make the request manually.
-     * <p/>
-     * You only need to use this method if you are making the HTTP/s-request yourself. If you want the framework
-     * to make the HTTP/s-request for you, you only need to use the "sendTag"-method.
-     * <p/>
-     * The category parameter must not be more than 255 characters.
-     * The contentID must not be more than 255 characters.
-     * The contentName must not be more than 255 characters.
-     * The input strings must not be null.
-     * If any of the parameters are invalid null will be returned.
-     *
-     * @param category    The name of category or page to be tagged. This value will be sent using
-     *                    the "cat"-attribute. Max 255 characters.
-     * @param contentID   Value to identify specific content within the category, such as a specific article. Max 255 characters.
-     * @param contentName Name to identify specific content within the category, such as a specific article. Max 255 characters.
-     * @return The String holding the created URL. NULL if unsuccessful.
-     * @deprecated This doesn't take into account some important cookies
-     * and support is planned to be dropped in future versions.
-     * Please use {@link #sendTag(String, String, String)} instead.
-     */
-    @Deprecated
-    public String getURL(String category, String contentName, String contentID) {
-        return dataRequestHandler.getURL(category, contentID, contentName);
-    }
-
-    /**
-     * @return The String holding the created URL. NULL if unsuccessful.
-     * @deprecated This doesn't take into account some important cookies
-     * and support is planned to be dropped in future versions.
-     * Please use {@link #sendTag(String, String, String)} instead.
-     */
-    @Deprecated
-    public String getURL(String category, String deprecated, String contentID, String contentName) {
-        return dataRequestHandler.getURL(category, contentID, contentName);
-    }
-
-    /**
-     * Create a URL to use to send a tag to the server, if you want to make the request manually.
-     * <p/>
-     * You only need to use this method if you are making the HTTP/s-request yourself. If you want the framework
-     * to make the HTTP/s-request for you, you only need to use the "sendTag"-method.
-     * <p/>
-     * The category list must not contain more than 4 objects and they must not be more than 62 characters each.
-     * The contentID must not be more than 255 characters.
-     * The contentName must not be more than 255 characters.
-     * The input strings must not be null.
-     * If any of the parameters are invalid null will be returned.
-     *
-     * @param category    Array of names in category structure. This value will be sent using
-     *                    the "cat"-attribute. Max 4 objects with 62 characters each.
-     * @param contentID   Value to identify specific content within the category, such as a specific article. Max 255 characters.
-     * @param contentName Name to identify specific content within the category, such as a specific article. Max 255 characters.
-     * @return The String holding the created URL. NULL if unsuccessful.
-     * @deprecated This doesn't take into account some important cookies
-     * and support is planned to be dropped in future versions.
-     * Please use {@link #sendTag(String[], String, String)} instead.
-     */
-    @Deprecated
-    public String getURL(String[] category, String contentName, String contentID) {
-        return dataRequestHandler.getURL(category, contentID, contentName);
-    }
-
-    /**
-     * @return The String holding the created URL. NULL if unsuccessful.
-     * @deprecated This doesn't take into account some important cookies
-     * and support is planned to be dropped in future versions.
-     * Please use {@link #sendTag(String[], String, String)} instead.
-     */
-    @Deprecated
-    public String getURL(String[] category, String deprecated, String contentID, String contentName) {
-        return dataRequestHandler.getURL(category, contentID, contentName);
-    }
-
-    /**
-     * Activate framework cookies for the given WebView.
-     * This enables the third party cookie option on the WebView.
-     * <p/>
-     * This function needs to be called once for every WebView before it can be guaranteed
-     * to pass on the proper cookies. This is especially important from API 21 onwards.
-     *
-     * @param webView The WebView that should use cookies from the framework.
-     * @deprecated Framework uses java.net.Cookie library now
-     * Please use {@link #activateCookies()} instead.
-     */
-    @Deprecated
-    public void activateCookies(WebView webView) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            CookieManager cookieManager = CookieManager.getInstance();
-            cookieManager.setAcceptThirdPartyCookies(webView, true);
-        }
-    }
-
-    /**
      * Activate third-party cookies.
      */
     public void activateCookies() {
@@ -338,19 +181,14 @@ public class TSMobileAnalytics {
     /**
      * Activate LogCat prints for the framework.
      *
-     * @deprecated This library uses Builder to initialize.
-     * Please use {@link #TSMobileAnalytics(Builder)} instead.
      * Default is false.
      */
-    @Deprecated
     public static void setLogPrintsActivated(boolean printToLog) {
         logPrintsActivated = printToLog;
     }
 
     /**
      * Activate https url for send data. Default is true.
-     *
-     * @deprecated This library uses Builder to initialize.
      * Please use {@link #TSMobileAnalytics(Builder)} instead.
      */
     public static void useHttps(boolean https) {

@@ -162,9 +162,8 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
     }
 
     /**
-     * Initialize method of framework v2.
+     * Initialize method of framework.
      */
-    @Deprecated
     private void initializeFrameworkWithCreateInstance() {
         TSMobileAnalytics.setLogPrintsActivated(logEnabled.isChecked());
         TSMobileAnalytics.useHttps(useHttps.isChecked());
@@ -172,7 +171,7 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
     }
 
     /**
-     * Initialize method of framework v3.
+     * Initialize method of framework with builder.
      * In your app, you can use it onCreate method.
      */
     private void initializeFrameworkWithBuilder() {
