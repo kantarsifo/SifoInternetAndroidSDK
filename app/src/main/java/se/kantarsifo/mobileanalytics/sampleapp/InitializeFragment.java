@@ -1,4 +1,4 @@
-package mo.dyna.sifomobileanalyticssdkforandroid;
+package se.kantarsifo.mobileanalytics.sampleapp;
 
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -17,9 +17,6 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.net.CookieHandler;
-import java.net.CookieManager;
 
 import se.sifo.analytics.mobileapptagging.android.TSMobileAnalytics;
 

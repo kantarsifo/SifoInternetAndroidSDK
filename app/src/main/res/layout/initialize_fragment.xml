@@ -131,7 +131,7 @@
             android:layout_height="wrap_content"
             android:text="success request: 0"
             android:layout_weight="1"
-            android:textColor="@android:color/holo_green_light"
+            android:textColor="@color/holo_green_light"
             />
 
 
@@ -142,7 +142,7 @@
             android:layout_height="wrap_content"
             android:text="fail request: 0"
             android:layout_weight="1"
-            android:textColor="@android:color/holo_red_light"/>
+            android:textColor="@color/holo_red_light"/>
 
     </LinearLayout>
 

@@ -1,4 +1,4 @@
-package mo.dyna.sifomobileanalyticssdkforandroid;
+package se.kantarsifo.mobileanalytics.sampleapp;
 
 import android.content.Intent;
 import android.support.v4.app.Fragment;

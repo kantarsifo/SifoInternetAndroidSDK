@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-   <mo.dyna.sifomobileanalyticssdkforandroid.NonSwipeableViewPager
+   <se.kantarsifo.mobileanalytics.sampleapp.NonSwipeableViewPager
         android:id="@+id/main_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

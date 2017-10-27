@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="mo.dyna.sifomobileanalyticssdkforandroid">
+    package="se.kantarsifo.mobileanalytics.sampleapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -28,7 +28,7 @@
         <activity
             android:name=".ContentActivity"
             android:label="@string/title_content_id"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName="MainActivity" />
         <activity
             android:name=".NameActivity"
             android:label="@string/title_content_name"

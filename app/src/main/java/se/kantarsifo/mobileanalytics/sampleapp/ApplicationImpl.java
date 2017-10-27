@@ -1,4 +1,4 @@
-package mo.dyna.sifomobileanalyticssdkforandroid;
+package se.kantarsifo.mobileanalytics.sampleapp;
 
 import android.app.Application;
 import android.util.Log;
