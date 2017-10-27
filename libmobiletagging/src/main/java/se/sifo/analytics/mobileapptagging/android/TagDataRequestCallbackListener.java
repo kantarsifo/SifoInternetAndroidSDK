@@ -1,6 +1,6 @@
 /*************************************************
- * TNS SIFO Mobile Application Tagging Framework *
- * (c) Copyright 2012 TNS SIFO, Sweden,          *
+ * Kantar Sifo Mobile Analytics Framework        *
+ * (c) Copyright 2017 Kantar Sifo AB, Sweden,    *
  * All rights reserved.                          *
  *************************************************/
 

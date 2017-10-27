@@ -1,6 +1,6 @@
 /*************************************************
  * Kantar Sifo Mobile Analytics Framework        *
- * (c) Copyright 2017 Kantar Sifo, Sweden,       *
+ * (c) Copyright 2017 Kantar Sifo AB, Sweden,    *
  * All rights reserved.                          *
  *************************************************/
 
