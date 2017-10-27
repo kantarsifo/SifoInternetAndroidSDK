@@ -20,17 +20,14 @@ import android.widget.Toast;
 
 import se.sifo.analytics.mobileapptagging.android.TSMobileAnalytics;
 
-
-/**
- * Created by ahmetcengiz on 26/09/2017.
- */
-
 public class InitializeFragment extends Fragment implements CompoundButton.OnCheckedChangeListener {
     private EditText mAppNameET, mCpIdET;
     private CheckBox panelistOnly, useHttps, logEnabled;
     private ViewPagerListener mListener;
     private Button initButton;
     private TextView failTV, successTV;
+    final private static int PAGE_WEB_FRAGMENT = 2;
+    final private static int PAGE_NATIVE_FRAGMENT = 1;
 
     public InitializeFragment() {
 
@@ -63,7 +60,6 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
         if (TSMobileAnalytics.getInstance() != null) {
             successTV.setText("success request: " + TSMobileAnalytics.getInstance().getNbrOfSuccessfulRequests());
             failTV.setText("fail request: " + TSMobileAnalytics.getInstance().getNbrOfFailedRequests());
-            Log.v("requestqueue", "queue :" + TSMobileAnalytics.getInstance().getRequestQueue().size());
         }
 
         //set starter data
@@ -79,7 +75,7 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
             @Override
             public void onClick(View v) {
                 if (TSMobileAnalytics.getInstance() != null) {
-                    mListener.sendPageNumber(2);
+                    mListener.sendPageNumber(PAGE_WEB_FRAGMENT);
                 } else {
                     showToastMessage("Framework must be initialized");
                 }
@@ -92,7 +88,7 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
             @Override
             public void onClick(View view) {
                 if (TSMobileAnalytics.getInstance() != null) {
-                    mListener.sendPageNumber(1);
+                    mListener.sendPageNumber(PAGE_NATIVE_FRAGMENT);
                 } else {
                     showToastMessage("Framework must be initialized");
                 }
@@ -131,7 +127,7 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
                         setPreferenceSetup();
 
                         //print setting of current framework
-                        printParams();
+                        //printParams();
 
                         Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
@@ -260,6 +256,4 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
         Log.v("printParams", "logEnabled :" + logEnabled.isChecked());
         Log.v("printParams", "panelistTrackingOnly :" + panelistOnly.isChecked());
     }
-
-
 }

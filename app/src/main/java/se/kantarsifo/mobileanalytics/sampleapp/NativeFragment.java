@@ -13,10 +13,6 @@ import android.widget.Toast;
 
 import se.sifo.analytics.mobileapptagging.android.TSMobileAnalytics;
 
-/**
- * Created by ahmetcengiz on 26/09/2017.
- */
-
 public class NativeFragment extends Fragment {
 
     ArrayAdapter<String> mAdapter;

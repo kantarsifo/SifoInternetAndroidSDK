@@ -13,9 +13,6 @@ import android.widget.Toast;
 
 import se.sifo.analytics.mobileapptagging.android.TSMobileAnalytics;
 
-/**
- * Created by Peter on 2015-04-17.
- */
 public class ContentActivity extends AppCompatActivity {
 
     @Override

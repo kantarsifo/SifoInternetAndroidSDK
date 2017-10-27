@@ -13,9 +13,6 @@ import android.widget.Toast;
 
 import se.sifo.analytics.mobileapptagging.android.TSMobileAnalytics;
 
-/**
- * Created by Peter on 2015-04-17.
- */
 public class CategoryActivity extends AppCompatActivity {
 
     @Override
@@ -82,6 +79,4 @@ public class CategoryActivity extends AppCompatActivity {
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
         }
     }
-
-
 }

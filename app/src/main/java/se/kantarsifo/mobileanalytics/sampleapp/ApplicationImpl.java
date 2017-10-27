@@ -7,9 +7,7 @@ import se.sifo.analytics.mobileapptagging.android.TSMobileAnalytics;
 import se.sifo.analytics.mobileapptagging.android.TagDataRequest;
 import se.sifo.analytics.mobileapptagging.android.TagDataRequestCallbackListener;
 
-/**
- * Created by Peter on 2015-04-17.
- */
+
 public class ApplicationImpl extends Application implements TagDataRequestCallbackListener {
 
     private static final TagInfo sTagInfo = new TagInfo();
@@ -97,7 +95,6 @@ public class ApplicationImpl extends Application implements TagDataRequestCallba
         public void setContentId(String contentId) {
             this.contentId = contentId;
         }
-
 
     }
 }
