@@ -4,7 +4,7 @@
  * All rights reserved.                          *
  *************************************************/
 
-package se.sifo.analytics.mobileapptagging.android;
+package se.kantarsifo.mobileanalytics.framework;
 
 import android.util.Log;
 

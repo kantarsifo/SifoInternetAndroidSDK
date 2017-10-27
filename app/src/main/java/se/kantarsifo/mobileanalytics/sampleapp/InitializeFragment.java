@@ -18,7 +18,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import se.sifo.analytics.mobileapptagging.android.TSMobileAnalytics;
+import se.kantarsifo.mobileanalytics.framework.TSMobileAnalytics;
 
 public class InitializeFragment extends Fragment implements CompoundButton.OnCheckedChangeListener {
     private EditText mAppNameET, mCpIdET;

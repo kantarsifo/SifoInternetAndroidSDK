@@ -9,7 +9,7 @@ android {
         targetSdkVersion 25
         versionCode 3
         versionName "3.0"
-        testApplicationId 'se.sifo.analytics.mobileapptagging.android.instrumenttest'
+        testApplicationId 'se.kantarsifo.mobileanalytics.framework.instrumenttest'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }

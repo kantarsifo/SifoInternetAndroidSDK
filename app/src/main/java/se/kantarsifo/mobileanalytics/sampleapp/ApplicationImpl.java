@@ -3,9 +3,9 @@ package se.kantarsifo.mobileanalytics.sampleapp;
 import android.app.Application;
 import android.util.Log;
 
-import se.sifo.analytics.mobileapptagging.android.TSMobileAnalytics;
-import se.sifo.analytics.mobileapptagging.android.TagDataRequest;
-import se.sifo.analytics.mobileapptagging.android.TagDataRequestCallbackListener;
+import se.kantarsifo.mobileanalytics.framework.TSMobileAnalytics;
+import se.kantarsifo.mobileanalytics.framework.TagDataRequest;
+import se.kantarsifo.mobileanalytics.framework.TagDataRequestCallbackListener;
 
 
 public class ApplicationImpl extends Application implements TagDataRequestCallbackListener {

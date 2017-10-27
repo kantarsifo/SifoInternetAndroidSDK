@@ -4,7 +4,7 @@
  * All rights reserved.                          *
  *************************************************/
 
-package se.sifo.analytics.mobileapptagging.android;
+package se.kantarsifo.mobileanalytics.framework;
 
 /**
  * Holds some pre-defined Strings used by the framework.

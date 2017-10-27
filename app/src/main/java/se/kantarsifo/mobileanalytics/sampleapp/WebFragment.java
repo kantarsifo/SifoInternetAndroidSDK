@@ -11,7 +11,7 @@ import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import se.sifo.analytics.mobileapptagging.android.TSMobileAnalytics;
+import se.kantarsifo.mobileanalytics.framework.TSMobileAnalytics;
 
 
 /**

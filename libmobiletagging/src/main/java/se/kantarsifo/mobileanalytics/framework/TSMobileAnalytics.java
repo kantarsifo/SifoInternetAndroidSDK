@@ -4,12 +4,10 @@
  * All rights reserved.                          *
  *************************************************/
 
-package se.sifo.analytics.mobileapptagging.android;
+package se.kantarsifo.mobileanalytics.framework;
 
 import android.content.Context;
-import android.os.Build;
-import android.webkit.CookieManager;
-import android.webkit.WebView;
+
 import java.util.List;
 
 /**

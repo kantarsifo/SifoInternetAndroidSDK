@@ -1,4 +1,4 @@
-package se.sifo.analytics.mobileapptagging.android;
+package se.kantarsifo.mobileanalytics.framework;
 
 import android.content.Context;
 import org.json.JSONException;

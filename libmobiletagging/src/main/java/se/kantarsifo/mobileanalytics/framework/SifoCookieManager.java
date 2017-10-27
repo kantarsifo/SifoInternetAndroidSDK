@@ -1,4 +1,4 @@
-package se.sifo.analytics.mobileapptagging.android;
+package se.kantarsifo.mobileanalytics.framework;
 
 /**
  * Created by ahmetcengiz on 15/09/2017.

@@ -11,7 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import se.sifo.analytics.mobileapptagging.android.TSMobileAnalytics;
+import se.kantarsifo.mobileanalytics.framework.TSMobileAnalytics;
 
 public class NativeFragment extends Fragment {
 
