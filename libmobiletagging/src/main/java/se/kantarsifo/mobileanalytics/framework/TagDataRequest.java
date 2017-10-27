@@ -6,8 +6,6 @@
 
 package se.kantarsifo.mobileanalytics.framework;
 
-import android.util.Log;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -24,8 +22,6 @@ import java.util.UUID;
  * Debugging/Advanced features : TagDataRequest.java :
  * <p/>
  * This class describes an object with information about a measure-tag request to the Mobiletech server.
- *
- * @author Jakob Schyberg (jakob.schyberg@wecode.se)
  */
 public class TagDataRequest {
     /**
@@ -167,7 +163,6 @@ public class TagDataRequest {
         }
         this.url = url;
         this.applicationName = applicationName;
-        Log.v("applicationVersion", "applicationVersion :" + applicationVersion);
         this.applicationVersion = applicationVersion;
 
         requestID = UUID.randomUUID();
@@ -179,8 +174,6 @@ public class TagDataRequest {
      * Init the server request to the specified URL. This function will start a new Thread.
      */
     void initRequest() {
-        Log.v("cookieStore", "cookieStore :" + SifoCookieManager.getInstance().getCookieStore().getCookies().toString());
-
         StringRequest postRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -201,7 +194,6 @@ public class TagDataRequest {
                 Map<String, String> params = new HashMap<>();
                 params.put("User-Agent", userAgent);
                 params.put("Cookie", cookieHandlerString);
-                Log.v("cookieStore", "cookieHandlerString :" + cookieHandlerString);
 
                 return params;
             }

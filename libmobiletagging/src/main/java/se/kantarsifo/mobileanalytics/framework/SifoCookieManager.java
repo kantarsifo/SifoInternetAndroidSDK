@@ -1,8 +1,5 @@
 package se.kantarsifo.mobileanalytics.framework;
 
-/**
- * Created by ahmetcengiz on 15/09/2017.
- */
 
 import java.net.CookieHandler;
 import java.net.CookieManager;
@@ -63,7 +60,6 @@ class SifoCookieManager
             return mCookieManager.getCookieStore();
     }
 
-
     public String getCookieValue() {
         String cookieValue = new String();
 
@@ -74,6 +70,5 @@ class SifoCookieManager
 
         return cookieValue;
     }
-
 
 }

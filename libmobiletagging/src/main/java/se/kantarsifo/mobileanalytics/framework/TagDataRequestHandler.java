@@ -18,7 +18,6 @@ import java.util.concurrent.Executors;
  * API for the data requests and URL handling etc. Used by the framework top
  * layer to execute the functions called by the user.
  *
- * @author Jakob Schyberg (jakob.schyberg@wecode.se)
  */
 class TagDataRequestHandler implements TagDataRequestCallbackListener {
     /**

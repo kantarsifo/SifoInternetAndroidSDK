@@ -27,7 +27,6 @@ import static android.os.Build.VERSION_CODES.LOLLIPOP;
  * time a URL is created. The EUID is created by a device identifier retrieved directly by this class using
  * an application Context object.
  *
- * @author Jakob Schyberg (jakob.schyberg@wecode.se)
  */
 class TagHandler {
 

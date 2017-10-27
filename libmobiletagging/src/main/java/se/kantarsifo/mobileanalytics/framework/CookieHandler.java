@@ -17,9 +17,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-/**
- * Created by Peter on 2015-03-30.
- */
 class CookieHandler {
 
     private static final long MAX_AGE = 315360000;
@@ -43,15 +40,11 @@ class CookieHandler {
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
-            TSMobileAnalyticsBackend.printToLog("--Cookie added: " + cookie);
+            //TSMobileAnalyticsBackend.printToLog("--Cookie added: " + cookie);
         }
 
 
         return SifoCookieManager.getInstance().getCookieStore();
-    }
-
-    static void clearCookiesFor(String domain) {
-
     }
 
     static HttpCookie getCookieFromJson(JSONObject json) throws JSONException {

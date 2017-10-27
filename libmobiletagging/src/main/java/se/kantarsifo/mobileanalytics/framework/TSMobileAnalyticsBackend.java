@@ -28,7 +28,6 @@ import java.util.List;
  * Extension of the framework class containing some extended functions used
  * internally by the framework.
  *
- * @author Jakob Schyberg (jakob.schyberg@wecode.se)
  */
 class TSMobileAnalyticsBackend extends TSMobileAnalytics {
     /**

@@ -9,7 +9,6 @@ package se.kantarsifo.mobileanalytics.framework;
 /**
  * Holds some pre-defined Strings used by the framework.
  *
- * @author Jakob Schyberg (jakob.schyberg@wecode.se)
  */
 public final class TagStringsAndValues {
     /**

@@ -13,8 +13,6 @@ package se.kantarsifo.mobileanalytics.framework;
  * 
  * This interface is used to receive callbacks from the Tagging framework to know if server requests
  * are succeeded or failed. The information can be used to track errors, handle errors etc.
- * 
- * @author Jakob Schyberg (jakob.schyberg@wecode.se)
  *
  */
 public interface TagDataRequestCallbackListener {
