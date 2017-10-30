@@ -1,4 +1,4 @@
-package se.kantarsifo.mobileanalytics.sampleapp;
+package se.kantarsifo.mobileanalytics;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

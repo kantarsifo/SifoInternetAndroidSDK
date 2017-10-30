@@ -39,3 +39,32 @@ dependencies {
     compile 'com.android.volley:volley:1.0.0'
 
 }
+
+def filename = 'libMobileTagging.jar'
+def output = "build/TNS-Sifo-MobileMeasureFramework-Android.${version}/"
+
+task javadoc(type: Javadoc) {
+    logger.lifecycle("javadoc ********")
+
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(project.android.getBootClasspath())
+    destinationDir = file("${output}javadoc/")
+    //Suppress warnings that can cause fail build on continuous integration tools
+    logger.lifecycle("javadoc created ********" + destinationDir)
+    failOnError false
+}
+
+task clearJar(type: Delete) {
+    logger.lifecycle("deleting a jar *********************")
+    delete 'libs/libMobileTagging.jar'
+}
+
+task makeJar(type: Copy) {
+    from 'build/intermediates/bundles/debug/'
+    into "libs/"
+    include('classes.jar')
+    rename('classes.jar', "$filename")
+}
+
+//Dependent tasks will be executed first before executing requested task
+makeJar.dependsOn(javadoc, clearJar, ':app:packageReleaseJar')
