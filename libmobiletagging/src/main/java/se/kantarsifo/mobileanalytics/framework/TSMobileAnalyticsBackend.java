@@ -82,14 +82,6 @@ class TSMobileAnalyticsBackend extends TSMobileAnalytics {
 
         }
 
-        Runnable runnable = new Runnable() {
-            public void run() {
-                VolleyManager.getInstance().getRequestQueue(context); // TODO: 19/09/2017 test it, it can be wrong and crash
-            }
-        };
-        Thread volleyThread = new Thread(runnable);
-        volleyThread.start();
-
         return frameworkInstance;
     }
 

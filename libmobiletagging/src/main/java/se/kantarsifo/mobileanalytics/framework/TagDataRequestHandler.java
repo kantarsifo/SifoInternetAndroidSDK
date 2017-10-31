@@ -8,6 +8,7 @@ package se.kantarsifo.mobileanalytics.framework;
 
 import android.content.Context;
 
+import java.io.IOException;
 import java.net.HttpCookie;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,6 @@ import java.util.concurrent.Executors;
 /**
  * API for the data requests and URL handling etc. Used by the framework top
  * layer to execute the functions called by the user.
- *
  */
 class TagDataRequestHandler implements TagDataRequestCallbackListener {
     /**

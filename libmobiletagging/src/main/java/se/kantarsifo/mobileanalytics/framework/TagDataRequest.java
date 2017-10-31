@@ -6,16 +6,12 @@
 
 package se.kantarsifo.mobileanalytics.framework;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkResponse;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-
-import java.util.HashMap;
-import java.util.Map;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.UUID;
+import javax.net.ssl.HttpsURLConnection;
 
 /**
  * TNS SIFO Mobile Application Tagging Framework :
@@ -174,72 +170,73 @@ public class TagDataRequest {
      * Init the server request to the specified URL. This function will start a new Thread.
      */
     void initRequest() {
-        StringRequest postRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        dataRequestFail(null, error);
-                    }
-                }
-        ) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                String userAgent = applicationName + "/" + applicationVersion +  " " + "session_id=" + "sdk_android_" + TSMobileAnalytics.getInstance().getLibraryVersion() + " " + System.getProperty("http.agent");
+        // HTTP-connection setup
+        if (url != null && url.length() > 0) {
+            URL obj = null;
+            HttpsURLConnection con = null;
+            try {
+                obj = new URL(url);
+                con = (HttpsURLConnection) obj.openConnection();
+
+                //add request header
+                String userAgent = applicationName + "/" + applicationVersion + " " + "session_id=" + "sdk_android_" + TSMobileAnalytics.getInstance().getLibraryVersion() + " " + System.getProperty("http.agent");
                 String cookieHandlerString = CookieHandler.getCookieString(SifoCookieManager.getInstance().getCookieStore().getCookies());
-                Map<String, String> params = new HashMap<>();
-                params.put("User-Agent", userAgent);
-                params.put("Cookie", cookieHandlerString);
 
-                return params;
-            }
+                con.setRequestMethod("GET");
+                con.setRequestProperty("User-Agent", userAgent);
+                con.setRequestProperty("Cookie", cookieHandlerString);
 
-            @Override
-            protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                if (response != null) {
-                    if ((httpStatusCode = response.statusCode) == 200) {
-                        // Request was successful with code 200
-                        TSMobileAnalyticsBackend.printToLog(
-                                "Tag request sent: " +
-                                        "\nRequestID: " + getRequestID() +
-                                        "\nCat encoded value:" + TagHandler.urlEncode(cat) +
-                                        "\nCat plain value: " + cat +
-                                        "\nId: " + id +
-                                        "\nName:" + name +
-                                        "\nURL:\n" + url);
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(con.getInputStream()));
+                String line;
+                StringBuffer response = new StringBuffer();
 
+                while ((line = in.readLine()) != null) {
+                    response.append(line);
+                }
+                in.close();
+
+                if (con != null) {
+                    TSMobileAnalyticsBackend.printToLog(
+                            "Tag request sent: " +
+                                    "\nRequestID: " + getRequestID() +
+                                    "\nCat encoded value:" + TagHandler.urlEncode(cat) +
+                                    "\nCat plain value: " + cat +
+                                    "\nId: " + id +
+                                    "\nName:" + name +
+                                    "\nURL:\n" + url);
+
+
+                    if (con.getResponseCode() == 200) {
                         dataRequestComplete();
                     } else {
-                        // Request finished with failure code
-                        dataRequestFail(response, null);
+                        dataRequestFailWithResponseCode(con.getResponseCode(), con.getResponseMessage());
                     }
-                } else {
-                    // Response was null, should not happen
-                    TSMobileAnalyticsBackend.errorToLog("Tag request response null");
                 }
-                return super.parseNetworkResponse(response);
+            } catch (IOException e) {
+                dataRequestFail(e);
             }
-        };
-        VolleyManager.getInstance().getRequestQueue().add(postRequest);
-
+        }
     }
 
     /**
      * Handle a failed request.
-     *
-     * @param response The response from the server.
-     * @param e        The exception if one was thrown.
+     * @param e The exception if one was thrown.
      */
-    private void dataRequestFail(NetworkResponse response, Exception e) {
-        if (response != null) {
-            TSMobileAnalyticsBackend.errorToLog("Tag request failed with http status code:" + response.statusCode + "\nRequestID: " + getRequestID());
-        } else {
-            TSMobileAnalyticsBackend.errorToLog("Tag request failed with exception:" + "\n" + e.toString() + "\nRequestID: " + getRequestID());
+    private void dataRequestFail(Exception e) {
+
+        TSMobileAnalyticsBackend.errorToLog("Tag request failed with exception:" + "\n" + e.toString() + "\nRequestID: " + getRequestID());
+
+
+        // Tell our callback-listeners that the request failed
+        callbackListener.onDataRequestFailed(this);
+        if (userDefinedCallbackListener != null) {
+            userDefinedCallbackListener.onDataRequestFailed(this);
         }
+    }
+
+    private void dataRequestFailWithResponseCode(int statusCode, String message) {
+        TSMobileAnalyticsBackend.errorToLog("Tag request failed with http status code:" + statusCode + "\nmessage:" + message + "\nRequestID: " + getRequestID());
 
         // Tell our callback-listeners that the request failed
         callbackListener.onDataRequestFailed(this);
