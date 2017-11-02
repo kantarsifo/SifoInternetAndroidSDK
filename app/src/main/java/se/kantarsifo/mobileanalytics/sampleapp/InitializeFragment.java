@@ -1,5 +1,6 @@
 package se.kantarsifo.mobileanalytics.sampleapp;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -32,7 +33,7 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
     public InitializeFragment() {
 
     }
-
+    @SuppressLint("ValidFragment")
     public InitializeFragment(ViewPagerListener listener) {
         mListener = listener;
     }
