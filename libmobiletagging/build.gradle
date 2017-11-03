@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 
+
 version = "3.0.0"
 
 android {
@@ -31,7 +32,49 @@ dependencies {
     androidTestCompile 'org.testng:testng:6.9.6'
 }
 
+println("finally !!")
+println(build.name)
 
+task copyAARToCommonLibs() << {
+
+    def path = project.rootDir.path + '/TNS-Sifo-Mobile-Analytics-SDK-3.0.0'
+    println  "Project Name:   "+ project.name;
+    def aarPath = project.rootDir.path + "/" + project.name + "/build/outputs/aar"
+    mkdir(path)
+
+    copy {
+        from(aarPath) {
+            println("Will try to copy")
+            include '*-release.aar'
+        }
+        into path
+    }
+
+    /*
+    println  "Root project:   "+ project.rootProject;
+    println  "  rootDir:      "+ project.rootDir;
+    println  "  projectDir:   "+ project.projectDir;
+    println  "  project dir:  "+ System.getProperty("user.dir");
+
+    System.setProperty( "user.dir", project.projectDir.toString())
+    println  "  project dir:  "+ System.getProperty("user.dir");
+    */
+
+}
+
+
+afterEvaluate {
+    copyAARToCommonLibs.dependsOn assembleRelease
+    copyAARToCommonLibs.dependsOn assembleDebug
+
+    assembleRelease.doLast {
+        copyAARToCommonLibs.execute()
+    }
+
+    assembleDebug.doLast {
+        copyAARToCommonLibs.execute()
+    }
+}
 
 
 
