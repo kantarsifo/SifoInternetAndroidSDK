@@ -28,5 +28,80 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile project(':libmobiletagging')
     compile 'com.squareup.picasso:picasso:2.5.2'
+}
+
+task copyAARToReleaseFolder() << {
+
+    def path = project.rootDir.path + '/TNS-Sifo-Mobile-Analytics-SDK-3.0.0'
+    def apkPath = project.rootDir.path + '/app/build/outputs/apk'
+
+
+    println  "Project Name:   "+ project.name;
+    def aarPath = project.rootDir.path + "/" + "libmobiletagging/build/outputs/aar"
+
+    println  "aarPath :    "+ aarPath;
+    mkdir(path)
+
+    def documentationPath = path + "/Documentation"
+    def frameworkPath = path + "/Framework"
+    def samplePath = path + "/Sample"
+
+    mkdir(documentationPath)
+    mkdir(frameworkPath)
+    mkdir(samplePath)
+
+    copyAPKToReleaseFolder(apkPath,samplePath)
+
+    copy {
+        from(aarPath) {
+            println("Will try to copy")
+            include '*-release.aar'
+        }
+        into frameworkPath
+    }
+    /*
+    println  "Root project:   "+ project.rootProject;
+    println  "  rootDir:      "+ project.rootDir;
+    println  "  projectDir:   "+ project.projectDir;
+    println  "  project dir:  "+ System.getProperty("user.dir");
+
+    System.setProperty( "user.dir", project.projectDir.toString())
+    println  "  project dir:  "+ System.getProperty("user.dir");*/
+
+
+
 
 }
+
+def copyAPKToReleaseFolder(apkPath,samplePath){
+
+    println  "apkPath :    "+ apkPath;
+    println  "samplePath :    "+ samplePath;
+
+    copy {
+        from(apkPath) {
+            println("Will try to copy")
+            include '*-debug.apk'
+        }
+        into samplePath
+    }
+
+}
+
+
+afterEvaluate {
+
+    println("2 !!!!!!")
+
+    copyAARToReleaseFolder.dependsOn assembleRelease
+    copyAARToReleaseFolder.dependsOn assembleDebug
+
+    assembleRelease.doLast {
+        copyAARToReleaseFolder.execute()
+    }
+
+    assembleDebug.doLast {
+        copyAARToReleaseFolder.execute()
+    }
+}
+
