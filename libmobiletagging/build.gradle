@@ -35,7 +35,7 @@ dependencies {
 println("finally !!")
 println(build.name)
 
-task copyAARToCommonLibs() << {
+task copyAARToReleaseFolder() << {
 
     def path = project.rootDir.path + '/TNS-Sifo-Mobile-Analytics-SDK-3.0.0'
     println  "Project Name:   "+ project.name;
@@ -64,15 +64,15 @@ task copyAARToCommonLibs() << {
 
 
 afterEvaluate {
-    copyAARToCommonLibs.dependsOn assembleRelease
-    copyAARToCommonLibs.dependsOn assembleDebug
+    copyAARToReleaseFolder.dependsOn assembleRelease
+    copyAARToReleaseFolder.dependsOn assembleDebug
 
     assembleRelease.doLast {
-        copyAARToCommonLibs.execute()
+        copyAARToReleaseFolder.execute()
     }
 
     assembleDebug.doLast {
-        copyAARToCommonLibs.execute()
+        copyAARToReleaseFolder.execute()
     }
 }
 
