@@ -11,7 +11,7 @@ android {
         minSdkVersion 9
         targetSdkVersion 25
         versionCode 1
-        versionName "3.0"
+        versionName "3.0.0"
         publishNonDefault true
     }
     buildTypes {
@@ -32,8 +32,17 @@ dependencies {
     androidTestCompile 'org.testng:testng:6.9.6'
 }
 
+android.libraryVariants.all { variant ->
+    variant.outputs.each { output ->
+        def outputFile = output.outputFile
+        if (outputFile != null && outputFile.name.endsWith('.aar')) {
+            def fileName = "kantar.sifo.mobile.analytics-${version}.aar"
+            output.outputFile = new File(outputFile.parent, fileName)
+        }
+    }
+}
+
 afterEvaluate {
-    println("3 !!!!!!")
 }
 
 

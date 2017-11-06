@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 
+version = "3.0.0"
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -8,13 +10,23 @@ android {
         minSdkVersion 9
         targetSdkVersion 25
         versionCode 2
-        versionName "3.0"
+        versionName "3.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('debug.apk')) {
+                def fileName = "kantar.sifo.mobile.analytics.sample-${version}.apk"
+                output.outputFile = new File(outputFile.parent, fileName)
+            }
         }
     }
 }
@@ -32,16 +44,14 @@ dependencies {
 
 task copyAARToReleaseFolder() << {
 
-    def path = project.rootDir.path + '/TNS-Sifo-Mobile-Analytics-SDK-3.0.0'
+    // set project version
+    project.configure(project){ println  "version !!!!????? : "  + version}
+
+    def path = project.rootDir.path + "/TNS-Sifo-Mobile-Analytics-SDK-${version}"
     def apkPath = project.rootDir.path + '/app/build/outputs/apk'
-
-
-    println  "Project Name:   "+ project.name;
     def aarPath = project.rootDir.path + "/" + "libmobiletagging/build/outputs/aar"
 
-    println  "aarPath :    "+ aarPath;
     mkdir(path)
-
     def documentationPath = path + "/Documentation"
     def frameworkPath = path + "/Framework"
     def samplePath = path + "/Sample"
@@ -54,8 +64,7 @@ task copyAARToReleaseFolder() << {
 
     copy {
         from(aarPath) {
-            println("Will try to copy")
-            include '*-release.aar'
+            include "*-${version}.aar"
         }
         into frameworkPath
     }
@@ -69,19 +78,12 @@ task copyAARToReleaseFolder() << {
     println  "  project dir:  "+ System.getProperty("user.dir");*/
 
 
-
-
 }
 
 def copyAPKToReleaseFolder(apkPath,samplePath){
-
-    println  "apkPath :    "+ apkPath;
-    println  "samplePath :    "+ samplePath;
-
     copy {
         from(apkPath) {
-            println("Will try to copy")
-            include '*-debug.apk'
+            include "*-${version}.apk"
         }
         into samplePath
     }
@@ -90,8 +92,6 @@ def copyAPKToReleaseFolder(apkPath,samplePath){
 
 
 afterEvaluate {
-
-    println("2 !!!!!!")
 
     copyAARToReleaseFolder.dependsOn assembleRelease
     copyAARToReleaseFolder.dependsOn assembleDebug
