@@ -51,6 +51,8 @@ task copyAARToReleaseFolder() << {
     def apkPath = project.rootDir.path + '/app/build/outputs/apk'
     def aarPath = project.rootDir.path + "/" + "libmobiletagging/build/outputs/aar"
     def javadocPath = project.rootDir.path + "/" + "libmobiletagging/build/docs"
+    def notesPath = project.rootDir.path + "/" + "libmobiletagging"
+    def guidePath = project.rootDir.path + "/" + "libmobiletagging"
 
     mkdir(path)
     def documentationPath = path + "/Documentation"
@@ -64,6 +66,10 @@ task copyAARToReleaseFolder() << {
     copyAPKToReleaseFolder(apkPath,samplePath)
 
     copyJavaDocToReleaseFolder(javadocPath,documentationPath)
+
+    copyNotesToReleaseFolder(notesPath,path)
+
+    copyDevelopersGuideToReleaseFolder(guidePath,documentationPath)
 
     copy {
         from(aarPath) {
@@ -90,20 +96,35 @@ def copyAPKToReleaseFolder(apkPath,samplePath){
         }
         into samplePath
     }
+}
+
+def copyNotesToReleaseFolder(notesPath,rootPath){
+    copy {
+        from(notesPath) {
+            include "licence.txt"
+            include "release-notes.txt"
+        }
+        into rootPath
+    }
+}
+
+def copyDevelopersGuideToReleaseFolder(guidePath,documentationPath){
+    copy {
+        from(guidePath) {
+            include "*Android.pdf"
+        }
+        into documentationPath
+    }
 
 }
 
 def copyJavaDocToReleaseFolder(javaDocPath,documentationPath){
-
-    println "javaDocPath : ?????  " + javaDocPath
-    println "documentationPath : ?????  " + documentationPath
     copy {
         from(javaDocPath) {
             from "docs"
         }
         into documentationPath
     }
-
 }
 
 
