@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="se.kantarsifo.mobileanalytics.sampleapp">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity"
+            android:windowSoftInputMode="stateHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
+        <activity
+            android:name=".CategoryActivity"
+            android:label="@string/title_categories"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ContentActivity"
+            android:label="@string/title_content_id"
+            android:parentActivityName="MainActivity" />
+        <activity
+            android:name=".NameActivity"
+            android:label="@string/title_content_name"
+            android:parentActivityName=".MainActivity" />
+
+    </application>
+
+</manifest>

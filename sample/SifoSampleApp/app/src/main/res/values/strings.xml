@@ -1,0 +1,73 @@
+<resources>
+    <string name="app_name">Sifo Mobile Analytics SDK for Android 3.0.0</string>
+
+    <string name="description_send_tags">Click on any item in the list to send a tag with that category.</string>
+    <string name="description_send_tags2">Click on any item in the list to send a tag with that as its second category.</string>
+    <string name="description_send_tags3">Click on any item in the list to send a tag with that content ID.</string>
+    <string name="description_send_tags4">Click on any item in the list to send a tag with that content name.</string>
+
+    <string name="connect_logcat">Connect Android Debug Bridge (ADB) and filter the LogCat output for \"MobileAppTagging\" and \"MobileTaggingTestApp\" to view usage.</string>
+
+    <string name="title_webactivity">Webview Test</string>
+    <string name="title_categories">Second category</string>
+    <string name="title_content_id">Content ID</string>
+    <string name="title_content_name">Content name</string>
+    <string name="toast_sent_tag">\"%1$s\" was sent!</string>
+    <string name="cpid_mobiletech_button">Mobiletech</string>
+    <string name="cpid_codigo_button">Codigo</string>
+
+    <string-array name="category_list_1">
+        <item>Category_0</item>
+        <item>Category_1</item>
+        <item>Category_2</item>
+        <item>Category_3</item>
+        <item>Category_4</item>
+        <item>Category_5</item>
+        <item>Category_6</item>
+        <item>Category_7</item>
+        <item>Category_8</item>
+    </string-array>
+
+    <string-array name="category_list_2">
+        <item>2nd_Category_0</item>
+        <item>2nd_Category_1</item>
+        <item>2nd_Category_2</item>
+        <item>2nd_Category_3</item>
+        <item>2nd_Category_4</item>
+        <item>2nd_Category_5</item>
+        <item>2nd_Category_6</item>
+        <item>2nd_Category_7</item>
+        <item>2nd_Category_8</item>
+    </string-array>
+
+    <string-array name="content_list">
+        <item>Content_0</item>
+        <item>Content_1</item>
+        <item>Content_2</item>
+        <item>Content_3</item>
+        <item>Content_4</item>
+        <item>Content_5</item>
+        <item>Content_6</item>
+        <item>Content_7</item>
+        <item>Content_8</item>
+    </string-array>
+
+    <string-array name="name_list">
+        <item>Name_0</item>
+        <item>Name_1</item>
+        <item>Name_2</item>
+        <item>Name_3</item>
+        <item>Name_4</item>
+        <item>Name_5</item>
+        <item>Name_6</item>
+        <item>Name_7</item>
+        <item>Name_8</item>
+    </string-array>
+
+    <string-array name="webview_sites">
+        <item>http://m.aftonbladet.se/</item>
+        <item>http://m.dn.se/</item>
+        <item>http://mobil.gp.se</item>
+    </string-array>
+
+</resources>
