@@ -1,0 +1,26 @@
+Kantar Sifo Mobile Analytics SDK for Android
+—————————————————————————————————————
+
+This SDK will help you measure the usage of your application
+using Kantar Sifo’s services. The SDK zip file contains three folders:
+
+- Framework folder that contains the kantarsifo-mobileanalytics-3.0.0.aar file
+  that needs to be included and linked with in your project.
+
+- Documentation folder that contains Developer's Guide and API Reference
+  in HTML and JavaDoc format.
+
+- Samples folder with code samples in Java.
+
+
+RELEASE NOTES:
+
+v3.0.0, 2017-10-27
+- Added new createInstance builder method.
+- Refactored the framework to use modern Android standards
+  (requires Android 2.3 or above).
+- Updated Cookie library.
+- Added URLConnection library to request.
+- Updated sample application.
+- Added option to send data with HTTPS.
+- Updated documentation.

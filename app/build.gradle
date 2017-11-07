@@ -47,7 +47,7 @@ task copyAARToReleaseFolder() << {
     // set project version
     project.configure(project){ println  "version !!!!????? : "  + version}
 
-    def path = project.rootDir.path + "/TNS-Sifo-Mobile-Analytics-SDK-${version}"
+    def path = project.rootDir.path + "/Kantar-Sifo-Mobile-Analytics-Android-SDK-${version}"
     def apkPath = project.rootDir.path + '/app/build/outputs/apk'
     def aarPath = project.rootDir.path + "/" + "libmobiletagging/build/outputs/aar"
     def javadocPath = project.rootDir.path + "/" + "libmobiletagging/build/docs"
