@@ -53,11 +53,15 @@ task copyAARToReleaseFolder() << {
     def javadocPath = project.rootDir.path + "/" + "libmobiletagging/build/docs"
     def notesPath = project.rootDir.path + "/" + "libmobiletagging"
     def guidePath = project.rootDir.path + "/" + "libmobiletagging"
+    def standaloneSamplePath = project.rootDir.path + "/" + "sample"
 
     mkdir(path)
     def documentationPath = path + "/Documentation"
     def frameworkPath = path + "/Framework"
     def samplePath = path + "/Sample"
+
+    def sampleAppPath = path + "/Sample"
+    def sampleAppLibraryPath = path + "/Sample/KantarSifoSampleApp/app/libs"
 
     mkdir(documentationPath)
     mkdir(frameworkPath)
@@ -71,22 +75,21 @@ task copyAARToReleaseFolder() << {
 
     copyDevelopersGuideToReleaseFolder(guidePath,documentationPath)
 
+    copySampleToReleaseFolder(standaloneSamplePath,sampleAppPath)
+
     copy {
         from(aarPath) {
             include "*-${version}.aar"
         }
         into frameworkPath
     }
-    /*
-    println  "Root project:   "+ project.rootProject;
-    println  "  rootDir:      "+ project.rootDir;
-    println  "  projectDir:   "+ project.projectDir;
-    println  "  project dir:  "+ System.getProperty("user.dir");
 
-    System.setProperty( "user.dir", project.projectDir.toString())
-    println  "  project dir:  "+ System.getProperty("user.dir");*/
-
-
+    copy {
+        from(aarPath) {
+            include "*-${version}.aar"
+        }
+        into sampleAppLibraryPath
+    }
 }
 
 def copyAPKToReleaseFolder(apkPath,samplePath){
@@ -124,6 +127,15 @@ def copyJavaDocToReleaseFolder(javaDocPath,documentationPath){
             from "docs"
         }
         into documentationPath
+    }
+}
+
+def copySampleToReleaseFolder(standaloneSamplePath,samplePath){
+    copy {
+        from(standaloneSamplePath) {
+            from "KantarSifoSampleApp"
+        }
+        into samplePath
     }
 }
 
