@@ -38,6 +38,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:26.0.0'
     testCompile 'junit:junit:4.12'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile(name:'libmobiletagging-release', ext:'aar')
+    compile(name:'kantar.sifo.mobile.analytics-3.0.0', ext:'aar')
 
 }
