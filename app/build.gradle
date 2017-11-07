@@ -50,6 +50,7 @@ task copyAARToReleaseFolder() << {
     def path = project.rootDir.path + "/TNS-Sifo-Mobile-Analytics-SDK-${version}"
     def apkPath = project.rootDir.path + '/app/build/outputs/apk'
     def aarPath = project.rootDir.path + "/" + "libmobiletagging/build/outputs/aar"
+    def javadocPath = project.rootDir.path + "/" + "libmobiletagging/build/docs"
 
     mkdir(path)
     def documentationPath = path + "/Documentation"
@@ -61,6 +62,8 @@ task copyAARToReleaseFolder() << {
     mkdir(samplePath)
 
     copyAPKToReleaseFolder(apkPath,samplePath)
+
+    copyJavaDocToReleaseFolder(javadocPath,documentationPath)
 
     copy {
         from(aarPath) {
@@ -86,6 +89,19 @@ def copyAPKToReleaseFolder(apkPath,samplePath){
             include "*-${version}.apk"
         }
         into samplePath
+    }
+
+}
+
+def copyJavaDocToReleaseFolder(javaDocPath,documentationPath){
+
+    println "javaDocPath : ?????  " + javaDocPath
+    println "documentationPath : ?????  " + documentationPath
+    copy {
+        from(javaDocPath) {
+            from "docs"
+        }
+        into documentationPath
     }
 
 }

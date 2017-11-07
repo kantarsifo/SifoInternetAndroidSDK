@@ -16,7 +16,7 @@ import javax.net.ssl.HttpsURLConnection;
 /**
  * TNS SIFO Mobile Application Tagging Framework :
  * Debugging/Advanced features : TagDataRequest.java :
- * <p/>
+ * <p>
  * This class describes an object with information about a measure-tag request to the Mobiletech server.
  */
 public class TagDataRequest {

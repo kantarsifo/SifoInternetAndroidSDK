@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Kantar Sifo Mobile Analytics Framework for Android:
  * TSMobileAnalytics.java:
- * <p/>
+ * <p>
  * This framework will help you to measure usage of your application using Kantar Sifo's services.
  * In order to measure traffic, your application needs to send HTTP/s-requests to a server provided by Mobiletech or Codigo Analytics.
  * The framework can help you with the whole process, both creating these URLs, as well as sending them to the server.
@@ -37,7 +37,7 @@ public class TSMobileAnalytics {
     /**
      * Call this method upon application start, for example in the onCreate-method of
      * the main Activity, to initialize the framework.
-     * <p/>
+     * <p>
      * The CPID must be 4 or 32 digits, it must not be empty.
      * The Application name must not be more than 243 characters.
      * The parameters must not be null.
@@ -84,14 +84,14 @@ public class TSMobileAnalytics {
 
     /**
      * Call to immediately send a tag to the server using the framework's http/s-functionality.
-     * <p/>
+     * <p>
      * Use when a page is displayed, for example in the onResume-method of an Activity.
      * Strings will be encoded using Latin1 (ISO8859-1) and characters not supported in this character
      * set will not be stored properly on the server.
-     * <p/>
+     * <p>
      * The category parameter must not be more than 255 characters.
      * The input strings must not me null.
-     * If any of the parameters are invalid the request will fail and return a value >0.
+     * If any of the parameters are invalid the request will fail and return a value greater than 0.
      * If the request is sent successfully 0 will be returned.
      *
      * @param category The name of category or page to be tagged. This value will be sent using
@@ -104,14 +104,14 @@ public class TSMobileAnalytics {
 
     /**
      * Call to immediately send a tag to the server using the framework's http/s-functionality.
-     * <p/>
+     * <p>
      * Use when a page is displayed, for example in the onResume-method of an Activity.
      * Strings will be encoded using Latin1 (ISO8859-1) and characters not supported in this character set will not be stored properly on the server.
-     * <p/>
+     * <p>
      * The category parameter must not be more than 255 characters.
      * The contentID must not be more than 255 characters.
      * The input strings must not be null.
-     * If any of the parameters are invalid the request will fail and return a value >0.
+     * If any of the parameters are invalid the request will fail and return a value greater than 0.
      * If the request is sent successfully 0 will be returned.
      *
      * @param category  The name of category or page to be tagged. This value will be sent using
@@ -125,15 +125,15 @@ public class TSMobileAnalytics {
 
     /**
      * Call to immediately send a tag to the server using the framework's http/s-functionality.
-     * <p/>
+     * <p>
      * Use when a page is displayed, for example in the onResume-method of an Activity.
      * Strings will be encoded using Latin1 (ISO8859-1) and characters not supported in this character set will not be stored properly on the server.
-     * <p/>
+     * <p>
      * The category parameter must not be more than 255 characters.
      * The contentID must not be more than 255 characters.
      * The contentName must not be more than 255 characters.
      * The input strings must not be null.
-     * If any of the parameters are invalid the request will fail and return a value >0.
+     * If any of the parameters are invalid the request will fail and return a value  greater than 0.
      * If the request is sent successfully 0 will be returned.
      *
      * @param category    The name of category or page to be tagged. This value will be sent using
@@ -148,15 +148,15 @@ public class TSMobileAnalytics {
 
     /**
      * Call to immediately send a tag to the server using the framework's http/s-functionality.
-     * <p/>
+     * <p>
      * Use when a page is displayed, for example in the onResume-method of an Activity.
      * Strings will be encoded using Latin1 (ISO8859-1) and characters not supported in this character set will not be stored properly on the server.
-     * <p/>
+     * <p>
      * The category list must not contain more than 4 objects and they must not be more than 62 characters each.
      * The contentID must not be more than 255 characters.
      * The contentName must not be more than 255 characters.
      * The input strings must not be null.
-     * If any of the parameters are invalid the request will fail and return a value >0.
+     * If any of the parameters are invalid the request will fail and return a value greater than 0.
      * If the request is sent successfully 0 will be returned.
      *
      * @param categories  Array of names in category structure. This value will be sent using
@@ -383,7 +383,7 @@ public class TSMobileAnalytics {
 
 
         /**
-         * @return return constructor of TSMobileAnalytics {@link #TSMobileAnalytics(Builder)}.
+         * @return return constructor of TSMobileAnalytics.
          */
         public TSMobileAnalytics build() {
             return new TSMobileAnalytics(this);
