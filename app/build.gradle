@@ -77,6 +77,7 @@ task copyAARToReleaseFolder() << {
 
     copySampleToReleaseFolder(standaloneSamplePath,sampleAppPath)
 
+
     copy {
         from(aarPath) {
             include "*-${version}.aar"
@@ -90,6 +91,11 @@ task copyAARToReleaseFolder() << {
         }
         into sampleAppLibraryPath
     }
+
+    //To copy src folder inside standalone sample app
+    def standaloneSampleSourcePath = path + "/Sample/KantarSifoSampleApp/app/src"
+    def srcPath = project.rootDir.path + '/app/src'
+    copySRCToStandaloneSampleProject(srcPath,standaloneSampleSourcePath)
 }
 
 def copyAPKToReleaseFolder(apkPath,samplePath){
@@ -136,6 +142,15 @@ def copySampleToReleaseFolder(standaloneSamplePath,samplePath){
             from "KantarSifoSampleApp"
         }
         into samplePath
+    }
+}
+
+def copySRCToStandaloneSampleProject(srcPath,standaloneSampleSourcePath){
+    copy {
+        from(srcPath) {
+            from "src"
+        }
+        into standaloneSampleSourcePath
     }
 }
 
