@@ -96,6 +96,8 @@ task copyAARToReleaseFolder() << {
     def standaloneSampleSourcePath = path + "/Sample/KantarSifoSampleApp/app/src"
     def srcPath = project.rootDir.path + '/app/src'
     copySRCToStandaloneSampleProject(srcPath,standaloneSampleSourcePath)
+
+    zipReleaseFolder.execute()
 }
 
 def copyAPKToReleaseFolder(apkPath,samplePath){
@@ -152,6 +154,14 @@ def copySRCToStandaloneSampleProject(srcPath,standaloneSampleSourcePath){
         }
         into standaloneSampleSourcePath
     }
+}
+
+task zipReleaseFolder(type: Zip){
+    from project.rootDir.path + "/Kantar-Sifo-Mobile-Analytics-Android-SDK-${version}"
+    include '*'
+    include '*/*' //to include contents of a folder present inside Reports directory
+    archiveName "/Kantar-Sifo-Mobile-Analytics-Android-SDK-${version}" + '.zip'
+    destinationDir(file(project.rootDir.path))
 }
 
 
