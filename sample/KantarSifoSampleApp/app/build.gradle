@@ -8,7 +8,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 26
         versionCode 2
-        versionName "3.0"
+        versionName "3.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -24,9 +24,6 @@ android {
 
     repositories {
         mavenCentral()
-        flatDir {
-            dirs 'libs'
-        }
     }
 }
 
@@ -38,6 +35,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:26.0.0'
     testCompile 'junit:junit:4.12'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile(name:'kantar.sifo.mobile.analytics-3.0.0', ext:'aar')
+    compile(name:'kantarsifo-mobileanalytics-3.0.1', ext:'aar')
 
 }

@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-version = "3.0.0"
+version = "3.0.1"
 
 android {
     compileSdkVersion 25
@@ -9,7 +9,7 @@ android {
         minSdkVersion 9
         targetSdkVersion 25
         versionCode 1
-        versionName "3.0.0"
+        versionName "3.0.1"
         publishNonDefault true
     }
     buildTypes {
@@ -47,7 +47,7 @@ android.libraryVariants.all { variant ->
     variant.outputs.each { output ->
         def outputFile = output.outputFile
         if (outputFile != null && outputFile.name.endsWith('.aar')) {
-            def fileName = "kantar.sifo.mobile.analytics-${version}.aar"
+            def fileName = "kantarsifo-mobileanalytics-${version}.aar"
             output.outputFile = new File(outputFile.parent, fileName)
         }
     }
