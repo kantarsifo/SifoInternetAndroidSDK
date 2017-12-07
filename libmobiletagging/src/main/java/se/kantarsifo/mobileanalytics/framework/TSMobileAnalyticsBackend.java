@@ -54,31 +54,35 @@ class TSMobileAnalyticsBackend extends TSMobileAnalytics {
                 fatalErrorToLog("Mobile Application Tagging Framework Failed to initiate - Application Name must not be more than " + TagStringsAndValues.MAX_LENGTH_APP_NAME + " characters");
             } else {
 
-                Runnable runnable = new Runnable() {
-                    public void run() {
-                        boolean requestHandled = initTags(context, cpID, applicationName, onlyPanelist);
-                        if (!requestHandled) {
-                            initLegacyTags(context, cpID, applicationName, onlyPanelist);
-                        }                    }
-                };
-                Thread initTagsThreat = new Thread(runnable);
-                initTagsThreat.start();
+//                Runnable runnable = new Runnable() {
+//                    public void run() {
+//                                           }
+//                };
+//                Thread initTagsThreat = new Thread(runnable);
+//                initTagsThreat.start();
+
+                boolean requestHandled = initTags(context, cpID, applicationName, onlyPanelist);
+                if (!requestHandled) {
+                    initLegacyTags(context, cpID, applicationName, onlyPanelist);
+                }
 
             }
         } else {
             printToLog("Mobile Application Tagging Framework already initiated");
             printToLog("Refreshing panelist keys");
-            Runnable runnable = new Runnable() {
-                public void run() {
-                    List<HttpCookie> cookies = PanelistHandler.getCookies(context);
-                    if (cookies != null) {
-                        frameworkInstance.dataRequestHandler.refreshCookies(context, cookies);
-                    } else {
-                        frameworkInstance.dataRequestHandler.refreshCookies(context, PanelistHandler.getPanelistKey(context));
-                    }                 }
-            };
-            Thread refreshCookiesThread = new Thread(runnable);
-            refreshCookiesThread.start();
+//            Runnable runnable = new Runnable() {
+//                public void run() {
+//                                     }
+//            };
+//            Thread refreshCookiesThread = new Thread(runnable);
+//            refreshCookiesThread.start();
+
+            List<HttpCookie> cookies = PanelistHandler.getCookies(context);
+            if (cookies != null) {
+                frameworkInstance.dataRequestHandler.refreshCookies(context, cookies);
+            } else {
+                frameworkInstance.dataRequestHandler.refreshCookies(context, PanelistHandler.getPanelistKey(context));
+            }
 
         }
 
