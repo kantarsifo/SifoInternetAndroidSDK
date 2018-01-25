@@ -173,7 +173,7 @@ public class TSMobileAnalytics {
      * Activate third-party cookies.
      */
     public void activateCookies() {
-        SifoCookieManager.getInstance().activeCookies();
+        SifoCookieManager.getInstance().activateCookies();
     }
 
     /**

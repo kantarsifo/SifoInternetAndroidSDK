@@ -8,8 +8,7 @@ import java.net.CookieStore;
 import java.net.HttpCookie;
 import java.util.List;
 
-class SifoCookieManager
-{
+class SifoCookieManager {
 
     private CookieManager mCookieManager;
 
@@ -24,37 +23,42 @@ class SifoCookieManager
     }
 
     private SifoCookieManager() {
-        mCookieManager = new CookieManager();
-        mCookieManager.setCookiePolicy(CookiePolicy.ACCEPT_NONE);
-        CookieHandler.setDefault(mCookieManager);
+        if (CookieHandler.getDefault() != null) {
+            mCookieManager = (CookieManager) CookieHandler.getDefault();
+        } else {
+            mCookieManager = new CookieManager();
+            mCookieManager.setCookiePolicy(CookiePolicy.ACCEPT_NONE);
+            CookieHandler.setDefault(mCookieManager);
+        }
     }
 
-    public void activeCookies(){
-        mCookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
-        CookieHandler.setDefault(mCookieManager);
+    public void activateCookies() {
+        if(mCookieManager != null) {
+            mCookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
+        }
     }
 
     private List<HttpCookie> getCookies() {
-        if(mCookieManager == null)
+        if (mCookieManager == null)
             return null;
         else
             return mCookieManager.getCookieStore().getCookies();
     }
 
     public void clearCookies() {
-        if(mCookieManager != null)
+        if (mCookieManager != null)
             mCookieManager.getCookieStore().removeAll();
     }
 
     private boolean isCookieManagerEmpty() {
-        if(mCookieManager == null)
+        if (mCookieManager == null)
             return true;
         else
             return mCookieManager.getCookieStore().getCookies().isEmpty();
     }
 
     public CookieStore getCookieStore() {
-        if(mCookieManager == null)
+        if (mCookieManager == null)
             return null;
         else
             return mCookieManager.getCookieStore();
@@ -63,7 +67,7 @@ class SifoCookieManager
     public String getCookieValue() {
         String cookieValue = new String();
 
-        if(!isCookieManagerEmpty()) {
+        if (!isCookieManagerEmpty()) {
             for (HttpCookie eachCookie : getCookies())
                 cookieValue = cookieValue + String.format("%s=%s; ", eachCookie.getName(), eachCookie.getValue());
         }

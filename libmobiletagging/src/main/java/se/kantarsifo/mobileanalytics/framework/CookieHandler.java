@@ -32,7 +32,7 @@ class CookieHandler {
      * Stores Panelist Cookie Headers in CookieSyncManager to use in WebView requests
      */
     static CookieStore setupPanelistCookies(Context context, List<HttpCookie> cookies, String urlBase) {
-        SifoCookieManager.getInstance().clearCookies();
+        //SifoCookieManager.getInstance().clearCookies();
 
         for (HttpCookie cookie : cookies) {
             try {
