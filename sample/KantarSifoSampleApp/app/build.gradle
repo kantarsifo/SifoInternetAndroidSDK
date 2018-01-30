@@ -35,6 +35,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:26.0.0'
     testCompile 'junit:junit:4.12'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile(name:'kantarsifo-mobileanalytics-3.0.2', ext:'aar')
+    compile(name:'kantarsifo-mobileanalytics-3.0.3', ext:'aar')
 
 }
