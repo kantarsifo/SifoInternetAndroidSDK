@@ -215,6 +215,10 @@ public class TagDataRequest {
                 }
             } catch (IOException e) {
                 dataRequestFail(e);
+            }finally {
+                if(con != null){
+                    con.disconnect();
+                }
             }
         }
     }
