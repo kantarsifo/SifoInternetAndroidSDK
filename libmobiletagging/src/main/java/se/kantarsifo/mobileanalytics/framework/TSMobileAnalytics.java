@@ -25,7 +25,7 @@ public class TSMobileAnalytics {
      * @return library version
      */
     public String getLibraryVersion(){
-        return "3.0.3";
+        return "3.0.4";
     }
 
     /**
