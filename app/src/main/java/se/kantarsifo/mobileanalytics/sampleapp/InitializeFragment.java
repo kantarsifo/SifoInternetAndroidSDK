@@ -33,6 +33,7 @@ public class InitializeFragment extends Fragment implements CompoundButton.OnChe
     public InitializeFragment() {
 
     }
+    
     @SuppressLint("ValidFragment")
     public InitializeFragment(ViewPagerListener listener) {
         mListener = listener;
