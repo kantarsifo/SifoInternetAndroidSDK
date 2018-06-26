@@ -7,12 +7,12 @@ version = "3.0.4"
 
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
 
     defaultConfig {
         minSdkVersion 9
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 1
         versionName "3.0.4"
         publishNonDefault true
@@ -30,39 +30,39 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    androidTestCompile 'org.testng:testng:6.9.6'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'org.testng:testng:6.9.10'
 }
 
-android.libraryVariants.all { variant ->
+//android.libraryVariants.all { variant ->
+//
+//    //Generate javaDoc task
+//    task("generate${variant.name.capitalize()}Javadoc", type: Javadoc) {
+//        source = variant.javaCompile.source
+//        classpath = files(variant.javaCompile.classpath.files, project.android.getBootClasspath())
+//        options {
+//            links "http://docs.oracle.com/javase/7/docs/api/"
+//            linksOffline "http://d.android.com/reference","${android.sdkDirectory}/docs/reference"
+//        }
+//        exclude '**/BuildConfig.java'
+//        exclude '**/R.java'
+//    }
+//
+////    variant.outputs.each { output ->
+////        def outputFile = output.outputFile
+////        if (outputFile != null && outputFile.name.endsWith('.aar')) {
+////            def fileName = "kantarsifo-mobileanalytics-${version}.aar"
+////            output.outputFile = new File(outputFile.parent, fileName)
+////        }
+////    }
+//}
 
-    //Generate javaDoc task
-    task("generate${variant.name.capitalize()}Javadoc", type: Javadoc) {
-        source = variant.javaCompile.source
-        classpath = files(variant.javaCompile.classpath.files, project.android.getBootClasspath())
-        options {
-            links "http://docs.oracle.com/javase/7/docs/api/"
-            linksOffline "http://d.android.com/reference","${android.sdkDirectory}/docs/reference"
-        }
-        exclude '**/BuildConfig.java'
-        exclude '**/R.java'
-    }
-
-    variant.outputs.each { output ->
-        def outputFile = output.outputFile
-        if (outputFile != null && outputFile.name.endsWith('.aar')) {
-            def fileName = "kantarsifo-mobileanalytics-${version}.aar"
-            output.outputFile = new File(outputFile.parent, fileName)
-        }
-    }
-}
-
-afterEvaluate {
-    //Generate javaDoc
-    generateReleaseJavadoc.execute()
-    generateDebugJavadoc.execute()
-}
+//afterEvaluate {
+//    //Generate javaDoc
+//    generateReleaseJavadoc.execute()
+//    generateDebugJavadoc.execute()
+//}
 
 
 
