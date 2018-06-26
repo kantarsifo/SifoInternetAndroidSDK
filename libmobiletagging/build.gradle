@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 
-group='com.github.ahmet-dynamo'
+group='myGroups'
 
 version = "3.0.4"
 
@@ -33,6 +33,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'org.testng:testng:6.9.10'
+    implementation 'commons-lang:commons-lang:2.3'
 }
 
 //android.libraryVariants.all { variant ->
