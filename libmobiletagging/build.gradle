@@ -1,5 +1,10 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+
+group='com.github.ahmet-dynamo'
+
 version = "3.0.4"
+
 
 android {
     compileSdkVersion 25
