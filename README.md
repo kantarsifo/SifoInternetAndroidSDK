@@ -296,10 +296,14 @@ If necessary, one could use tools to monitor network traffic, such as Charles Pr
 Final step, contact Kantar Sifo (see contact info below) to verify that the sent tags have been correctly stored in the analytics databases.
 
 # Contact information 
-Technical questions:
+Technical questions: 
+
 [peter.andersson@tns-sifo.se]()
 
-Other questions:
+Other questions: 
+
 [claes.bostrom@tns-sifo.se]() 
-[info@tns-sifo.se]()
+
+[info@tns-sifo.se]() 
+
 08-50742000
