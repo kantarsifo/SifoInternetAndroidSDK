@@ -55,7 +55,7 @@ The SDK contains the following:
 correct way. The file is called ​kantarsifo-mobileanalytics-3.X.X.aar.
 - **TestApp**:​ An Android application that uses the framework and prints out logs when
 sending tags. You can compare it to the logs printed by your own application to verify
-your implementation. See also ​**[Test application][]** below.
+your implementation. See also ​**[Test application](#test-application)** below.
 - **Javadoc**:​ API documentation of public methods in the framework. Open index.html in
 your web browser to view a complete specification of these classes and methods in
 the framework.
@@ -128,7 +128,7 @@ The value current article, resource or content within the category that is being
 The name of the current article, resource or content within the category that is being browsed.
 
 ## Integration with Sifo Internet app
-Kantar Sifo collects information about how apps and websites are used in order to create for example statistics and insights for the app/website publisher. The software and service needed is made available once an agreement with Kantar Sifo is in place. The usage information captured can be associated with individuals in the Sifo Internet panel. The Sifo Internet panel consists of several thousand persons from the Sifo panel who have opted in to participate in the panel and install the Sifo Internet app on their mobile devices. For more information about the Sifo panel please go to: [https://www.kantarsifo.se/undersokningsdeltagare/sifopanelen]()
+Kantar Sifo collects information about how apps and websites are used in order to create for example statistics and insights for the app/website publisher. The software and service needed is made available once an agreement with Kantar Sifo is in place. The usage information captured can be associated with individuals in the Sifo Internet panel. The Sifo Internet panel consists of several thousand persons from the Sifo panel who have opted in to participate in the panel and install the Sifo Internet app on their mobile devices. For more information about the Sifo panel please go to: [https://www.kantarsifo.se/undersokningsdeltagare/sifopanelen](https://www.kantarsifo.se/undersokningsdeltagare/sifopanelen)
 
 
 Sifo Internet app integration is available to both WebView based apps and native apps. The purpose of this integration is to identify the user as a certain panelist. This is achieved by receiving a panelist Id string from the Sifo Internet app, and setting that Id as a cookie in your app’s shared CookieStore. This communication is handled by with:
@@ -215,7 +215,7 @@ Strings sent to the server will be encoded using UTF-8. If the string given to t
 # FAQ
 
 - **How do I test and verify that the framework is correct integrated?**
-See ​[Test Application​]()​and [​Validation test with Kantar Sifo​]() below.
+See ​[Test Application​](#test-application) and [​Validation test with Kantar Sifo​](#validation-test-with-kantar-sifo) below.
 - **Native app - how do I integrate the framework​?**
 You have to both initialize the framework and send “page view” events in a correct way. This is a difference to “hybrid app” where page tagging is implemented separate to the framework.
 - **Hybrid app - how do I integrate the framework​?**
