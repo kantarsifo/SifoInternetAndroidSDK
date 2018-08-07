@@ -107,7 +107,7 @@ allprojects​ ​{
 **Step 2:​** Add to dependency
 ```javascript
 dependencies​ ​{
-    ​implementation​ ​'com.github.kantarsifo:SifoInternetAndroidSDK:3.X.X
+    ​implementation​ ​'com.github.kantarsifo:SifoInternetAndroidSDK:3.X.X'
 }
 ```
 
