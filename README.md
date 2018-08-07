@@ -25,7 +25,7 @@
 - **[FAQ](#faq)**
 - **[Update strategy](#update-strategy)**
 - **[Example files](#example-files)**
-- **[Test application](test-application)**
+- **[Test application](#test-application)**
 - **[Validation test with Kantar Sifo](#validation-test-with-kantar-sifo)**
 - **[Contact information](#contact-information)**
 
@@ -226,7 +226,7 @@ If the device has the Sifo Internet app installed and is logged in, Sifo Interne
 - **Web TV / streaming - how shall we implement that​?**
 Regarding web TV / streaming, it important to distinguish between measuring “preroll” and “start of clip”. Regarding what parameters to use, “preroll” shall not have the same category value as ​“**Start of clip​**”. As “start of clip” shall have **​“streaming”** as top category value, preroll can have e.g. “preroll” or “play”.
 
-## Update strategy
+# Update strategy
 
 Updates of the framework will be necessary to fix bugs, add features, handle changes on the servers or platform etc. For this reason we want to make updating of the framework as easy and seamless as possible.
 
