@@ -11,13 +11,12 @@
         android:layout_height="wrap_content"
         android:background="@color/material_blue_grey"
         android:padding="@dimen/default_margin"
-        android:text="@string/description_send_tags2" />
+        android:text="@string/description_send_tags" />
 
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:entries="@array/category_list_2" />
+        android:layout_weight="1" />
 
 </LinearLayout>

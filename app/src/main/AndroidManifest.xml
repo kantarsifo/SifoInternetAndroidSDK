@@ -1,38 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="se.kantarsifo.mobileanalytics.sampleapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
-            android:windowSoftInputMode="stateHidden">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="m">
 
+        <activity
+            android:name=".InitializationActivity"
+            android:windowSoftInputMode="stateHidden">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".web_view.WebViewActivity"
+            android:label="@string/title_web_activity" />
 
         <activity
-            android:name=".CategoryActivity"
+            android:name=".native_view.NativeActivity"
+            android:label="@string/title_native"
+            android:taskAffinity="@string/task_native_test" />
+
+        <activity
+            android:name=".native_view.CategoryActivity"
             android:label="@string/title_categories"
-            android:parentActivityName=".MainActivity" />
+            android:taskAffinity="@string/task_native_test" />
+
         <activity
-            android:name=".ContentActivity"
+            android:name=".native_view.ContentActivity"
             android:label="@string/title_content_id"
-            android:parentActivityName="MainActivity" />
-        <activity
-            android:name=".NameActivity"
-            android:label="@string/title_content_name"
-            android:parentActivityName=".MainActivity" />
+            android:taskAffinity="@string/task_native_test" />
 
     </application>
 

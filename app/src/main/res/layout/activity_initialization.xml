@@ -1,123 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp">
+    android:orientation="vertical"
+    android:padding="@dimen/default_margin">
 
-    <LinearLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal"
-        android:weightSum="10">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="cpId :"
-            android:layout_weight="2"
-            android:textSize="13dp"/>
-
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/cpIdET"
-            android:layout_width="0dp"
+            style="@style/CustomEditText"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="8"
-            android:hint="cpId"
-            android:textSize="13dp"
-            android:maxLines="2"
-            />
-    </LinearLayout>
+            android:hint="@string/cpid_label" />
 
-    <LinearLayout
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:weightSum="10">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/small_margin">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="App Name :"
-            android:layout_weight="2"
-            android:textSize="13dp"/>
-
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/appNameET"
-            android:layout_width="0dp"
+            style="@style/CustomEditText"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="8"
-            android:hint="appName"
-            android:textSize="13dp"
-            android:maxLines="2"
-            />
-    </LinearLayout>
+            android:hint="@string/app_name_label" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <CheckBox
         android:id="@+id/panelistOnly"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="13dp"
-        android:text="panelistOnly"
+        android:layout_marginTop="@dimen/large_margin"
         android:button="@null"
         android:checked="false"
+        android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
         android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
-        />
-
-    <CheckBox
-        android:id="@+id/useHttps"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="13dp"
-        android:text="useHttps"
-        android:button="@null"
-        android:checked="true"
-        android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
-        />
-
+        android:text="@string/panelist_only_label" />
 
     <CheckBox
         android:id="@+id/logEnabled"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="13dp"
-        android:text="log"
-        android:checked="true"
         android:button="@null"
+        android:checked="true"
+        android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
         android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
-        />
+        android:text="@string/log_enabled_label" />
 
-
+    <CheckBox
+        android:id="@+id/isWebViewBased"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:button="@null"
+        android:checked="false"
+        android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+        android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+        android:text="@string/is_web_view_based_label" />
 
     <Button
         android:id="@+id/initialize_button"
-        android:text="initialize"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        android:layout_marginTop="@dimen/large_margin"
+        android:text="@string/initialize_btn_label" />
 
     <Button
         android:id="@+id/destroy_button"
-        android:text="destroy framework"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
-
+        android:text="@string/destroy_btn_label" />
 
     <Button
         android:id="@+id/btn_webview"
-        android:text="Web view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        android:text="@string/web_view_btn_label" />
 
     <Button
         android:id="@+id/btn_native"
-        android:text="Native View"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
-
+        android:text="@string/native_view_btn_label" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -129,22 +98,18 @@
             android:id="@+id/success_request"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="success request: 0"
             android:layout_weight="1"
-            android:textColor="@color/holo_green_light"
-            />
-
-
+            android:text="@string/success_requests"
+            android:textColor="@color/holo_green_light" />
 
         <TextView
             android:id="@+id/fail_request"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="fail request: 0"
             android:layout_weight="1"
-            android:textColor="@color/holo_red_light"/>
+            android:text="@string/failed_requests"
+            android:textColor="@color/holo_red_light" />
 
     </LinearLayout>
-
 
 </LinearLayout>
