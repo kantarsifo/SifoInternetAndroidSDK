@@ -28,6 +28,7 @@ class TSMConfigUtil {
                     md5 = (json.getString("BaseMeasurementAddress") ?: "").toMD5()
                 }
             }catch (e: Exception) {
+                e.printStackTrace()
             }
 
             try {
@@ -45,12 +46,14 @@ class TSMConfigUtil {
                             // this will close the bReader as well
                             inputStream.close()
                         } catch (ignored: IOException) {
+                            ignored.printStackTrace()
                         }
                     }
                     disconnect()
                 }
             }
             } catch (ignored: Exception) {
+                ignored.printStackTrace()
             }
         }
 
