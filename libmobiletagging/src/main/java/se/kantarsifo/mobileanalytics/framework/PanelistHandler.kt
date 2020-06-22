@@ -44,7 +44,7 @@ internal object PanelistHandler {
         val sharedPref = activity.getSharedPreferences(TagStringsAndValues.SIFO_PREFERENCE_KEY, Context.MODE_PRIVATE)
         if (isInstalled) {
             Log.e("GPG cookie", "sifoOnline is installed.")
-            if (sharedPref.contains(TagStringsAndValues.SIFO_PREFERENCE_COOKIES).not() or shouldUpdateCookieValues(activity)) {
+            if (shouldUpdateCookieValues(activity)) {
                 clearPreferences(sharedPref)
                 Log.e("GPG cookie", "Fetching new cookies")
                 val url = "se.tns-sifo.internetpanelen://sync"
@@ -59,7 +59,6 @@ internal object PanelistHandler {
                     }
                     onComplete()
                 }
-                //han.launchIntent(intent)
             }else{
                 Log.e("GPG cookie", "Using cached cookies")
                 onComplete()
@@ -182,7 +181,7 @@ internal object PanelistHandler {
             return true
         }
         val syncTime = sharedPref.getLong(TagStringsAndValues.SIFO_PREFERENCE_COOKIES_SYNC_TIME, 0)
-        val interval = TSMDateUtil.elapsedTimeInMinutes(syncTime, System.currentTimeMillis())
-        return interval > 2
+        val interval = TSMDateUtil.elapsedTimeInDays(syncTime, System.currentTimeMillis())
+        return interval > 90
     }
 }
