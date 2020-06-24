@@ -59,6 +59,7 @@ internal object PanelistHandler {
                     }
                     onComplete()
                 }
+                //han.launchIntent(intent)
             }else{
                 Log.e("GPG cookie", "Using cached cookies")
                 onComplete()
@@ -72,13 +73,15 @@ internal object PanelistHandler {
 
     fun getCookies(context: Context, activity: ComponentActivity): List<HttpCookie>? {
         val sharedPref = activity.getSharedPreferences(TagStringsAndValues.SIFO_PREFERENCE_KEY, Context.MODE_PRIVATE)
+        val panelistOnly = sharedPref.getBoolean(TagStringsAndValues.SIFO_COOKIES_IS_PANELIST_ONLY, false)
+        val isWebBased = sharedPref.getBoolean(TagStringsAndValues.SIFO_COOKIES_IS_WEB_BASED, false)
         if (sharedPref.contains(TagStringsAndValues.SIFO_PREFERENCE_COOKIES)) {
-            return readCookiesFromJson(sharedPref.getString(TagStringsAndValues.SIFO_PREFERENCE_COOKIES, "") ?: "")
+            return readCookiesFromJson(sharedPref.getString(TagStringsAndValues.SIFO_PREFERENCE_COOKIES, "") ?: "", panelistOnly, isWebBased)
         } else { // Fallback to old version of reading cookies from sifo panel app shared preference
             val inputStream = getSifoInputStream(context,
                     TagStringsAndValues.SIFO_PANELIST_PACKAGE_NAME_V2,
                     TagStringsAndValues.SIFO_PANELIST_CREDENTIALS_FILENAME_V2)
-            return inputStream?.let { readCookieStore(it) }
+            return inputStream?.let { readCookieStore(it, panelistOnly, isWebBased) }
         }
     }
 
@@ -112,14 +115,14 @@ internal object PanelistHandler {
         }
     }
 
-    private fun readCookiesFromJson(content: String): List<HttpCookie> {
+    private fun readCookiesFromJson(content: String, panelistOnly: Boolean, isWebBased: Boolean): List<HttpCookie> {
         val cookieList = mutableListOf<HttpCookie>()
         Log.e("GPG cookie read", content)
         try {
             val jsonArray = JSONArray(content)
             for (i in 0 until jsonArray.length()) {
                 val entry = jsonArray.getJSONObject(i)
-                cookieList.add(CookieHandler.getCookieFromJson(entry))
+                cookieList.add(CookieHandler.getCookieFromJson(entry, panelistOnly, isWebBased))
             }
         } catch (e: JSONException) {
             TSMobileAnalyticsBackend.logError("Error parsing TNS Panelist JSON data")
@@ -127,14 +130,14 @@ internal object PanelistHandler {
         return cookieList
     }
 
-    private fun readCookieStore(stream: FileInputStream): List<HttpCookie> {
+    private fun readCookieStore(stream: FileInputStream, panelistOnly: Boolean, isWebBased: Boolean): List<HttpCookie> {
         val content = readFile(stream, "Error reading TNS Panelist cookies")
         val cookieList = mutableListOf<HttpCookie>()
         try {
             val jsonArray = JSONArray(content)
             for (i in 0 until jsonArray.length()) {
                 val entry = jsonArray.getJSONObject(i)
-                cookieList.add(CookieHandler.getCookieFromJson(entry))
+                cookieList.add(CookieHandler.getCookieFromJson(entry, panelistOnly, isWebBased))
             }
         } catch (e: JSONException) {
             TSMobileAnalyticsBackend.logError("Error parsing TNS Panelist JSON data")

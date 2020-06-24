@@ -66,6 +66,8 @@ open class TSMobileAnalytics protected constructor() {
      */
     protected var panelistTrackingOnly = false
 
+    protected var isWebViewBased = false
+
     /**
      * Call to immediately send a tag to the server using the framework's HTTPS-functionality.
      *
@@ -275,15 +277,15 @@ open class TSMobileAnalytics protected constructor() {
          */
         @JvmStatic
         fun createInstance(activity: ComponentActivity, cpID: String?, applicationName: String?): TSMobileAnalytics? {
-            return TSMobileAnalyticsBackend.createInstance(activity, cpID, applicationName, false)
+            return TSMobileAnalyticsBackend.createInstance(activity, cpID, applicationName, false, false)
         }
 
         /**
          * Call this method upon application start if you only want to measure Kantar Sifo Panelist users.
          */
         @JvmStatic
-        fun createInstance(activity: ComponentActivity, cpID: String?, applicationName: String?, panelistTrackingOnly: Boolean): TSMobileAnalytics? {
-            return TSMobileAnalyticsBackend.createInstance(activity, cpID, applicationName, panelistTrackingOnly)
+        fun createInstance(activity: ComponentActivity, cpID: String?, applicationName: String?, panelistTrackingOnly: Boolean, isWebViewBased: Boolean): TSMobileAnalytics? {
+            return TSMobileAnalyticsBackend.createInstance(activity, cpID, applicationName, panelistTrackingOnly, isWebViewBased)
         }
 
         /**
@@ -296,7 +298,7 @@ open class TSMobileAnalytics protected constructor() {
          */
         @JvmStatic
         fun createInstance(activity: ComponentActivity, builder: TSMobileAnalytics): TSMobileAnalytics? {
-            return createInstance(activity, builder.cpId, builder.appName, builder.panelistTrackingOnly)
+            return createInstance(activity, builder.cpId, builder.appName, builder.panelistTrackingOnly, builder.isWebViewBased)
         }
 
         /**

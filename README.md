@@ -33,7 +33,7 @@
 
 # Overview
 
-The Kantar Sifo Mobile Analytics SDK helps you to measure usage of mobile application using Kantar Sifo’s services. In order to measure traffic, your application needs to send HTTPS requests to a server provided by  Codigo Analytics using URLs following a specified pattern with information about your application.
+The Kantar Sifo Mobile Analytics SDK helps you to measure usage of mobile application using Kantar Sifo’s services. In order to measure traffic, your application needs to send HTTPS requests to a server provided by Codigo Analytics using URLs following a specified pattern with information about your application.
 
 Each of these HTTPS requests is called a “tag”. To get a good measure of the usage, your application should send a tag every time a new view or page of content is shown to the user. This tag should contain information about what content the user is seeing. For example when the user opens the application and its main view is shown, a tag should be sent, telling the server that the main view is displayed. When the user shows a list, an article, a video or some other page in your application, another tag should be sent, and so on.
 
@@ -41,23 +41,15 @@ The SDK can help you with the whole process, both creating these URLs, as well a
 
 
 ## What’s new?
-In Version 4.0.0:
+In version 4.0.0 these are the major changes:
 
-- Refactored the way cookie information is read from Sifo internet app. Data is now requested by intent.
+- Refactored the way cookie information is read from the Sifo Internet app. Data is now requested by intent.
 - Cookie information is now cached for 90 days.
 - Url for posting events is now loaded dynamically on initialization.
+- Added IsWebViewBased parameter in initialization call.
 
 For more detailed changes of each version, see release-notes.txt in the SDK root folder.
 
-
-## SDK contents
-The SDK contains the following:
-
-- **Framework**: The binary file that contains the API and functions to send tags in a
-correct way. The file is called `kantarsifo-mobileanalytics-3.X.X.aar`.
-- **TestApp**: An Android application that uses the framework and prints out logs when
-sending tags. You can compare it to the logs printed by your own application to verify
-your implementation. See also **[Test application](#test-application)** below.
 
 
 
@@ -79,7 +71,7 @@ allprojects {
 **Step 2:** Add to dependency
 ```javascript
 dependencies {
-    implementation 'com.github.kantarsifo:SifoInternetAndroidSDK:3.X.X'
+    implementation 'com.github.kantarsifo:SifoInternetAndroidSDK:4.X.X'
 }
 ```
 If your minSdkVersion is below 24 you might get the following error:
@@ -106,7 +98,7 @@ The name of your application. Choose a name that is representative of the applic
 - **Category** (`cat` - max 255 characters)  
 The current category or name of the page the user is browsing. This value tell us what the user is doing. If the user is reading an article about sports in your application, the value should be “sports”. If the user is browsing a set of football scores the value should be “sports/scores/football”. If the user is in the main view of the application, the value should be “main” or similar. If the user is watching streaming/web tv the value chain should start with “stream”. This information will be included in the attribute called `cat` in the tag. See also FAQ and contact Kantar Sifo for more info regarding what structure of category values you shall use and what you cannot use.
 
-- **Content id** (`id` - max 255 characters - optional, contact Sifo before use)  
+- **Content id** (`id` - max 255 characters - optional, contact Kantar Sifo before use)  
 The value current article, resource or content within the category that is being browsed. If the current category does not provide different content, this value is not needed. This information will be included in the attribute called `id` in the tag.
 
 
@@ -267,8 +259,6 @@ Regarding web TV / streaming, it important to distinguish between measuring “p
 
 Updates of the framework will be necessary to fix bugs, add features, handle changes on the servers or platform etc. For this reason we want to make updating of the framework as easy and seamless as possible.
 
-When upgrading from version 2.X to 3.X, you need to do quite a lot of code changes, e.g. use the new package name **se.kantarsifo.mobileanalytics.framework** and use the new Builder constructor. Later on when a new version of the framework is delivered, it should be possible to simply replace the old .aar file with the new one.
-
 To keeping updating as seamless as possible it is important that you:
 
 - Inform us as soon as you find something that should be changed or improved
@@ -363,12 +353,12 @@ Final step, contact Kantar Sifo (see contact info below) to verify that the sent
 # Contact information 
 Technical questions: 
 
-[peter.andersson@tns-sifo.se]()
+[peter.andersson@kantar.com]()
 
 Other questions: 
 
-[claes.bostrom@tns-sifo.se]() 
+[claes.bostrom@kantar.com]() 
 
-[info@tns-sifo.se]() 
+[info@kantarsifo.com]() 
 
 08-50742000

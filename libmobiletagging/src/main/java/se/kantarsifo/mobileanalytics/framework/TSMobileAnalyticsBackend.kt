@@ -37,11 +37,14 @@ internal class TSMobileAnalyticsBackend : TSMobileAnalytics {
 
     companion object {
 
-        fun createInstance(activity: ComponentActivity, cpID: String?, applicationName: String?, onlyPanelist: Boolean): TSMobileAnalyticsBackend? {
+        fun createInstance(activity: ComponentActivity, cpID: String?, applicationName: String?, onlyPanelist: Boolean, isWebBased: Boolean): TSMobileAnalyticsBackend? {
             if (activity == null) {
                 logFatalError("Mobile Application Tagging Framework Failed to initiate - context must not be null")
                 return frameworkInstance
             }
+            val sharedPref = activity.getSharedPreferences(TagStringsAndValues.SIFO_PREFERENCE_KEY, Context.MODE_PRIVATE)
+            sharedPref.edit().putBoolean(TagStringsAndValues.SIFO_COOKIES_IS_PANELIST_ONLY, onlyPanelist).commit()
+            sharedPref.edit().putBoolean(TagStringsAndValues.SIFO_COOKIES_IS_WEB_BASED, isWebBased).commit()
 
             if (frameworkInstance == null) {
                 if (paramsAreValid(cpID, applicationName)) {
