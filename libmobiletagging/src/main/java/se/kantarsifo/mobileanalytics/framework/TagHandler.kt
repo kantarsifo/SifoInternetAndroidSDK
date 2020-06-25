@@ -11,9 +11,7 @@ import android.content.pm.PackageManager
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.provider.Settings.Secure
-import android.util.Log
 import androidx.activity.ComponentActivity
-import androidx.core.app.ActivityCompat
 import org.json.JSONObject
 import java.io.UnsupportedEncodingException
 import java.net.CookieStore
@@ -85,7 +83,6 @@ internal class TagHandler(
                     .replace("{appNameValue}", type) // This seems like a mistake but the client confirmed they want it like this.
                     .replace("{appRefValue}", encodedRef)
 
-            Log.e("GPG url", url)
         }
         return url
     }
@@ -109,7 +106,6 @@ internal class TagHandler(
     private fun fetchUrl(activity: ComponentActivity?): String {
         val json = activity?.getSharedPreferences(TagStringsAndValues.SIFO_PREFERENCE_KEY, Context.MODE_PRIVATE)?.getString(TagStringsAndValues.SIFO_PREFERENCE_CONFIG, "")
         if (json.isNullOrEmpty()) {
-            Log.e("GPG", "Using default url")
             return TagStringsAndValues.SIFO_DEFAULT_CONFIG
         }
         var savedUrl = ""
@@ -120,10 +116,8 @@ internal class TagHandler(
         }
 
         return if (savedUrl.isNullOrEmpty()) {
-            Log.e("GPG", "Using default url")
             TagStringsAndValues.SIFO_DEFAULT_CONFIG
         } else {
-            Log.e("GPG", "Using dynamic url")
             savedUrl
         }
     }
