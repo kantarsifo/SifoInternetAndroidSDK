@@ -30,7 +30,7 @@ internal object CookieHandler {
     fun getCookieFromJson(json: JSONObject, isPanelistOnly: Boolean, isWebBased: Boolean, version: String): HttpCookie {
         return createHttpCookie(
                 name = json.getString("key"),
-                value = "trackPanelistOnly=$isPanelistOnly&isWebViewBased=$isWebBased" + "&" + "sdkVersion=$version" + "&" + json.getString("value"),
+                value = json.getString("value"),
                 path = json.getString("path"),
                 domain = json.getString("domain")
         )
