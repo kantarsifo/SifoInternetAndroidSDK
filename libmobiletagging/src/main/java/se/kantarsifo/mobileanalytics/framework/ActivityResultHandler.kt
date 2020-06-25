@@ -1,7 +1,6 @@
 package se.kantarsifo.mobileanalytics.framework
 
 import android.content.Intent
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher

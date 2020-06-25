@@ -34,8 +34,6 @@ class TSMConfigUtil {
             try {
                 version = packageInfo.versionName
             val url = URL("${TagStringsAndValues.BASE_CONFIG_URL}/App/GetBaseConfig?currentConfigHash=$md5&sdkversion=$version&appname=$appName")
-            Log.e("GPG", url.path)
-            Log.e("GPG", url.query)
             (url.openConnection() as? HttpURLConnection)?.run {
                 doInput = true
                 try {
@@ -66,13 +64,10 @@ class TSMConfigUtil {
                 temp = bReader.readLine()
             }
             if (response.isNullOrBlank()) {
-                Log.e("GPG", "Config response is blank")
                 return
             }
-            Log.e("GPG config", response)
             val json = JSONTokener(response).nextValue() as JSONObject
             sharedPreferences.edit().putString(TagStringsAndValues.SIFO_PREFERENCE_CONFIG, json.toString()).commit()
-            Log.e("GPG j", json.toString())
         }
 
         fun String.toMD5(): String {

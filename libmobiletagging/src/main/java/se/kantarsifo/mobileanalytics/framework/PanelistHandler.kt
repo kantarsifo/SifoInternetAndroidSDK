@@ -37,19 +37,15 @@ internal object PanelistHandler {
     }
 
     fun syncCookies(context: Context, activity: ComponentActivity, onComplete: () -> Unit) {
-        Log.e("GPG cookie", "Trying to sync..")
         val pm = context.packageManager
         val isInstalled: Boolean = isPackageInstalled(TagStringsAndValues.SIFO_PANELIST_PACKAGE_NAME_V2, pm)
         val sharedPref = activity.getSharedPreferences(TagStringsAndValues.SIFO_PREFERENCE_KEY, Context.MODE_PRIVATE)
         if (isInstalled) {
-            Log.e("GPG cookie", "sifoOnline is installed.")
             if (shouldUpdateCookieValues(activity)) {
                 clearPreferences(sharedPref)
-                Log.e("GPG cookie", "Fetching new cookies")
                 val url = "se.tns-sifo.internetpanelen://sync"
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                 ActivityResultHandler(activity, intent) { activityResult ->
-                    Log.e("GPG cookie fetched", activityResult.toString())
                     if (activityResult != null) {
                         if (activityResult.resultCode == Activity.RESULT_OK) {
                             sharedPref.edit().putString(TagStringsAndValues.SIFO_PREFERENCE_COOKIES, activityResult.data?.dataString).commit()
@@ -60,11 +56,9 @@ internal object PanelistHandler {
                 }
                 //han.launchIntent(intent)
             }else{
-                Log.e("GPG cookie", "Using cached cookies")
                 onComplete()
             }
         }else {
-            Log.e("GPG cookie", "sifoOnline NOT installed.")
             clearPreferences(sharedPref)
             onComplete()
         }
@@ -117,7 +111,6 @@ internal object PanelistHandler {
 
     private fun readCookiesFromJson(content: String, panelistOnly: Boolean, isWebBased: Boolean, version: String): List<HttpCookie> {
         val cookieList = mutableListOf<HttpCookie>()
-        Log.e("GPG cookie read", content)
         try {
             val jsonArray = JSONArray(content)
             for (i in 0 until jsonArray.length()) {

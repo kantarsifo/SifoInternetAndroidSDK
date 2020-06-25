@@ -134,7 +134,6 @@ internal class TSMobileAnalyticsBackend : TSMobileAnalytics {
 
         private fun initTags(activity: ComponentActivity, cpID: String, applicationName: String, onlyPanelist: Boolean): Boolean {
             val cookies = PanelistHandler.getCookies(activity, activity) ?: return false
-            Log.e("COOOKIES",cookies.toString())
             if (onlyPanelist && cookies.isEmpty()) {
                 logFatalError("Mobile Application Tagging Framework Failed to initiate - " +
                         "Cookies file was empty, panelist id not found")
