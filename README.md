@@ -252,8 +252,27 @@ If the device has the Sifo Internet app installed and is logged in, Sifo Interne
 No, there is no need to explicitly grant permission.
 - **Web TV / streaming - how shall we implement that?**  
 Regarding web TV / streaming, it important to distinguish between measuring “preroll” and “start of clip”. Regarding what parameters to use, “preroll” shall not have the same category value as “**Start of clip**”. As “start of clip” shall have **“streaming”** as top category value, preroll can have e.g. “preroll” or “play”.
-
-
+- **The initialization of the framework requires an Activity to be passed as an argument, but our app has more entry points which means more Activities. What is your recommendation in such a case? Should I initialize it in every Activity?** 
+You should only initialise the framework once and then you can access it anywhere else in your app by calling:
+```
+TSMobileAnalytics.instance.sendTag()
+```
+or
+```
+TSMobileAnalytics.instance.activateCookies()
+```
+or whatever you need.
+It is recommended to initialise only once in your root activity or launcher activity and then call the instance in the rest of your app as described above. If you have multiple launcher activities then you can write something like:
+```
+if (TSMobileAnalytics.instance == null) {
+    TSMobileAnalytics.createInstance...
+}
+```
+To check if initialisation has taken place and to do so if it has not.
+- **What about destroyFramework function? At what circumstances it should be called?** 
+You do not need to call destroy framework unless for some reason you want to ensure you do not send any further tracking information. It is not recommended to intialise or destroy the framework multiple times in your app lifecycle. 
+- **Our app is using AppCompatActivity, but the initialization of the framework requires a ComponentActivity. How shall we handle this?** 
+See the solution in this link: https://stackoverflow.com/questions/54915164/why-are-there-2-different-componentactivity-classes
 
 # Update strategy
 
