@@ -239,7 +239,11 @@ Strings sent to the server will be encoded using UTF-8. If the String given to t
 
 
 # FAQ
-
+- **Why do I need to initialise the library by passing ComponentActivity and not just Context as before?**  
+To properly track information regarding Sifo panelist users the library needs to read information from the Sifo Internet app if it is also installed on the device.
+In the past it was possible to read the needed information directly from the Sifo Internet app, however since the recent security updates on Android this is no longer possible.
+The new solution is to request the information from the Sifo internet, app given it is installed on the same device.
+This means on initialisation the app will send an intent request to the Sifo Internet app and wait for the result and this is why just passing the context is no longer enough.
 - **How do I test and verify that the framework is correct integrated?**  
 See [Test Application](#test-application) and [Validation test with Kantar Sifo​](#validation-test-with-kantar-sifo) below.
 - **Native app - how do I integrate the framework?**  
