@@ -158,16 +158,6 @@ object TagStringsAndValues {
     internal const val SIFO_PREFERENCE_COOKIES = "SIFO_PREFERENCE_COOKIES"
 
     /**
-     * Key for isPanelistOnly cookie tracking
-     */
-    internal const val SIFO_COOKIES_IS_PANELIST_ONLY = "SIFO_COOKIES_IS_PANELIST_ONLY"
-
-    /**
-     * Key for isWebBased cookie tracking
-     */
-    internal const val SIFO_COOKIES_IS_WEB_BASED = "SIFO_COOKIES_IS_WEB_BASED"
-
-    /**
      * Key for last cookie sync time
      */
     internal const val SIFO_PREFERENCE_COOKIES_SYNC_TIME = "SIFO_PREFERENCE_COOKIES_SYNC_TIME"
@@ -181,5 +171,10 @@ object TagStringsAndValues {
      *  Default config for when config server is down
      */
     internal const val SIFO_DEFAULT_CONFIG = "https://trafficgateway.research-int.se/TrafficCollector?siteId={siteIdValue}&appClientId={appClientIdValue}&cp={cpValue}&appId={appIDValue}&appName={appNameValue}&appRef={appRefValue}"
+
+    /**
+     * Meta cookie name
+     */
+    internal const val SIFO_META_COOKIE_NAME = "sifo_config"
 
 }

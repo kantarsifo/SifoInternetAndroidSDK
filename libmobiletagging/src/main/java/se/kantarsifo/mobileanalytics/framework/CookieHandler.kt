@@ -27,7 +27,7 @@ internal object CookieHandler {
     }
 
     @Throws(JSONException::class)
-    fun getCookieFromJson(json: JSONObject, isPanelistOnly: Boolean, isWebBased: Boolean, version: String): HttpCookie {
+    fun getCookieFromJson(json: JSONObject): HttpCookie {
         return createHttpCookie(
                 name = json.getString("key"),
                 value = json.getString("value"),
@@ -57,7 +57,7 @@ internal object CookieHandler {
         return String.format("%s=%s", cookie.name, cookie.value)
     }
 
-    private fun createHttpCookie(name: String,
+    fun createHttpCookie(name: String,
                                  value: String?,
                                  path: String = "/",
                                  domain: String = TagStringsAndValues.DOMAIN_CODIGO
