@@ -14,6 +14,9 @@ using Kantar Sifo’s services. The SDK zip file contains three folders:
 
 
 RELEASE NOTES:
+v4.0.1 2020-09-30
+- Added sifo_config cookie for tracking basic sdk config values.
+
 v4.0.0 2020-06-15
 - Refactored the way cookie information is read from Sifo internet app. Data is now requested by intent.
 - Cookie information is now cached for 90 days.
