@@ -9,6 +9,7 @@ import android.net.Uri
 import androidx.activity.ComponentActivity
 import org.json.JSONArray
 import org.json.JSONException
+import se.kantarsifo.mobileanalytics.framework.Utils.isPackageInstalled
 import java.io.BufferedReader
 import java.io.FileInputStream
 import java.io.IOException
@@ -36,8 +37,7 @@ internal object PanelistHandler {
     }
 
     fun syncCookies(context: Context, activity: ComponentActivity, onComplete: () -> Unit) {
-        val pm = context.packageManager
-        val isInstalled: Boolean = isPackageInstalled(TagStringsAndValues.SIFO_PANELIST_PACKAGE_NAME_V2, pm)
+        val isInstalled: Boolean = context.isPackageInstalled(TagStringsAndValues.SIFO_PANELIST_PACKAGE_NAME_V2)
         val sharedPref = activity.getSharedPreferences(TagStringsAndValues.SIFO_PREFERENCE_KEY, Context.MODE_PRIVATE)
         if (isInstalled) {
             if (shouldUpdateCookieValues(activity)) {
@@ -79,13 +79,6 @@ internal object PanelistHandler {
         sharedPreferences.edit().remove(TagStringsAndValues.SIFO_PREFERENCE_COOKIES_SYNC_TIME).commit()
     }
 
-    private fun isPackageInstalled(packageName: String?, packageManager: PackageManager): Boolean {
-        return try {
-            packageManager.getApplicationInfo(packageName, 0).enabled
-        } catch (e: PackageManager.NameNotFoundException) {
-            false
-        }
-    }
 
     /**
      * Opens a FileInputStream from TNS Sifo-Panelen
