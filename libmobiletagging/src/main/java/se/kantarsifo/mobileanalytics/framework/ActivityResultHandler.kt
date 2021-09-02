@@ -31,8 +31,7 @@ class ActivityResultImpl(private val registry: ActivityResultRegistry,
         try {
             startForResult.launch(intent)
         } catch (e: Exception) {
-            e.printStackTrace()
-            onResult(null)
+//            e.printStackTrace()
         }
 
     }
