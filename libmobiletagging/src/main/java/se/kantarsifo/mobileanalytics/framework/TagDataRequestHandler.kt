@@ -22,6 +22,8 @@ import java.util.concurrent.Executors
  */
 internal class TagDataRequestHandler : TagDataRequestCallbackListener {
 
+    var state = PREPARING
+
     /**
      * Counter keeping track of the number of successful requests.
      */
@@ -71,7 +73,14 @@ internal class TagDataRequestHandler : TagDataRequestCallbackListener {
      * @param applicationName   The name of the application.
      * @param cookies           The list of cookies to send with measurement requests.
      */
-    constructor(context: Context, activity: ComponentActivity, cpId: String, applicationName: String, cookies: List<HttpCookie>, trackPanelistOnly: Boolean) {
+    constructor(
+        context: Context,
+        activity: ComponentActivity,
+        cpId: String,
+        applicationName: String,
+        cookies: List<HttpCookie>?,
+        trackPanelistOnly: Boolean
+    ) {
         tagHandler = TagHandler(context, cpId, applicationName, cookies)
         dataRequestQueue = ArrayList()
         activityForPref = activity
@@ -87,7 +96,14 @@ internal class TagDataRequestHandler : TagDataRequestCallbackListener {
      * @param applicationName   The name of the application.
      * @param panelistKey       The panelist key.
      */
-    constructor(context: Context, activity: ComponentActivity,cpId: String, applicationName: String, panelistKey: String, trackPanelistOnly: Boolean) {
+    constructor(
+        context: Context,
+        activity: ComponentActivity,
+        cpId: String,
+        applicationName: String,
+        panelistKey: String,
+        trackPanelistOnly: Boolean
+    ) {
         tagHandler = TagHandler(context, cpId, applicationName, panelistKey)
         dataRequestQueue = ArrayList()
         activityForPref = activity
@@ -95,12 +111,12 @@ internal class TagDataRequestHandler : TagDataRequestCallbackListener {
         this.trackPanelistOnly = trackPanelistOnly
     }
 
-    fun refreshCookies(context: Context, cookies: List<HttpCookie>) {
-        tagHandler.refresh(context, cookies)
+    fun refreshCookies(cookies: List<HttpCookie>) {
+        tagHandler.refresh(cookies)
     }
 
-    fun refreshCookies(context: Context, panelistKey: String) {
-        tagHandler.refresh(context, panelistKey)
+    fun refreshCookies(panelistKey: String) {
+        tagHandler.refresh(panelistKey)
     }
 
     /**
@@ -115,21 +131,42 @@ internal class TagDataRequestHandler : TagDataRequestCallbackListener {
         val result = checkRequestParams(category, contentID)
         if (result == TagStringsAndValues.RESULT_SUCCESS) {
             val request = TagDataRequest(
-                    category!!,
-                    contentID!!,
-                    getURL(category, contentID),
-                    trackPanelistOnly,
-                    tagHandler.applicationName,
-                    tagHandler.applicationVersion,
-                    this,
-                    userCallbackListener
+                category!!,
+                contentID!!,
+                getURL(category, contentID),
+                trackPanelistOnly,
+                tagHandler.applicationName,
+                tagHandler.applicationVersion,
+                this,
+                userCallbackListener
             )
-            synchronized(this) {
-                dataRequestQueue.add(request)
-                runRequest(request)
-            }
+            log( "Request added to the queue")
+            dataRequestQueue.add(request)
+            runRequestQueue()
         }
         return result
+    }
+
+    fun setStateReady() {
+        log( "Lib is ready for logging...")
+        state = READY
+        runRequestQueue()
+    }
+
+    /**
+     * Runs the request queue to send all queued tags
+     */
+    private fun runRequestQueue() {
+        if (state == READY) {
+            if (dataRequestQueue.isNotEmpty()) {
+                runRequestQueueThread()
+            } else {
+                log( "Request queue is empty. Skip it...")
+            }
+        } else {
+            // Wait for the READY state...
+            log( "Waiting for the library to get ready...")
+        }
     }
 
     /**
@@ -227,21 +264,36 @@ internal class TagDataRequestHandler : TagDataRequestCallbackListener {
     /**
      * Init the server request to the specified URL in a new thread.
      */
-    private fun runRequest(request: TagDataRequest) {
-        val thread = RequestThread()
-        thread.request = request
-        threadPool.execute(thread)
+    private fun runRequestQueueThread() {
+        synchronized(dataRequestQueue) {
+            val thread = RequestThread()
+            thread.requests.addAll(dataRequestQueue)
+            dataRequestQueue.clear()
+            threadPool.execute(thread)
+        }
     }
 
     /**
      * A thread to run the request to the server.
      */
     private inner class RequestThread : Runnable {
-        var request: TagDataRequest? = null
+        var requests: MutableList<TagDataRequest> = mutableListOf()
 
         override fun run() {
-            request?.initRequest()
+            log( "Request queue(${requests.size}): STARTED")
+            requests.forEach {
+                log( "Run request: " + it.cat)
+                it.initRequest()
+            }
+            log( "Queue cleared!")
         }
+    }
+
+    /**
+     * Holds states of the handler
+     */
+    enum class State {
+        PREPARING, READY,
     }
 
     companion object {
