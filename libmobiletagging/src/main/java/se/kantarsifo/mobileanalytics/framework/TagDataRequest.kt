@@ -5,6 +5,8 @@
  */
 package se.kantarsifo.mobileanalytics.framework
 
+import se.kantarsifo.mobileanalytics.framework.Logger.error
+import se.kantarsifo.mobileanalytics.framework.Logger.log
 import java.io.IOException
 import java.net.URL
 import java.util.UUID
@@ -110,7 +112,7 @@ internal constructor(
      * Print request information to LogCat.
      */
     private fun logRequestInfo() {
-        TSMobileAnalyticsBackend.logMessage(
+        log(
                 "Tag request sent: " +
                         "\nRequestID: " + requestID +
                         "\nCat encoded value:" + TagHandler.urlEncode(cat) +
@@ -123,7 +125,7 @@ internal constructor(
      * Handle a successful request.
      */
     private fun dataRequestComplete() {
-        TSMobileAnalyticsBackend.logMessage("Tag request completed with success: \nRequestID: $requestID")
+        log("Tag request completed with success: \nRequestID: $requestID")
         notifySuccess()
     }
 
@@ -132,7 +134,7 @@ internal constructor(
      * @param e The exception if one was thrown.
      */
     private fun dataRequestFail(e: Exception) {
-        TSMobileAnalyticsBackend.logError("Tag request failed with exception:\n$e\nRequestID: $requestID")
+        error("Tag request failed with exception:\n$e\nRequestID: $requestID")
         notifyFailure()
     }
 
@@ -142,7 +144,7 @@ internal constructor(
      * @param message HTTP response message.
      */
     private fun dataRequestFailWithResponseCode(statusCode: Int, message: String) {
-        TSMobileAnalyticsBackend.logError("Tag request failed with http status code:$statusCode\nmessage:$message\nRequestID: $requestID")
+        error("Tag request failed with http status code:$statusCode\nmessage:$message\nRequestID: $requestID")
         notifyFailure()
     }
 

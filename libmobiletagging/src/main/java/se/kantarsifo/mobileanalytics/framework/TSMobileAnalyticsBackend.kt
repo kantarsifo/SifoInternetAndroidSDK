@@ -11,6 +11,9 @@ import androidx.activity.ComponentActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import se.kantarsifo.mobileanalytics.framework.Logger.fatalError
+import se.kantarsifo.mobileanalytics.framework.Logger.log
+import se.kantarsifo.mobileanalytics.framework.Utils.isPackageInstalled
 import java.net.HttpCookie
 
 /**
@@ -39,7 +42,7 @@ internal class TSMobileAnalyticsBackend : TSMobileAnalytics {
 
         fun createInstance(activity: ComponentActivity, cpID: String?, applicationName: String?, onlyPanelist: Boolean, isWebBased: Boolean): TSMobileAnalyticsBackend? {
             if (activity == null) {
-                logFatalError("Mobile Application Tagging Framework Failed to initiate - context must not be null")
+                fatalError("Mobile Application Tagging Framework Failed to initiate - context must not be null")
                 return frameworkInstance
             }
             val version = BuildConfig.VERSION_NAME
@@ -112,20 +115,20 @@ internal class TSMobileAnalyticsBackend : TSMobileAnalytics {
         private fun paramsAreValid(cpID: String?, applicationName: String?): Boolean {
             return when {
                 (cpID.isNullOrEmpty()) -> {
-                    logFatalError("Mobile Application Tagging Framework Failed to initiate - CPID must not be null or empty")
+                    fatalError("Mobile Application Tagging Framework Failed to initiate - CPID must not be null or empty")
                     false
                 }
                 (cpID.length != TagStringsAndValues.CPID_LENGTH_CODIGO) -> {
-                    logFatalError("Mobile Application Tagging Framework Failed to initiate - CPID must be " +
+                    fatalError("Mobile Application Tagging Framework Failed to initiate - CPID must be " +
                             "${TagStringsAndValues.CPID_LENGTH_CODIGO} characters")
                     false
                 }
                 (applicationName.isNullOrEmpty()) -> {
-                    logFatalError("Mobile Application Tagging Framework Failed to initiate - Application Name must not be null or empty")
+                    fatalError("Mobile Application Tagging Framework Failed to initiate - Application Name must not be null or empty")
                     false
                 }
                 (applicationName.length > TagStringsAndValues.MAX_LENGTH_APP_NAME) -> {
-                    logFatalError("Mobile Application Tagging Framework Failed to initiate - Application Name must not have more than "
+                    fatalError("Mobile Application Tagging Framework Failed to initiate - Application Name must not have more than "
                             + TagStringsAndValues.MAX_LENGTH_APP_NAME + " characters")
                     false
                 }
@@ -149,15 +152,15 @@ internal class TSMobileAnalyticsBackend : TSMobileAnalytics {
         private fun initLegacyTags(activity: ComponentActivity, cpID: String, applicationName: String, onlyPanelist: Boolean) {
             val panelistKey = PanelistHandler.getPanelistKey(activity)
             if (cpID.length != TagStringsAndValues.CPID_LENGTH_CODIGO) {
-                logFatalError("Mobile Application Tagging Framework Failed to initiate - " +
+                fatalError("Mobile Application Tagging Framework Failed to initiate - " +
                         "CPID must either be exactly " + TagStringsAndValues.CPID_LENGTH_CODIGO)
             } else if (onlyPanelist && panelistKey == TagStringsAndValues.NO_PANELIST_ID) {
-                logFatalError("Mobile Application Tagging Framework Failed to initiate - " +
+                fatalError("Mobile Application Tagging Framework Failed to initiate - " +
                         "Panelist Id was not found, it must exist if only panelist tracking is active")
             } else {
                 // TODO print panelist setting
                 frameworkInstance = TSMobileAnalyticsBackend(activity, activity, cpID, applicationName, panelistKey, onlyPanelist)
-                logMessage("Mobile Application Tagging Framework initiated with the following values " +
+                log("Mobile Application Tagging Framework initiated with the following values " +
                         "\nCPID: $cpID\nApplication name: $applicationName\nOnly panelist tracking : $onlyPanelist")
             }
         }

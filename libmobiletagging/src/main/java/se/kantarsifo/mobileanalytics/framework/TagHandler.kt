@@ -13,6 +13,9 @@ import android.os.Build.VERSION_CODES
 import android.provider.Settings.Secure
 import androidx.activity.ComponentActivity
 import org.json.JSONObject
+import se.kantarsifo.mobileanalytics.framework.Logger.error
+import se.kantarsifo.mobileanalytics.framework.Logger.fatalError
+import se.kantarsifo.mobileanalytics.framework.Logger.log
 import java.io.UnsupportedEncodingException
 import java.net.CookieStore
 import java.net.HttpCookie
@@ -126,7 +129,7 @@ internal class TagHandler(
         try {
             applicationVersion = context.packageManager.getPackageInfo(context.packageName, 0).versionName
         } catch (e: Exception) {
-            TSMobileAnalyticsBackend.logFatalError("Failed to retrieve application version, will not set be set in request header")
+            error("Failed to retrieve application version, will not set be set in request header")
         }
     }
 
@@ -158,7 +161,7 @@ internal class TagHandler(
     }
 
     private fun logFatalError(message: String) {
-        TSMobileAnalyticsBackend.logFatalError("Failed to create URL - $message")
+        fatalError("Failed to create URL - $message")
     }
 
     companion object {
@@ -173,7 +176,7 @@ internal class TagHandler(
                 URLEncoder.encode(input, TagStringsAndValues.URL_ENCODING)
             } catch (e: UnsupportedEncodingException) {
                 // Since encoding UTF-8 is supported by android, this should not happen
-                TSMobileAnalyticsBackend.logMessage("URL-Encoding not supported")
+                log("URL-Encoding not supported")
                 input
             }
         }
@@ -201,9 +204,7 @@ internal class TagHandler(
                 }
                 cookies = CookieHandler.setupPanelistCookies(cookieList)
             } catch (e: PackageManager.NameNotFoundException) {
-                TSMobileAnalyticsBackend.logError(
-                        "Failed to setup panel list cookies - Retry counter = $retryCounter"
-                )
+                error("Failed to setup panel list cookies - Retry counter = $retryCounter")
             }
         }
     }

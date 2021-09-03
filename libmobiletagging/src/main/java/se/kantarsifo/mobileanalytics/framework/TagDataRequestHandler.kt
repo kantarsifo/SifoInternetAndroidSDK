@@ -7,6 +7,10 @@ package se.kantarsifo.mobileanalytics.framework
 
 import android.content.Context
 import androidx.activity.ComponentActivity
+import se.kantarsifo.mobileanalytics.framework.Logger.error
+import se.kantarsifo.mobileanalytics.framework.Logger.fatalError
+import se.kantarsifo.mobileanalytics.framework.Logger.log
+import se.kantarsifo.mobileanalytics.framework.TagDataRequestHandler.State.*
 import java.net.HttpCookie
 import java.util.ArrayList
 import java.util.concurrent.ExecutorService
@@ -146,7 +150,7 @@ internal class TagDataRequestHandler : TagDataRequestCallbackListener {
      * This method is called when a data request has been completed successfully.
      */
     override fun onDataRequestComplete(request: TagDataRequest) {
-        synchronized(this) { dataRequestQueue.remove(request) }
+        log( "RequestCompleted: " + request.cat)
         nbrOfSuccessfulRequests++
     }
 
@@ -155,7 +159,7 @@ internal class TagDataRequestHandler : TagDataRequestCallbackListener {
      * This method is called when a data request has been failed.
      */
     override fun onDataRequestFailed(request: TagDataRequest) {
-        synchronized(this) { dataRequestQueue.remove(request) }
+        error( "RequestFailed: " + request.cat)
         nbrOfFailedRequests++
     }
 
@@ -167,27 +171,23 @@ internal class TagDataRequestHandler : TagDataRequestCallbackListener {
     private fun checkRequestParams(category: String?, contentID: String?): Int {
         return when {
             (category == null) -> {
-                logFatalError("category may not be null")
+                fatalError("category may not be null")
                 TagStringsAndValues.ERROR_CATEGORY_NULL
             }
             (category.length > TagStringsAndValues.MAX_LENGTH_CATEGORY) -> {
-                logFatalError("category may not have more than ${TagStringsAndValues.MAX_LENGTH_CATEGORY} characters")
+                fatalError("category may not have more than ${TagStringsAndValues.MAX_LENGTH_CATEGORY} characters")
                 TagStringsAndValues.ERROR_CATEGORY_TOO_LONG
             }
             (contentID == null) -> {
-                logFatalError("contentID may not be null")
+                fatalError("contentID may not be null")
                 TagStringsAndValues.ERROR_CONTENT_ID_NULL
             }
             (contentID.length > TagStringsAndValues.MAX_LENGTH_CONTENT_ID) -> {
-                logFatalError("contentID may not have more than ${TagStringsAndValues.MAX_LENGTH_CONTENT_ID} characters")
+                fatalError("contentID may not have more than ${TagStringsAndValues.MAX_LENGTH_CONTENT_ID} characters")
                 TagStringsAndValues.ERROR_CONTENT_ID_TOO_LONG
             }
             else -> TagStringsAndValues.RESULT_SUCCESS
         }
-    }
-
-    private fun logFatalError(message: String) {
-        TSMobileAnalyticsBackend.logFatalError("Failed to send tag - $message")
     }
 
     /**
