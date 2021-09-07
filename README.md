@@ -224,6 +224,19 @@ if (TSMobileAnalytics.getInstance() != null) {
 
 This method will allow third-party cookies.
 
+If you have a `react-native` project, there is a [known bug](https://github.com/facebook/react-native/commit/29249e19bd9cb4de8cb5b00edcd17f2c49d0d02c#diff-5eeea7cc5d0049418255078dfb3555cdbc3fc02e370392f4b6a31dd831720270) that doesn't let the SDK work properly. This is how you can fix it until it is resolved in the main react-native repo:
+
+```
+   //>>>>> ReactAndroid/src/main/java/com/facebook/react/ReactActivity.java
+
+  @Override
+  public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    mDelegate.onActivityResult(requestCode, resultCode, data);
+  }
+
+```
+
 
 ## Debugging 
 There are several more advanced functions in the framework. The purpose of them is to help out if there are any problems or issues with the tagging that needs to be traced. It is possible to get information about pending requests and to subscribe on notifications when a tag request has completed or failed, and more. To see some examples on how to use these functions, have a look at the source code for the test application.
