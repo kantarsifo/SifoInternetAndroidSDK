@@ -13,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import se.kantarsifo.mobileanalytics.framework.Logger.fatalError
 import se.kantarsifo.mobileanalytics.framework.Logger.log
+import se.kantarsifo.mobileanalytics.framework.TagStringsAndValues.SIFO_APP_START_EVENT_CATEGORY
 import se.kantarsifo.mobileanalytics.framework.Utils.isPackageInstalled
 import java.net.HttpCookie
 
@@ -56,6 +57,8 @@ internal class TSMobileAnalyticsBackend : TSMobileAnalytics {
                     }
 
                     initTags(activity, cpID!!, applicationName!!, onlyPanelist)
+
+                    sendAppStartEvent()
 
                     PanelistHandler.syncCookies(activity, activity) {
                         refreshCookiesAndKeys(activity,onlyPanelist)
@@ -124,6 +127,18 @@ internal class TSMobileAnalyticsBackend : TSMobileAnalytics {
             log("Mobile Application Tagging Framework initiated with the following values " +
                         "\nCPID: $cpID\nApplication name: $applicationName\nOnly panelist tracking : $onlyPanelist")
             return true
+        }
+
+        /**
+         * Sends the app start event
+         */
+        private fun sendAppStartEvent() {
+            if (frameworkInstance ==null) {
+                log("Cannot create app start event")
+                return
+            }
+
+            frameworkInstance!!.sendTag(SIFO_APP_START_EVENT_CATEGORY)
         }
 
     }
