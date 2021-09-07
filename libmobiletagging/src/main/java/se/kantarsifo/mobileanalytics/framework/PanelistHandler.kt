@@ -4,11 +4,12 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.activity.ComponentActivity
 import org.json.JSONArray
 import org.json.JSONException
+import se.kantarsifo.mobileanalytics.framework.Logger.error
+import se.kantarsifo.mobileanalytics.framework.Utils.isPackageInstalled
 import java.io.BufferedReader
 import java.io.FileInputStream
 import java.io.IOException
@@ -36,8 +37,7 @@ internal object PanelistHandler {
     }
 
     fun syncCookies(context: Context, activity: ComponentActivity, onComplete: () -> Unit) {
-        val pm = context.packageManager
-        val isInstalled: Boolean = isPackageInstalled(TagStringsAndValues.SIFO_PANELIST_PACKAGE_NAME_V2, pm)
+        val isInstalled: Boolean = context.isPackageInstalled(TagStringsAndValues.SIFO_PANELIST_PACKAGE_NAME_V2)
         val sharedPref = activity.getSharedPreferences(TagStringsAndValues.SIFO_PREFERENCE_KEY, Context.MODE_PRIVATE)
         if (isInstalled) {
             if (shouldUpdateCookieValues(activity)) {
@@ -79,13 +79,6 @@ internal object PanelistHandler {
         sharedPreferences.edit().remove(TagStringsAndValues.SIFO_PREFERENCE_COOKIES_SYNC_TIME).commit()
     }
 
-    private fun isPackageInstalled(packageName: String?, packageManager: PackageManager): Boolean {
-        return try {
-            packageManager.getApplicationInfo(packageName, 0).enabled
-        } catch (e: PackageManager.NameNotFoundException) {
-            false
-        }
-    }
 
     /**
      * Opens a FileInputStream from TNS Sifo-Panelen
@@ -99,7 +92,7 @@ internal object PanelistHandler {
             context.createPackageContext(packageName, 0).openFileInput(filename)
         } catch (e: Exception) {
 
-            TSMobileAnalyticsBackend.logError("Error Getting InputStream")
+            error("Error Getting InputStream")
             null
         }
     }
@@ -113,7 +106,7 @@ internal object PanelistHandler {
                 cookieList.add(CookieHandler.getCookieFromJson(entry))
             }
         } catch (e: JSONException) {
-            TSMobileAnalyticsBackend.logError("Error parsing TNS Panelist JSON data")
+            error("Error parsing TNS Panelist JSON data")
         }
         return cookieList
     }
@@ -128,7 +121,7 @@ internal object PanelistHandler {
                 cookieList.add(CookieHandler.getCookieFromJson(entry))
             }
         } catch (e: JSONException) {
-            TSMobileAnalyticsBackend.logError("Error parsing TNS Panelist JSON data")
+            error("Error parsing TNS Panelist JSON data")
         }
         return cookieList
     }
@@ -155,12 +148,12 @@ internal object PanelistHandler {
             }
             return buffer.toString()
         } catch (e: Exception) {
-            TSMobileAnalyticsBackend.logError(errorString)
+            error(errorString)
         } finally {
             try {
                 input?.close()
             } catch (e: IOException) { // Should never happen
-                TSMobileAnalyticsBackend.logError("Error Closing InputStream")
+                error("Error Closing InputStream")
             }
         }
         return ""
