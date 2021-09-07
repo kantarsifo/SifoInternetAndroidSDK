@@ -11,6 +11,9 @@ import androidx.activity.ComponentActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import se.kantarsifo.mobileanalytics.framework.Logger.fatalError
+import se.kantarsifo.mobileanalytics.framework.Logger.log
+import se.kantarsifo.mobileanalytics.framework.Utils.isPackageInstalled
 import java.net.HttpCookie
 
 /**
@@ -31,7 +34,7 @@ internal class TSMobileAnalyticsBackend : TSMobileAnalytics {
      * Constructor used internally only.
      * Use createInstance() and getInstance() instead.
      */
-    private constructor(context: Context, activity: ComponentActivity, cpId: String, applicationName: String, cookies: List<HttpCookie>, trackPanelistOnly: Boolean) : super() {
+    private constructor(context: Context, activity: ComponentActivity, cpId: String, applicationName: String, cookies: List<HttpCookie>?, trackPanelistOnly: Boolean) : super() {
         dataRequestHandler = TagDataRequestHandler(context, activity, cpId, applicationName, cookies, trackPanelistOnly)
     }
 
@@ -39,93 +42,75 @@ internal class TSMobileAnalyticsBackend : TSMobileAnalytics {
 
         fun createInstance(activity: ComponentActivity, cpID: String?, applicationName: String?, onlyPanelist: Boolean, isWebBased: Boolean): TSMobileAnalyticsBackend? {
             if (activity == null) {
-                logFatalError("Mobile Application Tagging Framework Failed to initiate - context must not be null")
+                fatalError("Mobile Application Tagging Framework Failed to initiate - context must not be null")
                 return frameworkInstance
             }
             val version = BuildConfig.VERSION_NAME
             val cookieValue = "trackPanelistOnly=$onlyPanelist&isWebViewBased=$isWebBased&sdkVersion=$version"
             val metaCookie = CookieHandler.createHttpCookie(TagStringsAndValues.SIFO_META_COOKIE_NAME, cookieValue)
             CookieHandler.setupPanelistCookies(listOf(metaCookie))
-
-            if (frameworkInstance == null) {
-                if (paramsAreValid(cpID, applicationName)) {
+            if (paramsAreValid(cpID, applicationName)) {
+                if (frameworkInstance == null) {
                     CoroutineScope(Dispatchers.IO).launch {
-                        TSMConfigUtil.syncConfig(activity,applicationName  ?: "")
+                        TSMConfigUtil.syncConfig(activity, applicationName ?: "")
                     }
+
+                    initTags(activity, cpID!!, applicationName!!, onlyPanelist)
+
                     PanelistHandler.syncCookies(activity, activity) {
-                        val requestHandled = initTags(activity, cpID!!, applicationName!!, onlyPanelist)
-                        if (!requestHandled) {
-                            initLegacyTags(activity, cpID, applicationName, onlyPanelist)
-                        }
+                        refreshCookiesAndKeys(activity,onlyPanelist)
+                        frameworkInstance!!.dataRequestHandler.setStateReady()
                     }
-                }
-            } else {
-                logMessage("Mobile Application Tagging Framework already initialized")
-                logMessage("Refreshing panelist keys")
-                val cookies = PanelistHandler.getCookies(activity, activity)
-                if (cookies != null) {
-                    frameworkInstance!!.dataRequestHandler.refreshCookies(activity, cookies)
                 } else {
-                    frameworkInstance!!.dataRequestHandler.refreshCookies(activity, PanelistHandler.getPanelistKey(activity))
+                    log("Mobile Application Tagging Framework already initialized")
+                    refreshCookiesAndKeys(activity, onlyPanelist)
                 }
             }
             return frameworkInstance
         }
 
-        /**
-         * Print text to LogCat following a specific pattern and the tag "MobileAppTagging".
-         *
-         * @param message The message to print.
-         */
-        fun logMessage(message: String) {
-            if (logPrintsActivated) {
-                Log.i("MobileAppTagging", message)
-                Log.i("MobileAppTagging", "***********************************")
-            }
-        }
 
-        /**
-         * Print an error message to LogCat following a specific pattern and the tag "MobileAppTagging"
-         * only if logs are activated.
-         *
-         * @param message The error message.
-         */
-        fun logError(message: String) {
-            if (logPrintsActivated) {
-                Log.e("MobileAppTagging", "***********************************")
-                Log.e("MobileAppTagging", message)
-                Log.e("MobileAppTagging", "***********************************")
+        private fun refreshCookiesAndKeys(activity: ComponentActivity, onlyPanelist: Boolean) {
+            val isInstalled = activity.isPackageInstalled(TagStringsAndValues.SIFO_PANELIST_PACKAGE_NAME_V2)
+            if (!isInstalled) {
+                //TODO: 2021-09-02 Do we need logFatalError when onlyPanelist ==true?
+                //No need to refresh the cookies since there is no panelist app to get the cookies from
+                return
             }
-        }
-
-        /**
-         * Print an error message to LogCat following a specific pattern and the tag "MobileAppTagging".
-         *
-         * @param message The error message.
-         */
-        fun logFatalError(message: String) {
-            Log.e("MobileAppTagging", "***********************************")
-            Log.e("MobileAppTagging", message)
-            Log.e("MobileAppTagging", "***********************************")
+            log("Refreshing panelist keys(Cookies)")
+            val cookies = PanelistHandler.getCookies(activity, activity)
+            frameworkInstance!!.dataRequestHandler.apply {
+                if (cookies != null) {
+                    refreshCookies(cookies)
+                } else {
+                    val panelistKey = PanelistHandler.getPanelistKey(activity)
+                    if (onlyPanelist && panelistKey == TagStringsAndValues.NO_PANELIST_ID) {
+                        fatalError("Mobile Application Tagging Framework Failed to initiate - " +
+                                "Panelist Id was not found, it must exist if only panelist tracking is active")
+                        return
+                    }
+                    refreshCookies(panelistKey)
+                }
+            }
         }
 
         private fun paramsAreValid(cpID: String?, applicationName: String?): Boolean {
             return when {
                 (cpID.isNullOrEmpty()) -> {
-                    logFatalError("Mobile Application Tagging Framework Failed to initiate - CPID must not be null or empty")
+                    fatalError("Mobile Application Tagging Framework Failed to initiate - CPID must not be null or empty")
                     false
                 }
                 (cpID.length != TagStringsAndValues.CPID_LENGTH_CODIGO) -> {
-                    logFatalError("Mobile Application Tagging Framework Failed to initiate - CPID must be " +
+                    fatalError("Mobile Application Tagging Framework Failed to initiate - CPID must be " +
                             "${TagStringsAndValues.CPID_LENGTH_CODIGO} characters")
                     false
                 }
                 (applicationName.isNullOrEmpty()) -> {
-                    logFatalError("Mobile Application Tagging Framework Failed to initiate - Application Name must not be null or empty")
+                    fatalError("Mobile Application Tagging Framework Failed to initiate - Application Name must not be null or empty")
                     false
                 }
                 (applicationName.length > TagStringsAndValues.MAX_LENGTH_APP_NAME) -> {
-                    logFatalError("Mobile Application Tagging Framework Failed to initiate - Application Name must not have more than "
+                    fatalError("Mobile Application Tagging Framework Failed to initiate - Application Name must not have more than "
                             + TagStringsAndValues.MAX_LENGTH_APP_NAME + " characters")
                     false
                 }
@@ -133,33 +118,12 @@ internal class TSMobileAnalyticsBackend : TSMobileAnalytics {
             }
         }
 
-        private fun initTags(activity: ComponentActivity, cpID: String, applicationName: String, onlyPanelist: Boolean): Boolean {
-            val cookies = PanelistHandler.getCookies(activity, activity) ?: return false
-            if (onlyPanelist && cookies.isEmpty()) {
-                logFatalError("Mobile Application Tagging Framework Failed to initiate - " +
-                        "Cookies file was empty, panelist id not found")
-            } else {
-                frameworkInstance = TSMobileAnalyticsBackend(activity, activity, cpID, applicationName, cookies, onlyPanelist)
-                logMessage("Mobile Application Tagging Framework initiated with the following values " +
-                        "\nCPID: $cpID\nApplication name: $applicationName\nOnly panelist tracking : $onlyPanelist")
-            }
-            return true
-        }
 
-        private fun initLegacyTags(activity: ComponentActivity, cpID: String, applicationName: String, onlyPanelist: Boolean) {
-            val panelistKey = PanelistHandler.getPanelistKey(activity)
-            if (cpID.length != TagStringsAndValues.CPID_LENGTH_CODIGO) {
-                logFatalError("Mobile Application Tagging Framework Failed to initiate - " +
-                        "CPID must either be exactly " + TagStringsAndValues.CPID_LENGTH_CODIGO)
-            } else if (onlyPanelist && panelistKey == TagStringsAndValues.NO_PANELIST_ID) {
-                logFatalError("Mobile Application Tagging Framework Failed to initiate - " +
-                        "Panelist Id was not found, it must exist if only panelist tracking is active")
-            } else {
-                // TODO print panelist setting
-                frameworkInstance = TSMobileAnalyticsBackend(activity, activity, cpID, applicationName, panelistKey, onlyPanelist)
-                logMessage("Mobile Application Tagging Framework initiated with the following values " +
+        private fun initTags(activity: ComponentActivity, cpID: String, applicationName: String, onlyPanelist: Boolean): Boolean {
+            frameworkInstance = TSMobileAnalyticsBackend(activity, activity, cpID, applicationName, null, onlyPanelist)
+            log("Mobile Application Tagging Framework initiated with the following values " +
                         "\nCPID: $cpID\nApplication name: $applicationName\nOnly panelist tracking : $onlyPanelist")
-            }
+            return true
         }
 
     }

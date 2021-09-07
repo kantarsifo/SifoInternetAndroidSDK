@@ -13,6 +13,9 @@ import android.os.Build.VERSION_CODES
 import android.provider.Settings.Secure
 import androidx.activity.ComponentActivity
 import org.json.JSONObject
+import se.kantarsifo.mobileanalytics.framework.Logger.error
+import se.kantarsifo.mobileanalytics.framework.Logger.fatalError
+import se.kantarsifo.mobileanalytics.framework.Logger.log
 import java.io.UnsupportedEncodingException
 import java.net.CookieStore
 import java.net.HttpCookie
@@ -27,10 +30,10 @@ import java.net.URLEncoder
  *
  */
 internal class TagHandler(
-        context: Context,
-        private val cpId: String,
-        ref: String,
-        cookies: List<HttpCookie>
+    val context: Context,
+    private val cpId: String,
+    ref: String,
+    cookies: List<HttpCookie>?
 ) {
 
     var applicationName: String = ref
@@ -50,17 +53,17 @@ internal class TagHandler(
 
     init {
         generateEuId(context)
-        initCookies(context, cookies)
+        cookies?.let { initCookies(it) }
         getApplicationVersion(context)
     }
 
-    fun refresh(context: Context, panelistKey: String?) {
+    fun refresh(panelistKey: String?) {
         val cookies = CookieHandler.createLegacyCookies(panelistKey)
-        initCookies(context, cookies)
+        initCookies(cookies)
     }
 
-    fun refresh(context: Context, cookies: List<HttpCookie>) {
-        initCookies(context, cookies)
+    fun refresh(cookies: List<HttpCookie>) {
+        initCookies(cookies)
     }
 
     /**
@@ -104,13 +107,16 @@ internal class TagHandler(
     }
 
     private fun fetchUrl(activity: ComponentActivity?): String {
-        val json = activity?.getSharedPreferences(TagStringsAndValues.SIFO_PREFERENCE_KEY, Context.MODE_PRIVATE)?.getString(TagStringsAndValues.SIFO_PREFERENCE_CONFIG, "")
+        val json = activity?.getSharedPreferences(
+            TagStringsAndValues.SIFO_PREFERENCE_KEY,
+            Context.MODE_PRIVATE
+        )?.getString(TagStringsAndValues.SIFO_PREFERENCE_CONFIG, "")
         if (json.isNullOrEmpty()) {
             return TagStringsAndValues.SIFO_DEFAULT_CONFIG
         }
         var savedUrl = ""
         try {
-            savedUrl =  JSONObject(json).getString("BaseMeasurementAddress")
+            savedUrl = JSONObject(json).getString("BaseMeasurementAddress")
         } catch (e: Exception) {
 
         }
@@ -124,13 +130,14 @@ internal class TagHandler(
 
     private fun getApplicationVersion(context: Context) {
         try {
-            applicationVersion = context.packageManager.getPackageInfo(context.packageName, 0).versionName
+            applicationVersion =
+                context.packageManager.getPackageInfo(context.packageName, 0).versionName
         } catch (e: Exception) {
-            TSMobileAnalyticsBackend.logFatalError("Failed to retrieve application version, will not set be set in request header")
+            error("Failed to retrieve application version, will not set be set in request header")
         }
     }
 
-    private fun initCookies(context: Context, cookieList: List<HttpCookie>) {
+    private fun initCookies(cookieList: List<HttpCookie>) {
         val setupPanelListCookies = SetupPanelListCookies(context, cookieList)
         setupPanelListCookies.run()
     }
@@ -158,7 +165,7 @@ internal class TagHandler(
     }
 
     private fun logFatalError(message: String) {
-        TSMobileAnalyticsBackend.logFatalError("Failed to create URL - $message")
+        fatalError("Failed to create URL - $message")
     }
 
     companion object {
@@ -173,7 +180,7 @@ internal class TagHandler(
                 URLEncoder.encode(input, TagStringsAndValues.URL_ENCODING)
             } catch (e: UnsupportedEncodingException) {
                 // Since encoding UTF-8 is supported by android, this should not happen
-                TSMobileAnalyticsBackend.logMessage("URL-Encoding not supported")
+                log("URL-Encoding not supported")
                 input
             }
         }
@@ -186,8 +193,8 @@ internal class TagHandler(
      * @See <a https:></a>//code.google.com/p/chromium/issues/detail?id=506369">chromium Issue tracking
      */
     private inner class SetupPanelListCookies(
-            private val context: Context,
-            private val cookieList: List<HttpCookie>
+        private val context: Context,
+        private val cookieList: List<HttpCookie>
     ) : Runnable {
 
         private val systemWebViewPackageName = "com.google.android.webview"
@@ -197,13 +204,14 @@ internal class TagHandler(
         override fun run() {
             try {
                 if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP && retryCounter++ < maxWebViewPackageRetry) {
-                    context.packageManager.getPackageInfo(systemWebViewPackageName, PackageManager.GET_ACTIVITIES)
+                    context.packageManager.getPackageInfo(
+                        systemWebViewPackageName,
+                        PackageManager.GET_ACTIVITIES
+                    )
                 }
                 cookies = CookieHandler.setupPanelistCookies(cookieList)
             } catch (e: PackageManager.NameNotFoundException) {
-                TSMobileAnalyticsBackend.logError(
-                        "Failed to setup panel list cookies - Retry counter = $retryCounter"
-                )
+                error("Failed to setup panel list cookies - Retry counter = $retryCounter")
             }
         }
     }
