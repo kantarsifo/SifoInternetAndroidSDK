@@ -177,4 +177,9 @@ object TagStringsAndValues {
      */
     internal const val SIFO_META_COOKIE_NAME = "sifo_config"
 
+    /**
+     * app start event category name
+     */
+    internal const val SIFO_APP_START_EVENT_CATEGORY = "appstart"
+
 }
