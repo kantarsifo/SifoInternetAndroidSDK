@@ -12,4 +12,14 @@ object Utils {
             false
         }
     }
+
+    fun Context.getApplicationVersion(): String? {
+        return try {
+            packageManager.getPackageInfo(packageName, 0).versionName
+        } catch (e: Exception) {
+            Logger.error("Failed to retrieve application version, will not set be set in request header")
+            null
+        }
+    }
+
 }

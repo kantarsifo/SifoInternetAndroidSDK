@@ -6,13 +6,14 @@
 package se.kantarsifo.mobileanalytics.framework
 
 import android.content.Context
-import android.util.Log
 import androidx.activity.ComponentActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import se.kantarsifo.mobileanalytics.framework.Logger.fatalError
 import se.kantarsifo.mobileanalytics.framework.Logger.log
+import se.kantarsifo.mobileanalytics.framework.TagStringsAndValues.SIFO_APP_START_EVENT_CATEGORY
+import se.kantarsifo.mobileanalytics.framework.Utils.getApplicationVersion
 import se.kantarsifo.mobileanalytics.framework.Utils.isPackageInstalled
 import java.net.HttpCookie
 
@@ -45,8 +46,9 @@ internal class TSMobileAnalyticsBackend : TSMobileAnalytics {
                 fatalError("Mobile Application Tagging Framework Failed to initiate - context must not be null")
                 return frameworkInstance
             }
-            val version = BuildConfig.VERSION_NAME
-            val cookieValue = "trackPanelistOnly=$onlyPanelist&isWebViewBased=$isWebBased&sdkVersion=$version"
+            val sdkVersion = BuildConfig.VERSION_NAME
+            val appVersion = activity.getApplicationVersion()
+            val cookieValue = "trackPanelistOnly=$onlyPanelist&isWebViewBased=$isWebBased&sdkVersion=$sdkVersion&appVersion=$appVersion"
             val metaCookie = CookieHandler.createHttpCookie(TagStringsAndValues.SIFO_META_COOKIE_NAME, cookieValue)
             CookieHandler.setupPanelistCookies(listOf(metaCookie))
             if (paramsAreValid(cpID, applicationName)) {
@@ -57,9 +59,11 @@ internal class TSMobileAnalyticsBackend : TSMobileAnalytics {
 
                     initTags(activity, cpID!!, applicationName!!, onlyPanelist)
 
+                    sendAppStartEvent()
+
                     PanelistHandler.syncCookies(activity, activity) {
                         refreshCookiesAndKeys(activity,onlyPanelist)
-                        frameworkInstance!!.dataRequestHandler.setStateReady()
+                        frameworkInstance?.dataRequestHandler?.setStateReady()
                     }
                 } else {
                     log("Mobile Application Tagging Framework already initialized")
@@ -73,13 +77,16 @@ internal class TSMobileAnalyticsBackend : TSMobileAnalytics {
         private fun refreshCookiesAndKeys(activity: ComponentActivity, onlyPanelist: Boolean) {
             val isInstalled = activity.isPackageInstalled(TagStringsAndValues.SIFO_PANELIST_PACKAGE_NAME_V2)
             if (!isInstalled) {
-                //TODO: 2021-09-02 Do we need logFatalError when onlyPanelist ==true?
+                if (onlyPanelist && !isInstalled) {
+                    frameworkInstance = null
+                    fatalError("To track panelists only you need to have the internet app installed")
+                }
                 //No need to refresh the cookies since there is no panelist app to get the cookies from
                 return
             }
             log("Refreshing panelist keys(Cookies)")
             val cookies = PanelistHandler.getCookies(activity, activity)
-            frameworkInstance!!.dataRequestHandler.apply {
+            frameworkInstance?.dataRequestHandler?.apply {
                 if (cookies != null) {
                     refreshCookies(cookies)
                 } else {
@@ -124,6 +131,18 @@ internal class TSMobileAnalyticsBackend : TSMobileAnalytics {
             log("Mobile Application Tagging Framework initiated with the following values " +
                         "\nCPID: $cpID\nApplication name: $applicationName\nOnly panelist tracking : $onlyPanelist")
             return true
+        }
+
+        /**
+         * Sends the app start event
+         */
+        private fun sendAppStartEvent() {
+            if (frameworkInstance ==null) {
+                log("Cannot create app start event")
+                return
+            }
+
+            frameworkInstance?.sendTag(SIFO_APP_START_EVENT_CATEGORY)
         }
 
     }
