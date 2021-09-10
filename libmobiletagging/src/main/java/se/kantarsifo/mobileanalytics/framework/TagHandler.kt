@@ -8,6 +8,7 @@ package se.kantarsifo.mobileanalytics.framework
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.provider.Settings.Secure
@@ -16,6 +17,7 @@ import org.json.JSONObject
 import se.kantarsifo.mobileanalytics.framework.Logger.error
 import se.kantarsifo.mobileanalytics.framework.Logger.fatalError
 import se.kantarsifo.mobileanalytics.framework.Logger.log
+import se.kantarsifo.mobileanalytics.framework.Utils.getApplicationVersion
 import java.io.UnsupportedEncodingException
 import java.net.CookieStore
 import java.net.HttpCookie
@@ -54,7 +56,7 @@ internal class TagHandler(
     init {
         generateEuId(context)
         cookies?.let { initCookies(it) }
-        getApplicationVersion(context)
+        applicationVersion = context.getApplicationVersion()
     }
 
     fun refresh(panelistKey: String?) {
@@ -85,6 +87,16 @@ internal class TagHandler(
                     .replace("{type}", type)
                     .replace("{appNameValue}", type) // This seems like a mistake but the client confirmed they want it like this.
                     .replace("{appRefValue}", encodedRef)
+
+            applicationVersion?.apply {
+                val encodedVersion = urlEncode(trim())
+                val uri = Uri.parse(url)
+                    .buildUpon()
+                    .appendQueryParameter("appVersion",encodedVersion)
+                    .build()
+                url = uri.toString()
+            }
+
 
         }
         return url
@@ -125,15 +137,6 @@ internal class TagHandler(
             TagStringsAndValues.SIFO_DEFAULT_CONFIG
         } else {
             savedUrl
-        }
-    }
-
-    private fun getApplicationVersion(context: Context) {
-        try {
-            applicationVersion =
-                context.packageManager.getPackageInfo(context.packageName, 0).versionName
-        } catch (e: Exception) {
-            error("Failed to retrieve application version, will not set be set in request header")
         }
     }
 

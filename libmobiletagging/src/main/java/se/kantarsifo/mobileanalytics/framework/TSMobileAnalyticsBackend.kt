@@ -6,7 +6,6 @@
 package se.kantarsifo.mobileanalytics.framework
 
 import android.content.Context
-import android.util.Log
 import androidx.activity.ComponentActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -14,6 +13,7 @@ import kotlinx.coroutines.launch
 import se.kantarsifo.mobileanalytics.framework.Logger.fatalError
 import se.kantarsifo.mobileanalytics.framework.Logger.log
 import se.kantarsifo.mobileanalytics.framework.TagStringsAndValues.SIFO_APP_START_EVENT_CATEGORY
+import se.kantarsifo.mobileanalytics.framework.Utils.getApplicationVersion
 import se.kantarsifo.mobileanalytics.framework.Utils.isPackageInstalled
 import java.net.HttpCookie
 
@@ -46,8 +46,9 @@ internal class TSMobileAnalyticsBackend : TSMobileAnalytics {
                 fatalError("Mobile Application Tagging Framework Failed to initiate - context must not be null")
                 return frameworkInstance
             }
-            val version = BuildConfig.VERSION_NAME
-            val cookieValue = "trackPanelistOnly=$onlyPanelist&isWebViewBased=$isWebBased&sdkVersion=$version"
+            val sdkVersion = BuildConfig.VERSION_NAME
+            val appVersion = activity.getApplicationVersion()
+            val cookieValue = "trackPanelistOnly=$onlyPanelist&isWebViewBased=$isWebBased&sdkVersion=$sdkVersion&appVersion=$appVersion"
             val metaCookie = CookieHandler.createHttpCookie(TagStringsAndValues.SIFO_META_COOKIE_NAME, cookieValue)
             CookieHandler.setupPanelistCookies(listOf(metaCookie))
             if (paramsAreValid(cpID, applicationName)) {
