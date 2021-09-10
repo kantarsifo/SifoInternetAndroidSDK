@@ -62,7 +62,7 @@ internal class TSMobileAnalyticsBackend : TSMobileAnalytics {
 
                     PanelistHandler.syncCookies(activity, activity) {
                         refreshCookiesAndKeys(activity,onlyPanelist)
-                        frameworkInstance!!.dataRequestHandler.setStateReady()
+                        frameworkInstance?.dataRequestHandler?.setStateReady()
                     }
                 } else {
                     log("Mobile Application Tagging Framework already initialized")
@@ -76,13 +76,16 @@ internal class TSMobileAnalyticsBackend : TSMobileAnalytics {
         private fun refreshCookiesAndKeys(activity: ComponentActivity, onlyPanelist: Boolean) {
             val isInstalled = activity.isPackageInstalled(TagStringsAndValues.SIFO_PANELIST_PACKAGE_NAME_V2)
             if (!isInstalled) {
-                //TODO: 2021-09-02 Do we need logFatalError when onlyPanelist ==true?
+                if (onlyPanelist && !isInstalled) {
+                    frameworkInstance = null
+                    fatalError("To track panelists only you need to have the internet app installed")
+                }
                 //No need to refresh the cookies since there is no panelist app to get the cookies from
                 return
             }
             log("Refreshing panelist keys(Cookies)")
             val cookies = PanelistHandler.getCookies(activity, activity)
-            frameworkInstance!!.dataRequestHandler.apply {
+            frameworkInstance?.dataRequestHandler?.apply {
                 if (cookies != null) {
                     refreshCookies(cookies)
                 } else {
@@ -138,7 +141,7 @@ internal class TSMobileAnalyticsBackend : TSMobileAnalytics {
                 return
             }
 
-            frameworkInstance!!.sendTag(SIFO_APP_START_EVENT_CATEGORY)
+            frameworkInstance?.sendTag(SIFO_APP_START_EVENT_CATEGORY)
         }
 
     }
