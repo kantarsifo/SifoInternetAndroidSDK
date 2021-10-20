@@ -44,6 +44,7 @@ The SDK can help you with the whole process, both creating these URLs, as well a
 In version 4.1.1 these are the major changes:
 
 -Send app version in all requests and include it in the cookie
+
 -Disable the SDK if onlyPanelist==true and the SIFO internet app is not installed
 
 
