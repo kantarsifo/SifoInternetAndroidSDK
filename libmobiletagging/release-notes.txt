@@ -14,6 +14,19 @@ using Kantar Sifo’s services. The SDK zip file contains three folders:
 
 
 RELEASE NOTES:
+
+v4.1.1 2021-09-10
+
+- Send app version in all requests and include it in the cookie
+- Disable the SDK if onlyPanelist==true and the SIFO internet app is not installed
+
+v4.1.0 2021-09-07
+
+- Issues with tracking events not being tracked
+- SDK crashing after initialization
+- Help to Fix the issue with the onActivityResult issue on Readme.
+
+
 v4.0.1 2020-09-30
 - Added sifo_config cookie for tracking basic sdk config values.
 
