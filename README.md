@@ -41,14 +41,10 @@ The SDK can help you with the whole process, both creating these URLs, as well a
 
 
 ## What’s new?
-In version 4.0.0 these are the major changes:
+In version 4.1.1 these are the major changes:
 
-- Refactored the way cookie information is read from the Sifo Internet app. Data is now requested by intent.
-- Cookie information is now cached for 90 days.
-- Url for posting events is now loaded dynamically on initialization.
-- Added IsWebViewBased parameter in initialization call.
-
-For more detailed changes of each version, see release-notes.txt in the SDK root folder.
+-Send app version in all requests and include it in the cookie
+-Disable the SDK if onlyPanelist==true and the SIFO internet app is not installed
 
 
 
@@ -264,7 +260,7 @@ You have to both initialize the framework and send “page view” events in a c
 - **Hybrid app - how do I integrate the framework?**  
 First you have to check if pages shown in web view already are tagged with Codigo scripts (contact Kantar Sifo regarding this). Then you need only to invoke **activateCookies**() on the framework instance.
 - **How does Framework sync with Sifo Internet app?**  
-If the device has the Sifo Internet app installed and is logged in, Sifo Internet writes panelist cookies as a json file to the internal storage, which is read by the framework.
+If the device has the Sifo Internet app installed and is logged in,the SDK communicates with the Sifo Internet app to get the cookies.
 - **Do I need to grant permissions to the framework to read files?**  
 No, there is no need to explicitly grant permission.
 - **Web TV / streaming - how shall we implement that?**  
