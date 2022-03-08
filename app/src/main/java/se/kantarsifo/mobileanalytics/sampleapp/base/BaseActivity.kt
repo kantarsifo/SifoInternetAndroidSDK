@@ -31,6 +31,7 @@ abstract class BaseActivity : AppCompatActivity(), TagDataRequestCallbackListene
     // TagDataRequestCallbackListener overrides
 
     override fun onDataRequestComplete(request: TagDataRequest) {
+        Log.e("onDataRequestComplete","onDataRequestComplete")
         runOnUiThread {
             showToast("Request successful -> \"${getRequestMainInfo(request)}\"")
             Log.d(Constants.LOG_TAG, request.uRL ?: "")
@@ -47,6 +48,7 @@ abstract class BaseActivity : AppCompatActivity(), TagDataRequestCallbackListene
     }
 
     override fun onDataRequestFailed(request: TagDataRequest) {
+        Log.e("onDataRequestFailed","onDataRequestComplete")
         runOnUiThread {
             showToast("Request failed -> \"${getRequestMainInfo(request)}\"")
             Log.w(Constants.LOG_TAG, request.uRL ?: "")

@@ -56,6 +56,7 @@
 
     <!-- WebViewActivity -->
     <string name="title_web_activity">WebView Test</string>
+    <string name="trusted_web_activity">Trusted web activity</string>
     <string-array name="web_view_sites">
         <item>https://www.mediafacts.se</item>
         <item>http://m.aftonbladet.se/</item>

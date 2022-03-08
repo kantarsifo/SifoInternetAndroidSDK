@@ -1,6 +1,7 @@
 package se.kantarsifo.mobileanalytics.framework
 
 import android.os.Build
+import android.util.Log
 import android.webkit.WebView
 import java.net.CookieHandler
 import java.net.CookieManager
@@ -37,9 +38,11 @@ object SifoCookieManager {
         }
         val cookies = cookieManager.cookieStore.cookies
         for (cookie in cookies) {
-            val cookieString = cookie.getName() + "=" + cookie.getValue() + "; Domain=" + cookie.getDomain()
+            val cookieString = cookie.name + "=" + cookie.value + "; Domain=" + cookie.domain
+            Log.e("cookieString",cookieString)
             android.webkit.CookieManager.getInstance().setCookie(cookie.domain, cookieString)
         }
     }
+
 
 }
