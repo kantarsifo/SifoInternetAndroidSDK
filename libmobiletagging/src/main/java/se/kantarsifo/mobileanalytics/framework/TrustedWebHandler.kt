@@ -15,29 +15,18 @@ internal class TrustedWebHandler(
 ) {
 
     fun open() {
-        val uri = Uri.parse(twaUrl)
-        val urLBuilder= uri
-            .buildUpon()
-        getTWAParams(context).let { map ->
-            for ((key, value) in map) {
-                urLBuilder.appendQueryParameter(key,value.toString())
-            }
+        if (twaUrl.isEmpty()){
+            throw RuntimeException("you should set twa url first in analytics instance")
         }
-        urLBuilder.build()
-        val builder = TrustedWebActivityIntentBuilder(uri)
+        val uri = Uri.parse(twaUrl).buildUpon()
+            .appendQueryParameter("sifo_config","trackPanelistOnly=$trackPanelistOnly")
+            .appendQueryParameter("isWebViewBased",isWebViewBased.toString())
+            .appendQueryParameter("sdkVersion",BuildConfig.VERSION_NAME)
+            .appendQueryParameter("appVersion", context.getApplicationVersion())
+            .appendQueryParameter("domain",TagStringsAndValues.DOMAIN_CODIGO)
+            .build()
         val launcher = TwaLauncher(context)
         launcher.launch(uri)
-    }
-
-
-    private fun getTWAParams(context: Context): Map<String, Any> {
-        return mapOf<String, Any>().apply {
-            "sifo_config" to "trackPanelistOnly=$trackPanelistOnly"
-            "isWebViewBased" to isWebViewBased
-            "sdkVersion" to BuildConfig.VERSION_NAME
-            "appVersion" to context.getApplicationVersion()
-            "domain" to TagStringsAndValues.DOMAIN_CODIGO
-        }
     }
 
 }
