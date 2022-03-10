@@ -73,7 +73,7 @@ open class TSMobileAnalytics protected constructor() {
     /**
      * URL for trusted web activity
      */
-    var twaUrl: String = ""
+    lateinit var twaInfo: TWAModel
 
 
     /**
@@ -174,7 +174,7 @@ open class TSMobileAnalytics protected constructor() {
         panelistTrackingOnly = builder.panelistTrackingOnly
         logPrintsActivated = builder.logPrintsActivated
         isWebViewBased = builder.isWebViewBased
-        twaUrl = builder.twaUrl
+        twaInfo = builder.twaInfo
     }
 
     /**
@@ -196,7 +196,7 @@ open class TSMobileAnalytics protected constructor() {
             private set
         var isWebViewBased = false
             private set
-        var twaUrl :String = ""
+        lateinit var twaInfo :TWAModel
 
         /**
          * Specify the cpId you want to set(required).
@@ -257,8 +257,8 @@ open class TSMobileAnalytics protected constructor() {
          * @param twaUrl Set web URL for trusted web activity
          * @return the current builder object.
          */
-        fun setTWAUrl(twaUrl: String) = apply {
-            this.twaUrl = twaUrl
+        fun setTWAInfo(twaInfo:TWAModel) = apply {
+            this.twaInfo = twaInfo
         }
 
         /**
@@ -329,7 +329,7 @@ open class TSMobileAnalytics protected constructor() {
             applicationName: String?,
             panelistTrackingOnly: Boolean,
             isWebViewBased: Boolean,
-            twaUrl: String = ""
+            twaInfo: TWAModel = TWAModel()
         ): TSMobileAnalytics? {
             return TSMobileAnalyticsBackend.createInstance(
                 activity,
@@ -337,7 +337,7 @@ open class TSMobileAnalytics protected constructor() {
                 applicationName,
                 panelistTrackingOnly,
                 isWebViewBased,
-                twaUrl
+                twaInfo
             )
         }
 
@@ -360,7 +360,7 @@ open class TSMobileAnalytics protected constructor() {
                 builder.appName,
                 builder.panelistTrackingOnly,
                 builder.isWebViewBased,
-                builder.twaUrl
+                builder.twaInfo
             )
         }
 

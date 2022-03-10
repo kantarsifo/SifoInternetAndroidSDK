@@ -81,7 +81,7 @@ internal class TagDataRequestHandler : TagDataRequestCallbackListener {
         applicationName: String,
         cookies: List<HttpCookie>?,
         trackPanelistOnly: Boolean,
-        twaUrl: String = "",
+        twaInfo: TWAModel =  TWAModel(),
         isWebBased:Boolean = false
     ) {
         tagHandler = TagHandler(context, cpId, applicationName, cookies)
@@ -90,10 +90,11 @@ internal class TagDataRequestHandler : TagDataRequestCallbackListener {
         threadPool = Executors.newScheduledThreadPool(MAX_NBR_OF_THREADS)
         this.trackPanelistOnly = trackPanelistOnly
         trustedWebHandler = TrustedWebHandler(
-            twaUrl = twaUrl,
+            twaInfo = twaInfo,
             context = context,
             trackPanelistOnly = trackPanelistOnly,
-            isWebViewBased = isWebBased
+            isWebViewBased = isWebBased,
+            cpId = cpId
         )
     }
 

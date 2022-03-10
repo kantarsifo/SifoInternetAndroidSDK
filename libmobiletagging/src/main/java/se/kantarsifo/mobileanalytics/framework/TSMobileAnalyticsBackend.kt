@@ -36,13 +36,13 @@ internal class TSMobileAnalyticsBackend : TSMobileAnalytics {
      * Constructor used internally only.
      * Use createInstance() and getInstance() instead.
      */
-    private constructor(context: Context, activity: ComponentActivity, cpId: String, applicationName: String, cookies: List<HttpCookie>?, trackPanelistOnly: Boolean,twaUrl:String,isWebViewBased: Boolean) : super() {
-        dataRequestHandler = TagDataRequestHandler(context, activity, cpId, applicationName, cookies, trackPanelistOnly,twaUrl,isWebViewBased)
+    private constructor(context: Context, activity: ComponentActivity, cpId: String, applicationName: String, cookies: List<HttpCookie>?, trackPanelistOnly: Boolean,twaInfo: TWAModel,isWebViewBased: Boolean) : super() {
+        dataRequestHandler = TagDataRequestHandler(context, activity, cpId, applicationName, cookies, trackPanelistOnly,twaInfo,isWebViewBased)
     }
 
     companion object {
 
-        fun createInstance(activity: ComponentActivity, cpID: String?, applicationName: String?, onlyPanelist: Boolean, isWebBased: Boolean = false,twaUrl:String = ""): TSMobileAnalyticsBackend? {
+        fun createInstance(activity: ComponentActivity, cpID: String?, applicationName: String?, onlyPanelist: Boolean, isWebBased: Boolean = false,twaInfo: TWAModel = TWAModel()): TSMobileAnalyticsBackend? {
             if (activity == null) {
                 fatalError("Mobile Application Tagging Framework Failed to initiate - context must not be null")
                 return frameworkInstance
@@ -58,7 +58,7 @@ internal class TSMobileAnalyticsBackend : TSMobileAnalytics {
                         TSMConfigUtil.syncConfig(activity, applicationName ?: "")
                     }
 
-                    initTags(activity, cpID!!, applicationName!!, onlyPanelist, isWebViewBased,twaUrl)
+                    initTags(activity, cpID!!, applicationName!!, onlyPanelist, isWebViewBased,twaInfo)
 
                     sendAppStartEvent()
 
@@ -133,9 +133,9 @@ internal class TSMobileAnalyticsBackend : TSMobileAnalytics {
             applicationName: String,
             onlyPanelist: Boolean,
             isWebViewBased: Boolean,
-            twaUrl: String
+            twaInfo: TWAModel
         ): Boolean {
-            frameworkInstance = TSMobileAnalyticsBackend(activity, activity, cpID, applicationName, null, onlyPanelist,twaUrl,isWebViewBased)
+            frameworkInstance = TSMobileAnalyticsBackend(activity, activity, cpID, applicationName, null, onlyPanelist,twaInfo,isWebViewBased)
             log("Mobile Application Tagging Framework initiated with the following values " +
                         "\nCPID: $cpID\nApplication name: $applicationName\nOnly panelist tracking : $onlyPanelist")
             return true

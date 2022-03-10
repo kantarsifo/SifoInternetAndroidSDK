@@ -12,6 +12,7 @@ import androidx.browser.trusted.TrustedWebActivityIntentBuilder
 import com.google.androidbrowserhelper.trusted.TwaLauncher
 import kotlinx.android.synthetic.main.activity_initialization.*
 import se.kantarsifo.mobileanalytics.framework.TSMobileAnalytics
+import se.kantarsifo.mobileanalytics.framework.TWAModel
 import se.kantarsifo.mobileanalytics.framework.TagStringsAndValues
 import se.kantarsifo.mobileanalytics.sampleapp.base.BaseActivity
 import se.kantarsifo.mobileanalytics.sampleapp.native_view.NativeActivity
@@ -85,7 +86,11 @@ class InitializationActivity : BaseActivity() {
                         .setPanelistTrackingOnly(panelistOnly.isChecked)
                         .setIsWebViewBased(isWebViewBased.isChecked)
                         .setLogPrintsActivated(logEnabled.isChecked)
-                        .setTWAUrl("https://www.mediafacts.se")
+                        .setTWAInfo(TWAModel(url = "https://codigoanalytics.azurewebsites.net/test/GetLatestData").apply {
+                            extraParams.apply {
+                               put("customCustomerParam","foo")
+                            }
+                        })
                         .build()
         )
     }
