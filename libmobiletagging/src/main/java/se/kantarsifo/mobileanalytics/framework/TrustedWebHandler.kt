@@ -21,13 +21,15 @@ internal class TrustedWebHandler(
 
     fun open() {
         var url = ""
-        if (twaUrl.isEmpty() && !twaUrl.endsWith("/")){
+        if (twaUrl.isEmpty()){
             throw RuntimeException("you should set twa url first in analytics instance and ends with /")
         }
         url = twaUrl
         val panelistData = PanelistHandler.getCookies(context,context as ComponentActivity)
         val cookiesParams = appendPanelistDataUrl(panelistData)
-        url += "?$cookiesParams"
+        if (cookiesParams.isNotEmpty()){
+            url += "?$cookiesParams"
+        }
         try {
             val uri = Uri.parse(url).buildUpon()
                 .appendQueryParameter("sifo_config","trackPanelistOnly=$trackPanelistOnly")
@@ -46,11 +48,15 @@ internal class TrustedWebHandler(
     }
 
     private fun appendPanelistDataUrl(panelistData: List<HttpCookie>?) :String{
-        var params = ""
-        panelistData?.forEach {
-            params += it.value + "&"
+        return try {
+            var params = ""
+            panelistData?.forEach {
+                params += it.value + "&"
+            }
+            params.dropLast(1)
+        }catch (e:Exception){
+            ""
         }
-        return params.dropLast(1)
     }
 
 }
