@@ -25,10 +25,10 @@ internal class TrustedWebHandler(
         url = twaInfo.url
         val panelistData = PanelistHandler.getCookies(context,context as ComponentActivity)
         val sdkId = getSdkId(panelistData)
-        if (sdkId.isNotEmpty()){
-            url += "?sdkid=$sdkId"
+        url += if (sdkId.isNotEmpty()){
+            "?sdkid=$sdkId"
         }else{
-            url += "?sdkid=${getSdkId()}"
+            "?sdkid=${getSdkId()}"
         }
         try {
             val uri = Uri.parse(url).buildUpon()
