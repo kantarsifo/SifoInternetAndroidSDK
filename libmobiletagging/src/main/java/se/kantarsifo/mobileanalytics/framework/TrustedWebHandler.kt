@@ -13,8 +13,7 @@ internal class TrustedWebHandler(
     private var twaInfo:TWAModel,
     private val context: Context,
     private val trackPanelistOnly:Boolean,
-    private val isWebViewBased:Boolean,
-    private val cpId:String
+    private val isWebViewBased:Boolean
 ) {
 
     fun open() {
@@ -32,7 +31,6 @@ internal class TrustedWebHandler(
         }
         try {
             val uri = Uri.parse(url).buildUpon()
-                .appendQueryParameter("siteid",cpId)
                 .appendQueryParameter("isWebViewBased",isWebViewBased.toString())
                 .appendQueryParameter("sdkVersion",BuildConfig.VERSION_NAME)
                 .appendQueryParameter("appVersion", context.getApplicationVersion())

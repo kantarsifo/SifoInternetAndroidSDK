@@ -93,8 +93,7 @@ internal class TagDataRequestHandler : TagDataRequestCallbackListener {
             twaInfo = twaInfo,
             context = context,
             trackPanelistOnly = trackPanelistOnly,
-            isWebViewBased = isWebBased,
-            cpId = cpId
+            isWebViewBased = isWebBased
         )
     }
 
