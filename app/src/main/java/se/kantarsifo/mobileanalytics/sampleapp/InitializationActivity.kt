@@ -89,7 +89,7 @@ class InitializationActivity : BaseActivity() {
                         .setTWAInfo(TWAModel(url = "https://codigoanalytics.azurewebsites.net/test/GetLatestData").apply {
                             extraParams.apply {
                                put("customCustomerParam","foo")
-                                put("siteid","F53C7A3D-013D-4B89-A1C1-E697DC724467")
+                               put("siteid","F53C7A3D-013D-4B89-A1C1-E697DC724467")
                             }
                         })
                         .build()
