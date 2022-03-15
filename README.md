@@ -308,7 +308,7 @@ TSMobileAnalytics.createInstance(
         .setPanelistTrackingOnly(panelistOnly.isChecked) // optional, default value is false
         .setIsWebViewBased(isWebViewBased.isChecked)  // optional, default value is false
         .setLogPrintsActivated(logEnabled.isChecked) // optional, default value is false
-        .setTWAInfo(TWAModel(url = "https://www.mediafacts.se/").apply {
+        .setTWAInfo(TWAModel(url = "YOUR_URL").apply {
             extraParams.apply {
                 put("customCustomerParam", "foo")
             }
