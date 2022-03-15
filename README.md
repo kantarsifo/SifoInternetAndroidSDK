@@ -317,7 +317,7 @@ TSMobileAnalytics.createInstance(
 )
 ``` 
 
-**How do you lunch the trusted web activity**
+**How do you launch the trusted web activity**
 
 Just call open Twa like below code
 
