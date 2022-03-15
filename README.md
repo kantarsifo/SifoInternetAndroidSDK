@@ -409,7 +409,7 @@ To check if initialisation has taken place and to do so if it has not.
   ComponentActivity. How shall we handle this?**
   See the solution in this
   link: https://stackoverflow.com/questions/54915164/why-are-there-2-different-componentactivity-classes
--**What do I need to do to verify my integrate  Trusted Web Activity? Contact Kantar**
+- **What do I need to do to verify my integrate  Trusted Web Activity? Contact Kantar**
 
 # Update strategy
 
