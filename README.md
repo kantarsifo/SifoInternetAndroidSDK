@@ -297,7 +297,7 @@ react-native repo:
 ### Trusted web activity Integration
 
 You just need to call setTWAInfo function in SDK initialization and set the URL and extra parameters
-if you have extra parameters as shown below
+if you have extra parameters as like below code
 
 ```kotlin
 TSMobileAnalytics.createInstance(
@@ -319,7 +319,7 @@ TSMobileAnalytics.createInstance(
 
 **How do you lunch the trusted web activity**
 
-Just call open Twa like below 
+Just call open Twa like below code
 
 ```kotlin
   TSMobileAnalytics.instance?.openTwa()
