@@ -50,11 +50,9 @@ in this document.
 
 ## What’s new?
 
-In version 4.1.1 these are the major changes:
+In version 4.1.2 these are the major changes:
 
--Send app version in all requests and include it in the cookie
-
--Disable the SDK if onlyPanelist==true and the SIFO internet app is not installed
+-Integration with trusted web activity to open web activity in a secure way
 
 # Getting started
 
@@ -411,6 +409,7 @@ To check if initialisation has taken place and to do so if it has not.
   ComponentActivity. How shall we handle this?**
   See the solution in this
   link: https://stackoverflow.com/questions/54915164/why-are-there-2-different-componentactivity-classes
+-**What do I need to do to verify my integrate  Trusted Web Activity? Contact Kantar**
 
 # Update strategy
 
