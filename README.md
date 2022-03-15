@@ -296,28 +296,34 @@ react-native repo:
 
 ### Trusted web activity Integration
 
-You just need to call setTWAInfo function in SDK initialization and set the URL and extra parameters if you have extra parameters 
-as shown below 
-
-**Kotlin**
+You just need to call setTWAInfo function in SDK initialization and set the URL and extra parameters
+if you have extra parameters as shown below
 
 ```kotlin
 TSMobileAnalytics.createInstance(
     this,
     TSMobileAnalytics.Builder()
-        .setCpId(cpIdET.text.toString())
-        .setApplicationName(appNameET.text.toString())
-        .setPanelistTrackingOnly(panelistOnly.isChecked)
-        .setIsWebViewBased(isWebViewBased.isChecked)
-        .setLogPrintsActivated(logEnabled.isChecked)
+        .setCpId(cpIdET.text.toString())  // required
+        .setApplicationName(appNameET.text.toString()) // required
+        .setPanelistTrackingOnly(panelistOnly.isChecked) // optional, default value is false
+        .setIsWebViewBased(isWebViewBased.isChecked)  // optional, default value is false
+        .setLogPrintsActivated(logEnabled.isChecked) // optional, default value is false
         .setTWAInfo(TWAModel(url = "https://www.mediafacts.se/").apply {
             extraParams.apply {
                 put("customCustomerParam", "foo")
             }
-        })
+        }) // optional 
         .build()
 )
-```  
+``` 
+
+**How do you lunch the trusted web activity**
+
+Just call open Twa like below 
+
+```kotlin
+  TSMobileAnalytics.instance?.openTwa()
+```
 
 ## Debugging
 

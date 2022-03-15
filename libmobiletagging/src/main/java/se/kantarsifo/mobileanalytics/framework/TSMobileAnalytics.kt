@@ -257,7 +257,7 @@ open class TSMobileAnalytics protected constructor() {
          * @param twaUrl Set web URL for trusted web activity
          * @return the current builder object.
          */
-        fun setTWAInfo(twaInfo:TWAModel) = apply {
+        fun setTWAInfo(twaInfo:TWAModel = TWAModel()) = apply {
             this.twaInfo = twaInfo
         }
 
