@@ -58,7 +58,7 @@ internal class TSMobileAnalyticsBackend : TSMobileAnalytics {
                         TSMConfigUtil.syncConfig(activity, applicationName ?: "")
                     }
 
-                    initTags(activity, cpID!!, applicationName!!, onlyPanelist, isWebViewBased,twaInfo)
+                    initTags(activity, cpID!!, applicationName!!, onlyPanelist, isWebBased,twaInfo)
 
                     sendAppStartEvent()
 
