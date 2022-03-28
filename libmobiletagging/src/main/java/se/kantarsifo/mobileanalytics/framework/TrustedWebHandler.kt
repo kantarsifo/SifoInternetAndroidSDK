@@ -35,6 +35,7 @@ internal class TrustedWebHandler(
                 .appendQueryParameter("sdkVersion",BuildConfig.VERSION_NAME)
                 .appendQueryParameter("appVersion", context.getApplicationVersion())
                 .appendQueryParameter("domain",TagStringsAndValues.DOMAIN_CODIGO)
+                .appendQueryParameter("trackPanelistOnly",trackPanelistOnly.toString())
                 .addExtraParams(twaInfo.extraParams)
                 .build()
             val launcher = TwaLauncher(context)
