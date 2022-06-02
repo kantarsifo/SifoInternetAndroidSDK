@@ -6,4 +6,5 @@
         <package android:name="se.poll.android" />
         <package android:name="se.tns_sifo.ipm" />
     </queries>
+
 </manifest>

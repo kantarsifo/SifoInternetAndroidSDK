@@ -10,9 +10,9 @@ import androidx.activity.ComponentActivity
 import se.kantarsifo.mobileanalytics.framework.Logger.error
 import se.kantarsifo.mobileanalytics.framework.Logger.fatalError
 import se.kantarsifo.mobileanalytics.framework.Logger.log
-import se.kantarsifo.mobileanalytics.framework.TagDataRequestHandler.State.*
+import se.kantarsifo.mobileanalytics.framework.TagDataRequestHandler.State.PREPARING
+import se.kantarsifo.mobileanalytics.framework.TagDataRequestHandler.State.READY
 import java.net.HttpCookie
-import java.util.ArrayList
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -49,6 +49,7 @@ internal class TagDataRequestHandler : TagDataRequestCallbackListener {
 
     private var activityForPref: ComponentActivity? = null
 
+    private lateinit var trustedWebHandler: TrustedWebHandler
 
     /**
      * The callback-listener specified by the user.
@@ -79,13 +80,21 @@ internal class TagDataRequestHandler : TagDataRequestCallbackListener {
         cpId: String,
         applicationName: String,
         cookies: List<HttpCookie>?,
-        trackPanelistOnly: Boolean
+        trackPanelistOnly: Boolean,
+        twaInfo: TWAModel =  TWAModel(),
+        isWebBased:Boolean = false
     ) {
         tagHandler = TagHandler(context, cpId, applicationName, cookies)
         dataRequestQueue = ArrayList()
         activityForPref = activity
         threadPool = Executors.newScheduledThreadPool(MAX_NBR_OF_THREADS)
         this.trackPanelistOnly = trackPanelistOnly
+        trustedWebHandler = TrustedWebHandler(
+            twaInfo = twaInfo,
+            context = context,
+            trackPanelistOnly = trackPanelistOnly,
+            isWebViewBased = isWebBased
+        )
     }
 
     /**
@@ -140,7 +149,7 @@ internal class TagDataRequestHandler : TagDataRequestCallbackListener {
                 this,
                 userCallbackListener
             )
-            log( "Request added to the queue")
+            log("Request added to the queue")
             dataRequestQueue.add(request)
             runRequestQueue()
         }
@@ -148,7 +157,7 @@ internal class TagDataRequestHandler : TagDataRequestCallbackListener {
     }
 
     fun setStateReady() {
-        log( "Lib is ready for logging...")
+        log("Lib is ready for logging...")
         state = READY
         runRequestQueue()
     }
@@ -161,11 +170,11 @@ internal class TagDataRequestHandler : TagDataRequestCallbackListener {
             if (dataRequestQueue.isNotEmpty()) {
                 runRequestQueueThread()
             } else {
-                log( "Request queue is empty. Skip it...")
+                log("Request queue is empty. Skip it...")
             }
         } else {
             // Wait for the READY state...
-            log( "Waiting for the library to get ready...")
+            log("Waiting for the library to get ready...")
         }
     }
 
@@ -180,6 +189,10 @@ internal class TagDataRequestHandler : TagDataRequestCallbackListener {
         return performMetricsRequest(generateCategoryString(categories), contentID)
     }
 
+    fun openTwa(){
+        trustedWebHandler.open()
+    }
+
     // TagDataRequestCallbackListener overrides
 
     /**
@@ -187,7 +200,7 @@ internal class TagDataRequestHandler : TagDataRequestCallbackListener {
      * This method is called when a data request has been completed successfully.
      */
     override fun onDataRequestComplete(request: TagDataRequest) {
-        log( "RequestCompleted: " + request.cat)
+        log("RequestCompleted: " + request.cat)
         nbrOfSuccessfulRequests++
     }
 
@@ -196,7 +209,7 @@ internal class TagDataRequestHandler : TagDataRequestCallbackListener {
      * This method is called when a data request has been failed.
      */
     override fun onDataRequestFailed(request: TagDataRequest) {
-        error( "RequestFailed: " + request.cat)
+        error("RequestFailed: " + request.cat)
         nbrOfFailedRequests++
     }
 
@@ -273,6 +286,7 @@ internal class TagDataRequestHandler : TagDataRequestCallbackListener {
         }
     }
 
+
     /**
      * A thread to run the request to the server.
      */
@@ -280,12 +294,12 @@ internal class TagDataRequestHandler : TagDataRequestCallbackListener {
         var requests: MutableList<TagDataRequest> = mutableListOf()
 
         override fun run() {
-            log( "Request queue(${requests.size}): STARTED")
+            log("Request queue(${requests.size}): STARTED")
             requests.forEach {
-                log( "Run request: " + it.cat)
+                log("Run request: " + it.cat)
                 it.initRequest()
             }
-            log( "Queue cleared!")
+            log("Queue cleared!")
         }
     }
 

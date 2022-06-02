@@ -1,13 +1,18 @@
 package se.kantarsifo.mobileanalytics.sampleapp
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import androidx.activity.result.ActivityResultLauncher
+import androidx.browser.trusted.TrustedWebActivityIntentBuilder
+import com.google.androidbrowserhelper.trusted.TwaLauncher
 import kotlinx.android.synthetic.main.activity_initialization.*
 import se.kantarsifo.mobileanalytics.framework.TSMobileAnalytics
+import se.kantarsifo.mobileanalytics.framework.TWAModel
 import se.kantarsifo.mobileanalytics.framework.TagStringsAndValues
 import se.kantarsifo.mobileanalytics.sampleapp.base.BaseActivity
 import se.kantarsifo.mobileanalytics.sampleapp.native_view.NativeActivity
@@ -59,6 +64,7 @@ class InitializationActivity : BaseActivity() {
         destroy_button.setOnClickListener { destroyCurrentFramework() }
         btn_webview.setOnClickListener { onWebViewClicked() }
         btn_native.setOnClickListener { onNativeClicked() }
+        twa_native.setOnClickListener {  onTWAClicked() }
     }
 
     private fun onInitFrameworkClicked() {
@@ -72,7 +78,7 @@ class InitializationActivity : BaseActivity() {
     }
 
     private fun initializeFrameworkWithBuilder() {
-        TSMobileAnalytics.createInstance(
+       TSMobileAnalytics.createInstance(
                 this,
                 TSMobileAnalytics.Builder()
                         .setCpId(cpIdET.text.toString())
@@ -80,6 +86,11 @@ class InitializationActivity : BaseActivity() {
                         .setPanelistTrackingOnly(panelistOnly.isChecked)
                         .setIsWebViewBased(isWebViewBased.isChecked)
                         .setLogPrintsActivated(logEnabled.isChecked)
+                        .setTWAInfo(TWAModel(url = "https://www.mediafacts.se/").apply {
+                            extraParams.apply {
+                               put("customCustomerParam","foo")
+                            }
+                        })
                         .build()
         )
     }
@@ -117,6 +128,19 @@ class InitializationActivity : BaseActivity() {
             WebViewActivity.start(this)
         }
     }
+
+    private fun onTWAClicked() {
+        if (isFrameworkInitialized()) {
+           start(this)
+        }
+    }
+
+    fun start(context: Context) {
+
+        TSMobileAnalytics.instance?.openTwa()
+
+    }
+
 
     private fun onNativeClicked() {
         if (isFrameworkInitialized()) {

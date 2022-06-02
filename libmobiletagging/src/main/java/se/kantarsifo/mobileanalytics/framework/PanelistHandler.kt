@@ -46,9 +46,9 @@ internal object PanelistHandler {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                 ActivityResultHandler(activity, intent) { activityResult ->
                     if (activityResult != null) {
-                        if (activityResult.resultCode == Activity.RESULT_OK) {
-                            sharedPref.edit().putString(TagStringsAndValues.SIFO_PREFERENCE_COOKIES, activityResult.data?.dataString).commit()
-                            sharedPref.edit().putLong(TagStringsAndValues.SIFO_PREFERENCE_COOKIES_SYNC_TIME, System.currentTimeMillis()).commit()
+                        if (activityResult.resultCode == Activity.RESULT_OK  ) {
+                            sharedPref.edit().putString(TagStringsAndValues.SIFO_PREFERENCE_COOKIES, activityResult.data?.dataString).apply()
+                            sharedPref.edit().putLong(TagStringsAndValues.SIFO_PREFERENCE_COOKIES_SYNC_TIME, System.currentTimeMillis()).apply()
                         }
                     }
                     onComplete()

@@ -13,6 +13,7 @@
             android:id="@+id/cpIdET"
             style="@style/CustomEditText"
             android:layout_width="match_parent"
+            android:inputType="text"
             android:layout_height="wrap_content"
             android:hint="@string/cpid_label" />
 
@@ -87,6 +88,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/native_view_btn_label" />
+    <Button
+        android:id="@+id/twa_native"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/trusted_web_activity" />
 
     <LinearLayout
         android:layout_width="match_parent"

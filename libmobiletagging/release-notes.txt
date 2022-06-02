@@ -15,6 +15,10 @@ using Kantar Sifo’s services. The SDK zip file contains three folders:
 
 RELEASE NOTES:
 
+v4.1.2 2022-03-17
+
+ - Trusted Web Activity feature to open web activity in a secure way
+
 v4.1.1 2021-09-10
 
 - Send app version in all requests and include it in the cookie
