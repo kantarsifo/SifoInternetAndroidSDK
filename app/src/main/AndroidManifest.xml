@@ -46,6 +46,9 @@
             android:label="@string/title_content_id"
             android:taskAffinity="@string/task_native_test" />
 
+
     </application>
+
+
 
 </manifest>

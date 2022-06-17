@@ -8,6 +8,8 @@ package se.kantarsifo.mobileanalytics.framework
 import android.content.Context
 import android.webkit.WebView
 import androidx.activity.ComponentActivity
+import se.kantarsifo.mobileanalytics.framework.TagStringsAndValues.DOMAIN_CODIGO
+import se.kantarsifo.mobileanalytics.framework.Utils.getApplicationVersion
 
 /**
  * Kantar Sifo Mobile Analytics Framework for Android:
@@ -69,6 +71,12 @@ open class TSMobileAnalytics protected constructor() {
     protected var isWebViewBased = false
 
     /**
+     * URL for trusted web activity
+     */
+    lateinit var twaInfo: TWAModel
+
+
+    /**
      * Call to immediately send a tag to the server using the framework's HTTPS-functionality.
      *
      * Use when a page is displayed, for example in the onResume-method of an Activity.
@@ -87,6 +95,10 @@ open class TSMobileAnalytics protected constructor() {
     fun sendTag(category: String?): Int {
         return dataRequestHandler.performMetricsRequest(category)
     }
+    fun openTwa() {
+       dataRequestHandler.openTwa()
+    }
+
 
     /**
      * Call to immediately send a tag to the server using the framework's HTTPS-functionality.
@@ -109,6 +121,8 @@ open class TSMobileAnalytics protected constructor() {
     fun sendTag(category: String?, contentID: String?): Int {
         return dataRequestHandler.performMetricsRequest(category, contentID)
     }
+
+
 
     /**
      * Call to immediately send a tag to the server using the framework's HTTPS-functionality.
@@ -147,6 +161,8 @@ open class TSMobileAnalytics protected constructor() {
         dataRequestHandler.userCallbackListener = callbackListener
     }
 
+
+
     /**
      * TSMobileAnalytics constructor with Builder class.
      *
@@ -158,6 +174,7 @@ open class TSMobileAnalytics protected constructor() {
         panelistTrackingOnly = builder.panelistTrackingOnly
         logPrintsActivated = builder.logPrintsActivated
         isWebViewBased = builder.isWebViewBased
+        twaInfo = builder.twaInfo
     }
 
     /**
@@ -179,6 +196,7 @@ open class TSMobileAnalytics protected constructor() {
             private set
         var isWebViewBased = false
             private set
+        lateinit var twaInfo :TWAModel
 
         /**
          * Specify the cpId you want to set(required).
@@ -234,9 +252,20 @@ open class TSMobileAnalytics protected constructor() {
         }
 
         /**
+         * Specify the twaUrl you want to set(not required, default value is null).
+         *
+         * @param twaUrl Set web URL for trusted web activity
+         * @return the current builder object.
+         */
+        fun setTWAInfo(twaInfo:TWAModel = TWAModel()) = apply {
+            this.twaInfo = twaInfo
+        }
+
+        /**
          * @return return constructor of TSMobileAnalytics.
          */
         fun build() = TSMobileAnalytics(this)
+
 
     }
 
@@ -276,16 +305,40 @@ open class TSMobileAnalytics protected constructor() {
          * @return The framework instance created with your values. Returns null if creation failed due to invalid parameters.
          */
         @JvmStatic
-        fun createInstance(activity: ComponentActivity, cpID: String?, applicationName: String?): TSMobileAnalytics? {
-            return TSMobileAnalyticsBackend.createInstance(activity, cpID, applicationName, false, false)
+        fun createInstance(
+            activity: ComponentActivity,
+            cpID: String?,
+            applicationName: String?
+        ): TSMobileAnalytics? {
+            return TSMobileAnalyticsBackend.createInstance(
+                activity,
+                cpID,
+                applicationName,
+                false,
+                false
+            )
         }
 
         /**
          * Call this method upon application start if you only want to measure Kantar Sifo Panelist users.
          */
         @JvmStatic
-        fun createInstance(activity: ComponentActivity, cpID: String?, applicationName: String?, panelistTrackingOnly: Boolean, isWebViewBased: Boolean): TSMobileAnalytics? {
-            return TSMobileAnalyticsBackend.createInstance(activity, cpID, applicationName, panelistTrackingOnly, isWebViewBased)
+        fun createInstance(
+            activity: ComponentActivity,
+            cpID: String?,
+            applicationName: String?,
+            panelistTrackingOnly: Boolean,
+            isWebViewBased: Boolean,
+            twaInfo: TWAModel = TWAModel()
+        ): TSMobileAnalytics? {
+            return TSMobileAnalyticsBackend.createInstance(
+                activity,
+                cpID,
+                applicationName,
+                panelistTrackingOnly,
+                isWebViewBased,
+                twaInfo
+            )
         }
 
         /**
@@ -297,8 +350,18 @@ open class TSMobileAnalytics protected constructor() {
          * @return The framework instance created with your values. Returns null if creation failed due to invalid parameters.
          */
         @JvmStatic
-        fun createInstance(activity: ComponentActivity, builder: TSMobileAnalytics): TSMobileAnalytics? {
-            return createInstance(activity, builder.cpId, builder.appName, builder.panelistTrackingOnly, builder.isWebViewBased)
+        fun createInstance(
+            activity: ComponentActivity,
+            builder: TSMobileAnalytics
+        ): TSMobileAnalytics? {
+            return createInstance(
+                activity,
+                builder.cpId,
+                builder.appName,
+                builder.panelistTrackingOnly,
+                builder.isWebViewBased,
+                builder.twaInfo
+            )
         }
 
         /**
@@ -321,5 +384,9 @@ open class TSMobileAnalytics protected constructor() {
         }
 
     }
+
+
+
+
 
 }

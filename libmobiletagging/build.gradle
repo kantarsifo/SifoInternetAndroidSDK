@@ -5,7 +5,7 @@ apply plugin: 'com.github.dcendents.android-maven'
 
 group='myGroups'
 
-version = "4.1.1"
+version = "4.1.2"
 
 
 android {
@@ -47,6 +47,8 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-common-java8:2.2.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.4'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.4'
+    api("com.google.androidbrowserhelper:androidbrowserhelper:2.3.0")
+
 }
 
 //android.libraryVariants.all { variant ->
