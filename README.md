@@ -166,7 +166,7 @@ TSMobileAnalytics.createInstance(
     TSMobileAnalytics.Builder()
         .setCpId("Customer ID") // required
         .setApplicationName("Application name") // required
-        .setPanelistTrackingOnly(boolean) // required value is false
+        .setPanelistTrackingOnly(boolean) // optional, default value is false
         .setLogPrintsActivated(boolean) // optional, default value is false
         .setIsWebViewBased(boolean) // optional, default value is false
         .build()
@@ -181,7 +181,7 @@ TSMobileAnalytics.createInstance(
         new TSMobileAnalytics.Builder()
         .setCpId("Customer ID") // required
         .setApplicationName("Application name") // required
-        .setPanelistTrackingOnly(boolean) // required value is false
+        .setPanelistTrackingOnly(boolean) // optional, default value is false
         .setLogPrintsActivated(boolean) // optional, default value is false
         .setIsWebViewBased(boolean) // optional, default value is false
         .build()
@@ -303,7 +303,7 @@ TSMobileAnalytics.createInstance(
     TSMobileAnalytics.Builder()
         .setCpId(cpIdET.text.toString())  // required
         .setApplicationName(appNameET.text.toString()) // required
-        .setPanelistTrackingOnly(panelistOnly.isChecked) // optional, default value is false
+        .setPanelistTrackingOnly(panelistOnly.isChecked) // required value is false
         .setIsWebViewBased(isWebViewBased.isChecked)  // optional, default value is false
         .setLogPrintsActivated(logEnabled.isChecked) // optional, default value is false
         .setTWAInfo(TWAModel(url = "YOUR_URL").apply {
