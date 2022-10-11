@@ -166,7 +166,7 @@ TSMobileAnalytics.createInstance(
     TSMobileAnalytics.Builder()
         .setCpId("Customer ID") // required
         .setApplicationName("Application name") // required
-        .setPanelistTrackingOnly(boolean) // optional, default value is false
+        .setPanelistTrackingOnly(boolean) // required value is false
         .setLogPrintsActivated(boolean) // optional, default value is false
         .setIsWebViewBased(boolean) // optional, default value is false
         .build()
@@ -181,7 +181,7 @@ TSMobileAnalytics.createInstance(
         new TSMobileAnalytics.Builder()
         .setCpId("Customer ID") // required
         .setApplicationName("Application name") // required
-        .setPanelistTrackingOnly(boolean) // optional, default value is false
+        .setPanelistTrackingOnly(boolean) // required value is false
         .setLogPrintsActivated(boolean) // optional, default value is false
         .setIsWebViewBased(boolean) // optional, default value is false
         .build()
