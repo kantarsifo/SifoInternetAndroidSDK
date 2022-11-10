@@ -5,11 +5,8 @@
  */
 package se.kantarsifo.mobileanalytics.framework
 
-import android.content.Context
 import android.webkit.WebView
 import androidx.activity.ComponentActivity
-import se.kantarsifo.mobileanalytics.framework.TagStringsAndValues.DOMAIN_CODIGO
-import se.kantarsifo.mobileanalytics.framework.Utils.getApplicationVersion
 
 /**
  * Kantar Sifo Mobile Analytics Framework for Android:
@@ -73,7 +70,7 @@ open class TSMobileAnalytics protected constructor() {
     /**
      * URL for trusted web activity
      */
-    lateinit var twaInfo: TWAModel
+    protected var twaInfo: TWAModel = TWAModel()
 
 
     /**
@@ -95,8 +92,9 @@ open class TSMobileAnalytics protected constructor() {
     fun sendTag(category: String?): Int {
         return dataRequestHandler.performMetricsRequest(category)
     }
+
     fun openTwa() {
-       dataRequestHandler.openTwa()
+        dataRequestHandler.openTwa()
     }
 
 
@@ -121,7 +119,6 @@ open class TSMobileAnalytics protected constructor() {
     fun sendTag(category: String?, contentID: String?): Int {
         return dataRequestHandler.performMetricsRequest(category, contentID)
     }
-
 
 
     /**
@@ -162,7 +159,6 @@ open class TSMobileAnalytics protected constructor() {
     }
 
 
-
     /**
      * TSMobileAnalytics constructor with Builder class.
      *
@@ -196,7 +192,8 @@ open class TSMobileAnalytics protected constructor() {
             private set
         var isWebViewBased = false
             private set
-        lateinit var twaInfo :TWAModel
+        var twaInfo: TWAModel = TWAModel()
+            private set
 
         /**
          * Specify the cpId you want to set(required).
@@ -257,7 +254,7 @@ open class TSMobileAnalytics protected constructor() {
          * @param twaUrl Set web URL for trusted web activity
          * @return the current builder object.
          */
-        fun setTWAInfo(twaInfo:TWAModel = TWAModel()) = apply {
+        fun setTWAInfo(twaInfo: TWAModel = TWAModel()) = apply {
             this.twaInfo = twaInfo
         }
 
@@ -306,16 +303,10 @@ open class TSMobileAnalytics protected constructor() {
          */
         @JvmStatic
         fun createInstance(
-            activity: ComponentActivity,
-            cpID: String?,
-            applicationName: String?
+            activity: ComponentActivity, cpID: String?, applicationName: String?
         ): TSMobileAnalytics? {
             return TSMobileAnalyticsBackend.createInstance(
-                activity,
-                cpID,
-                applicationName,
-                false,
-                false
+                activity, cpID, applicationName, false, false
             )
         }
 
@@ -332,12 +323,7 @@ open class TSMobileAnalytics protected constructor() {
             twaInfo: TWAModel = TWAModel()
         ): TSMobileAnalytics? {
             return TSMobileAnalyticsBackend.createInstance(
-                activity,
-                cpID,
-                applicationName,
-                panelistTrackingOnly,
-                isWebViewBased,
-                twaInfo
+                activity, cpID, applicationName, panelistTrackingOnly, isWebViewBased, twaInfo
             )
         }
 
@@ -351,8 +337,7 @@ open class TSMobileAnalytics protected constructor() {
          */
         @JvmStatic
         fun createInstance(
-            activity: ComponentActivity,
-            builder: TSMobileAnalytics
+            activity: ComponentActivity, builder: TSMobileAnalytics
         ): TSMobileAnalytics? {
             return createInstance(
                 activity,
@@ -384,9 +369,6 @@ open class TSMobileAnalytics protected constructor() {
         }
 
     }
-
-
-
 
 
 }
