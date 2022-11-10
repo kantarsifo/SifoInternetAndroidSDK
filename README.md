@@ -50,7 +50,7 @@ in this document.
 
 ## What’s new?
 
-In version 4.1.2 these are the major changes:
+In version 4.1.3 these are the major changes:
 
 -Integration with trusted web activity to open web activity in a secure way
 
