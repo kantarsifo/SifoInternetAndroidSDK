@@ -353,6 +353,9 @@ correctly in the statistics.
   the Sifo internet, app given it is installed on the same device. This means on initialisation the
   app will send an intent request to the Sifo Internet app and wait for the result and this is why
   just passing the context is no longer enough.
+- **Which Activity is better for initialising the library?**
+  For initialising the library, it needs some time to set up itself, the best way to initialize the library is in MainActivity.
+  Example: if you have SplashActivity and MainActivity. Splash activity is alive for 1 or 2 seconds and The best way to initialize the library is in MainActivity.
 - **How do I test and verify that the framework is correct integrated?**  
   See [Test Application](#test-application)
   and [Validation test with Kantar Sifo​](#validation-test-with-kantar-sifo) below.
