@@ -515,14 +515,8 @@ correctly stored in the analytics databases.
 
 # Contact information
 
-Technical questions:
+Please send any questions or feedback to:
 
-[peter.andersson@kantar.com]()
+[SwedishInternetSDK@kantar.com](mailto:SwedishInternetSDK@kantar.com)  +46 (0)701 842 372
 
-Other questions:
-
-[claes.bostrom@kantar.com]()
-
-[info@kantarsifo.com]()
-
-08-50742000
+[info@kantarsifo.com](mailto:info@kantarsifo.com)  +46 (0)8 507 420 00
