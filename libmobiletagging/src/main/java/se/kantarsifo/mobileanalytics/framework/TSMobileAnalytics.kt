@@ -322,6 +322,7 @@ open class TSMobileAnalytics protected constructor() {
             isWebViewBased: Boolean,
             twaInfo: TWAModel = TWAModel()
         ): TSMobileAnalytics? {
+            this.isWebViewBased = isWebViewBased
             return TSMobileAnalyticsBackend.createInstance(
                 activity, cpID, applicationName, panelistTrackingOnly, isWebViewBased, twaInfo
             )
