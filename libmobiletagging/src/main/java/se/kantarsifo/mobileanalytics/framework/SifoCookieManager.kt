@@ -38,9 +38,17 @@ object SifoCookieManager {
         }
         val cookies = cookieManager.cookieStore.cookies
         for (cookie in cookies) {
-            val cookieString = cookie.name + "=" + cookie.value + "; Domain=" + cookie.domain
-            Log.e("cookieString",cookieString)
-            android.webkit.CookieManager.getInstance().setCookie(cookie.domain, cookieString)
+            val cookieString =
+                cookie.name + "=" + cookie.value + "; Domain=" + cookie.domain + "; SameSite=None; path=/; secure; HttpOnly"
+            Log.e("cookieString", cookieString)
+
+            var newDomain = cookie.domain.trim()
+            if (newDomain.startsWith(".")) {
+                newDomain = newDomain.replaceFirst(".", "")
+            }
+            newDomain = "https://$newDomain"
+            android.webkit.CookieManager.getInstance()
+                .setCookie(newDomain, cookieString)
         }
     }
 
