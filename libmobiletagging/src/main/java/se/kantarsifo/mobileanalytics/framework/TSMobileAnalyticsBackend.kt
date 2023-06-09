@@ -49,7 +49,7 @@ internal class TSMobileAnalyticsBackend : TSMobileAnalytics {
             }
             val sdkVersion = BuildConfig.VERSION_NAME
             val appVersion = activity.getApplicationVersion()
-            val cookieValue = "trackPanelistOnly=$onlyPanelist&isWebViewBased=$isWebBased&sdkVersion=$sdkVersion&appVersion=$appVersion; Samesite=None; secure; Httponly"
+            val cookieValue = "trackPanelistOnly=$onlyPanelist&isWebViewBased=$isWebBased&sdkVersion=$sdkVersion&appVersion=$appVersion; SameSite=None; secure; Httponly"
             val metaCookie = CookieHandler.createHttpCookie(TagStringsAndValues.SIFO_META_COOKIE_NAME, cookieValue)
             CookieHandler.setupPanelistCookies(listOf(metaCookie))
             if (paramsAreValid(cpID, applicationName)) {
