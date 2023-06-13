@@ -2,14 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
-version = "4.0.2"
+version = "4.0.1"
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion 31
     defaultConfig {
         applicationId "se.kantarsifo.mobileanalytics.sampleapp"
         minSdkVersion 16
-        targetSdkVersion 33
+        targetSdkVersion 30
         versionCode 1
         versionName version
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"

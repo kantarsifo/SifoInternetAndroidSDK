@@ -67,7 +67,6 @@ internal object CookieHandler {
             this.path = path
             this.domain = domain
             this.maxAge = CookieHandler.getMaxAge()
-            this.secure = true
         }
     }
 
