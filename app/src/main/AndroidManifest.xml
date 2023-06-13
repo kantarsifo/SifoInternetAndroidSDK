@@ -17,6 +17,7 @@
         tools:targetApi="m">
 
         <activity
+            android:exported="true"
             android:name=".InitializationActivity"
             android:windowSoftInputMode="stateHidden">
 
