@@ -1,15 +1,11 @@
 package se.kantarsifo.mobileanalytics.sampleapp
 
-import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import androidx.activity.result.ActivityResultLauncher
-import androidx.browser.trusted.TrustedWebActivityIntentBuilder
-import com.google.androidbrowserhelper.trusted.TwaLauncher
 import kotlinx.android.synthetic.main.activity_initialization.*
 import se.kantarsifo.mobileanalytics.framework.TSMobileAnalytics
 import se.kantarsifo.mobileanalytics.framework.TWAModel
@@ -131,16 +127,9 @@ class InitializationActivity : BaseActivity() {
 
     private fun onTWAClicked() {
         if (isFrameworkInitialized()) {
-           start(this)
+            TSMobileAnalytics.instance?.openTwa(activity = this)
         }
     }
-
-    fun start(context: Context) {
-
-        TSMobileAnalytics.instance?.openTwa()
-
-    }
-
 
     private fun onNativeClicked() {
         if (isFrameworkInitialized()) {

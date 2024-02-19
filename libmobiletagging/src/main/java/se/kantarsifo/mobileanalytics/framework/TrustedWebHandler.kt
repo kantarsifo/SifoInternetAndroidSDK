@@ -1,6 +1,5 @@
 package se.kantarsifo.mobileanalytics.framework
 
-import android.content.Context
 import android.net.Uri
 import androidx.activity.ComponentActivity
 import com.google.androidbrowserhelper.trusted.TwaLauncher
@@ -11,18 +10,17 @@ import java.net.HttpCookie
 
 internal class TrustedWebHandler(
     private var twaInfo:TWAModel,
-    private val context: Context,
     private val trackPanelistOnly:Boolean,
     private val isWebViewBased:Boolean
 ) {
 
-    fun open() {
+    fun open(activity: ComponentActivity) {
         var url = ""
         if (twaInfo.url.isEmpty()){
             throw RuntimeException("you should set twa url first in analytics instance and ends with /")
         }
         url = twaInfo.url
-        val panelistData = PanelistHandler.getCookies(context,context as ComponentActivity)
+        val panelistData = PanelistHandler.getCookies(activity)
         val sdkId = getSdkId(panelistData)
         url += if (sdkId.isNotEmpty()){
             "?sdkid=$sdkId"
@@ -33,12 +31,12 @@ internal class TrustedWebHandler(
             val uri = Uri.parse(url).buildUpon()
                 .appendQueryParameter("isWebViewBased",isWebViewBased.toString())
                 .appendQueryParameter("sdkVersion",BuildConfig.VERSION_NAME)
-                .appendQueryParameter("appVersion", context.getApplicationVersion())
+                .appendQueryParameter("appVersion", activity.getApplicationVersion())
                 .appendQueryParameter("domain",TagStringsAndValues.DOMAIN_CODIGO)
                 .appendQueryParameter("trackPanelistOnly",trackPanelistOnly.toString())
                 .addExtraParams(twaInfo.extraParams)
                 .build()
-            val launcher = TwaLauncher(context)
+            val launcher = TwaLauncher(activity)
             launcher.launch(uri)
         }catch (e:Exception){
             e.printStackTrace()

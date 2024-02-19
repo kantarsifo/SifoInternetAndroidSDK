@@ -21,36 +21,54 @@ import java.net.HttpCookie
  * Extension of the framework class containing some extended functions used
  * internally by the framework.
  */
-internal class TSMobileAnalyticsBackend : TSMobileAnalytics {
+internal class TSMobileAnalyticsBackend
+/**
+ * Constructor used internally only.
+ * Use createInstance() and getInstance() instead.
+ */ private constructor(
+    context: Context,
+    cpId: String,
+    applicationName: String,
+    cookies: List<HttpCookie>?,
+    trackPanelistOnly: Boolean,
+    twaInfo: TWAModel,
+    isWebViewBased: Boolean
+) : TSMobileAnalytics() {
 
-    /**
-     * Constructor used internally only.
-     * Use createInstance() and getInstance() instead.
-     */
-    private constructor(context: Context, activity: ComponentActivity, cpId: String, applicationName: String, panelistId: String, trackPanelistOnly: Boolean) : super() {
-        dataRequestHandler = TagDataRequestHandler(context, activity, cpId, applicationName, panelistId, trackPanelistOnly)
-    }
-
-
-    /**
-     * Constructor used internally only.
-     * Use createInstance() and getInstance() instead.
-     */
-    private constructor(context: Context, activity: ComponentActivity, cpId: String, applicationName: String, cookies: List<HttpCookie>?, trackPanelistOnly: Boolean,twaInfo: TWAModel,isWebViewBased: Boolean) : super() {
-        dataRequestHandler = TagDataRequestHandler(context, activity, cpId, applicationName, cookies, trackPanelistOnly,twaInfo,isWebViewBased)
+    init {
+        dataRequestHandler = TagDataRequestHandler(
+            context,
+            cpId,
+            applicationName,
+            cookies,
+            trackPanelistOnly,
+            twaInfo,
+            isWebViewBased
+        )
     }
 
     companion object {
 
-        fun createInstance(activity: ComponentActivity, cpID: String?, applicationName: String?, onlyPanelist: Boolean, isWebBased: Boolean = false,twaInfo: TWAModel = TWAModel()): TSMobileAnalyticsBackend? {
+        fun createInstance(
+            activity: ComponentActivity,
+            cpID: String?,
+            applicationName: String?,
+            onlyPanelist: Boolean,
+            isWebBased: Boolean = false,
+            twaInfo: TWAModel = TWAModel()
+        ): TSMobileAnalyticsBackend? {
             if (activity == null) {
                 fatalError("Mobile Application Tagging Framework Failed to initiate - context must not be null")
                 return frameworkInstance
             }
             val sdkVersion = BuildConfig.VERSION_NAME
             val appVersion = activity.getApplicationVersion()
-            val cookieValue = "trackPanelistOnly=$onlyPanelist&isWebViewBased=$isWebBased&sdkVersion=$sdkVersion&appVersion=$appVersion; SameSite=None; secure; Httponly"
-            val metaCookie = CookieHandler.createHttpCookie(TagStringsAndValues.SIFO_META_COOKIE_NAME, cookieValue)
+            val cookieValue =
+                "trackPanelistOnly=$onlyPanelist&isWebViewBased=$isWebBased&sdkVersion=$sdkVersion&appVersion=$appVersion; SameSite=None; secure; Httponly"
+            val metaCookie = CookieHandler.createHttpCookie(
+                TagStringsAndValues.SIFO_META_COOKIE_NAME,
+                cookieValue
+            )
             CookieHandler.setupPanelistCookies(listOf(metaCookie))
             if (paramsAreValid(cpID, applicationName)) {
                 if (frameworkInstance == null) {
@@ -58,12 +76,19 @@ internal class TSMobileAnalyticsBackend : TSMobileAnalytics {
                         TSMConfigUtil.syncConfig(activity, applicationName ?: "")
                     }
 
-                    initTags(activity, cpID!!, applicationName!!, onlyPanelist, isWebBased,twaInfo)
+                    initTags(
+                        activity.applicationContext,
+                        cpID!!,
+                        applicationName!!,
+                        onlyPanelist,
+                        isWebBased,
+                        twaInfo
+                    )
 
                     sendAppStartEvent()
 
-                    PanelistHandler.syncCookies(activity, activity) {
-                        refreshCookiesAndKeys(activity,onlyPanelist)
+                    PanelistHandler.syncCookies(activity.baseContext, activity) {
+                        refreshCookiesAndKeys(activity, onlyPanelist)
                         frameworkInstance?.dataRequestHandler?.setStateReady()
                     }
                 } else {
@@ -75,8 +100,9 @@ internal class TSMobileAnalyticsBackend : TSMobileAnalytics {
         }
 
 
-        private fun refreshCookiesAndKeys(activity: ComponentActivity, onlyPanelist: Boolean) {
-            val isInstalled = activity.isPackageInstalled(TagStringsAndValues.SIFO_PANELIST_PACKAGE_NAME_V2)
+        private fun refreshCookiesAndKeys(context: Context, onlyPanelist: Boolean) {
+            val isInstalled =
+                context.isPackageInstalled(TagStringsAndValues.SIFO_PANELIST_PACKAGE_NAME_V2)
             if (!isInstalled) {
                 if (onlyPanelist && !isInstalled) {
                     frameworkInstance = null
@@ -86,15 +112,17 @@ internal class TSMobileAnalyticsBackend : TSMobileAnalytics {
                 return
             }
             log("Refreshing panelist keys(Cookies)")
-            val cookies = PanelistHandler.getCookies(activity, activity)
+            val cookies = PanelistHandler.getCookies(context)
             frameworkInstance?.dataRequestHandler?.apply {
                 if (cookies != null) {
                     refreshCookies(cookies)
                 } else {
-                    val panelistKey = PanelistHandler.getPanelistKey(activity)
+                    val panelistKey = PanelistHandler.getPanelistKey(context)
                     if (onlyPanelist && panelistKey == TagStringsAndValues.NO_PANELIST_ID) {
-                        fatalError("Mobile Application Tagging Framework Failed to initiate - " +
-                                "Panelist Id was not found, it must exist if only panelist tracking is active")
+                        fatalError(
+                            "Mobile Application Tagging Framework Failed to initiate - " +
+                                    "Panelist Id was not found, it must exist if only panelist tracking is active"
+                        )
                         return
                     }
                     refreshCookies(panelistKey)
@@ -128,14 +156,22 @@ internal class TSMobileAnalyticsBackend : TSMobileAnalytics {
 
 
         private fun initTags(
-            activity: ComponentActivity,
+            context: Context,
             cpID: String,
             applicationName: String,
             onlyPanelist: Boolean,
             isWebViewBased: Boolean,
             twaInfo: TWAModel
         ): Boolean {
-            frameworkInstance = TSMobileAnalyticsBackend(activity, activity, cpID, applicationName, null, onlyPanelist,twaInfo,isWebViewBased)
+            frameworkInstance = TSMobileAnalyticsBackend(
+                context,
+                cpID,
+                applicationName,
+                null,
+                onlyPanelist,
+                twaInfo,
+                isWebViewBased
+            )
             log("Mobile Application Tagging Framework initiated with the following values " +
                         "\nCPID: $cpID\nApplication name: $applicationName\nOnly panelist tracking : $onlyPanelist")
             return true
@@ -145,7 +181,7 @@ internal class TSMobileAnalyticsBackend : TSMobileAnalytics {
          * Sends the app start event
          */
         private fun sendAppStartEvent() {
-            if (frameworkInstance ==null) {
+            if (frameworkInstance == null) {
                 log("Cannot create app start event")
                 return
             }

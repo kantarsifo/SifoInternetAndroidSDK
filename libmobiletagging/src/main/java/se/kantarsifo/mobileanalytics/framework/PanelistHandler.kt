@@ -62,8 +62,8 @@ internal object PanelistHandler {
         }
     }
 
-    fun getCookies(context: Context, activity: ComponentActivity): List<HttpCookie>? {
-        val sharedPref = activity.getSharedPreferences(TagStringsAndValues.SIFO_PREFERENCE_KEY, Context.MODE_PRIVATE)
+    fun getCookies(context: Context): List<HttpCookie>? {
+        val sharedPref = context.getSharedPreferences(TagStringsAndValues.SIFO_PREFERENCE_KEY, Context.MODE_PRIVATE)
         if (sharedPref.contains(TagStringsAndValues.SIFO_PREFERENCE_COOKIES)) {
             return readCookiesFromJson(sharedPref.getString(TagStringsAndValues.SIFO_PREFERENCE_COOKIES, "") ?: "")
         } else { // Fallback to old version of reading cookies from sifo panel app shared preference
@@ -159,8 +159,8 @@ internal object PanelistHandler {
         return ""
     }
 
-    private fun shouldUpdateCookieValues(activity: ComponentActivity): Boolean {
-        val sharedPref = activity.getSharedPreferences(TagStringsAndValues.SIFO_PREFERENCE_KEY, Context.MODE_PRIVATE)
+    private fun shouldUpdateCookieValues(context: Context): Boolean {
+        val sharedPref = context.getSharedPreferences(TagStringsAndValues.SIFO_PREFERENCE_KEY, Context.MODE_PRIVATE)
         if (sharedPref.contains(TagStringsAndValues.SIFO_PREFERENCE_COOKIES_SYNC_TIME).not()) {
             return true
         }

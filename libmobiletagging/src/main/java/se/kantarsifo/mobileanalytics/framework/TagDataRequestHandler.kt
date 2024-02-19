@@ -12,6 +12,7 @@ import se.kantarsifo.mobileanalytics.framework.Logger.fatalError
 import se.kantarsifo.mobileanalytics.framework.Logger.log
 import se.kantarsifo.mobileanalytics.framework.TagDataRequestHandler.State.PREPARING
 import se.kantarsifo.mobileanalytics.framework.TagDataRequestHandler.State.READY
+import java.lang.ref.WeakReference
 import java.net.HttpCookie
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -47,14 +48,13 @@ internal class TagDataRequestHandler : TagDataRequestCallbackListener {
      */
     private var tagHandler: TagHandler
 
-    private var activityForPref: ComponentActivity? = null
 
     private lateinit var trustedWebHandler: TrustedWebHandler
 
     /**
      * The callback-listener specified by the user.
      */
-    var userCallbackListener: TagDataRequestCallbackListener? = null
+    var userCallbackListener: WeakReference<TagDataRequestCallbackListener?>? = null
 
     /**
      * The thread handling requests.
@@ -76,7 +76,6 @@ internal class TagDataRequestHandler : TagDataRequestCallbackListener {
      */
     constructor(
         context: Context,
-        activity: ComponentActivity,
         cpId: String,
         applicationName: String,
         cookies: List<HttpCookie>?,
@@ -86,39 +85,15 @@ internal class TagDataRequestHandler : TagDataRequestCallbackListener {
     ) {
         tagHandler = TagHandler(context, cpId, applicationName, cookies)
         dataRequestQueue = ArrayList()
-        activityForPref = activity
         threadPool = Executors.newScheduledThreadPool(MAX_NBR_OF_THREADS)
         this.trackPanelistOnly = trackPanelistOnly
         trustedWebHandler = TrustedWebHandler(
             twaInfo = twaInfo,
-            context = context,
             trackPanelistOnly = trackPanelistOnly,
             isWebViewBased = isWebBased
         )
     }
 
-    /**
-     * Create a new handler for specified context and application information.
-     *
-     * @param context           The context of the application.
-     * @param cpId              The customer ID of the application.
-     * @param applicationName   The name of the application.
-     * @param panelistKey       The panelist key.
-     */
-    constructor(
-        context: Context,
-        activity: ComponentActivity,
-        cpId: String,
-        applicationName: String,
-        panelistKey: String,
-        trackPanelistOnly: Boolean
-    ) {
-        tagHandler = TagHandler(context, cpId, applicationName, panelistKey)
-        dataRequestQueue = ArrayList()
-        activityForPref = activity
-        threadPool = Executors.newScheduledThreadPool(MAX_NBR_OF_THREADS)
-        this.trackPanelistOnly = trackPanelistOnly
-    }
 
     fun refreshCookies(cookies: List<HttpCookie>) {
         tagHandler.refresh(cookies)
@@ -147,7 +122,7 @@ internal class TagDataRequestHandler : TagDataRequestCallbackListener {
                 tagHandler.applicationName,
                 tagHandler.applicationVersion,
                 this,
-                userCallbackListener
+                userCallbackListener?.get()
             )
             log("Request added to the queue")
             dataRequestQueue.add(request)
@@ -189,8 +164,8 @@ internal class TagDataRequestHandler : TagDataRequestCallbackListener {
         return performMetricsRequest(generateCategoryString(categories), contentID)
     }
 
-    fun openTwa(){
-        trustedWebHandler.open()
+    fun openTwa(activity: ComponentActivity) {
+        trustedWebHandler.open(activity = activity)
     }
 
     // TagDataRequestCallbackListener overrides
@@ -271,7 +246,7 @@ internal class TagDataRequestHandler : TagDataRequestCallbackListener {
      * @return The created URL.
      */
     private fun getURL(category: String, contentID: String): String? {
-        return tagHandler.getURL(category, contentID, activityForPref)
+        return tagHandler.getURL(category, contentID)
     }
 
     /**

@@ -2,8 +2,6 @@ package se.kantarsifo.mobileanalytics.framework
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
-import androidx.activity.ComponentActivity
 import org.json.JSONObject
 import org.json.JSONTokener
 import java.io.*
@@ -14,12 +12,12 @@ import java.security.MessageDigest
 
 class TSMConfigUtil {
     companion object {
-        fun syncConfig(activity: ComponentActivity, appName: String) {
-            val packageMngr = activity.packageManager
-            val packageName = activity.packageName
+        fun syncConfig(context: Context, appName: String) {
+            val packageMngr = context.packageManager
+            val packageName = context.packageName
             val packageInfo = packageMngr.getPackageInfo(packageName, 0)
             var version = ""
-            val sharedPref = activity.getSharedPreferences(TagStringsAndValues.SIFO_PREFERENCE_KEY, Context.MODE_PRIVATE)
+            val sharedPref = context.getSharedPreferences(TagStringsAndValues.SIFO_PREFERENCE_KEY, Context.MODE_PRIVATE)
             val config = sharedPref.getString(TagStringsAndValues.SIFO_PREFERENCE_CONFIG, "")
             var md5 = "nohash"
             try {
