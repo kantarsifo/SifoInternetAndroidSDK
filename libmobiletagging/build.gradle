@@ -5,7 +5,7 @@ apply plugin: 'com.github.dcendents.android-maven'
 
 group='myGroups'
 
-version = "4.2.0"
+version = "4.2.1"
 
 
 android {

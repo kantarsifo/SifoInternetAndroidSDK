@@ -7,6 +7,7 @@ package se.kantarsifo.mobileanalytics.framework
 
 import android.webkit.WebView
 import androidx.activity.ComponentActivity
+import java.lang.ref.WeakReference
 
 /**
  * Kantar Sifo Mobile Analytics Framework for Android:
@@ -93,8 +94,8 @@ open class TSMobileAnalytics protected constructor() {
         return dataRequestHandler.performMetricsRequest(category)
     }
 
-    fun openTwa() {
-        dataRequestHandler.openTwa()
+    fun openTwa(activity: ComponentActivity) {
+        dataRequestHandler.openTwa(activity)
     }
 
 
@@ -155,7 +156,7 @@ open class TSMobileAnalytics protected constructor() {
      * @param callbackListener The callback-listener implementing the TagDataRequestCallbackListener interface.
      */
     fun setCallbackListener(callbackListener: TagDataRequestCallbackListener?) {
-        dataRequestHandler.userCallbackListener = callbackListener
+        dataRequestHandler.userCallbackListener = WeakReference(callbackListener)
     }
 
 

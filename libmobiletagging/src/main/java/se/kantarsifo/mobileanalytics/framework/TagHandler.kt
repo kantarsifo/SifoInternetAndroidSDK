@@ -12,7 +12,6 @@ import android.net.Uri
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.provider.Settings.Secure
-import androidx.activity.ComponentActivity
 import org.json.JSONObject
 import se.kantarsifo.mobileanalytics.framework.Logger.error
 import se.kantarsifo.mobileanalytics.framework.Logger.fatalError
@@ -71,10 +70,10 @@ internal class TagHandler(
     /**
      * Get a tag-request URL for the specified values of [category], [id]
      */
-    fun getURL(category: String, id: String, activity: ComponentActivity?): String? {
+    fun getURL(category: String, id: String): String? {
         var url: String? = null
         if (paramsAreValid(category, id)) {
-            url = fetchUrl(activity)
+            url = fetchUrl()
             val encodedRef = urlEncode(ref.trim())
             val encodedCategory = urlEncode(category.trim())
             val encodedId = urlEncode(id.trim())
@@ -118,8 +117,8 @@ internal class TagHandler(
         }
     }
 
-    private fun fetchUrl(activity: ComponentActivity?): String {
-        val json = activity?.getSharedPreferences(
+    private fun fetchUrl(): String {
+        val json = context.getSharedPreferences(
             TagStringsAndValues.SIFO_PREFERENCE_KEY,
             Context.MODE_PRIVATE
         )?.getString(TagStringsAndValues.SIFO_PREFERENCE_CONFIG, "")
