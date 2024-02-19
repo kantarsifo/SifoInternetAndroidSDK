@@ -15,6 +15,10 @@ using Kantar Sifo’s services. The SDK zip file contains three folders:
 
 RELEASE NOTES:
 
+v4.2.1 2024-02-19
+
+- Bug fix memory leak where activity was retained during library initialization
+
 v4.2.0 2023-06-14
 
 - Bug fix Android 12 for secure cookies
