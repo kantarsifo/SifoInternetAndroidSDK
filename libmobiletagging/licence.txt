@@ -1,6 +1,6 @@
-Copyright 2017 Kantar Sifo AB
+Commercial SDK (c) 2016-2024 Kantar Media Sweden AB
 
- 
+
 
 Licensed under the Apache License, Version 2.0 (the "License");
 
