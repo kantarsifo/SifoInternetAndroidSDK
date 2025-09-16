@@ -1,15 +1,15 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 
 version = "4.0.3"
 
 android {
-    compileSdkVersion 33
+    namespace 'se.kantarsifo.mobileanalytics.sampleapp'
+    compileSdk 34
     defaultConfig {
         applicationId "se.kantarsifo.mobileanalytics.sampleapp"
-        minSdkVersion 16
-        targetSdkVersion 33
+        minSdkVersion 21
+        targetSdkVersion 34
         versionCode 1
         versionName version
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -19,6 +19,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    viewBinding {
+        enabled = true
     }
 
     compileOptions {
@@ -44,148 +48,13 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':libmobiletagging')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation "androidx.preference:preference-ktx:1.1.0"
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation "androidx.preference:preference-ktx:1.2.1"
+    implementation 'com.google.android.material:material:1.12.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
 
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    androidTestImplementation 'androidx.test:core-ktx:1.4.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
+    androidTestImplementation 'androidx.test:core-ktx:1.6.1'
 }
-
-//task copyAARToReleaseFolder() << {
-//
-//    def path = project.rootDir.path + "/Kantar-Sifo-Mobile-Analytics-Android-SDK-${version}"
-//    def apkPath = project.rootDir.path + '/app/build/outputs/apk'
-//    def aarPath = project.rootDir.path + "/" + "libmobiletagging/build/outputs/aar"
-//    def javadocPath = project.rootDir.path + "/" + "libmobiletagging/build/docs"
-//    def notesPath = project.rootDir.path + "/" + "libmobiletagging"
-//    def guidePath = project.rootDir.path + "/" + "libmobiletagging"
-//    def standaloneSamplePath = project.rootDir.path + "/" + "sample"
-//
-//    mkdir(path)
-//    def documentationPath = path + "/Documentation"
-//    def frameworkPath = path + "/Framework"
-//    def samplePath = path + "/Sample"
-//
-//    def sampleAppPath = path + "/Sample"
-//    def sampleAppLibraryPath = path + "/Sample/KantarSifoSampleApp/app/libs"
-//
-//    mkdir(documentationPath)
-//    mkdir(frameworkPath)
-//    mkdir(samplePath)
-//
-//    copyAPKToReleaseFolder(apkPath,samplePath)
-//
-//    copyJavaDocToReleaseFolder(javadocPath,documentationPath)
-//
-//    copyNotesToReleaseFolder(notesPath,path)
-//
-//    copyDevelopersGuideToReleaseFolder(guidePath,documentationPath)
-//
-//    copySampleToReleaseFolder(standaloneSamplePath,sampleAppPath)
-//
-//
-//    copy {
-//        from(aarPath) {
-//            include "*-${version}.aar"
-//        }
-//        into frameworkPath
-//    }
-//
-//    copy {
-//        from(aarPath) {
-//            include "*-${version}.aar"
-//        }
-//        into sampleAppLibraryPath
-//    }
-//
-//    //To copy src folder inside standalone sample app
-//    def standaloneSampleSourcePath = path + "/Sample/KantarSifoSampleApp/app/src"
-//    def srcPath = project.rootDir.path + '/app/src'
-//    copySRCToStandaloneSampleProject(srcPath,standaloneSampleSourcePath)
-//
-//    zipReleaseFolder.execute()
-//}
-//
-//def copyAPKToReleaseFolder(apkPath,samplePath){
-//    copy {
-//        from(apkPath) {
-//            include "*-${version}.apk"
-//        }
-//        into samplePath
-//    }
-//}
-//
-//def copyNotesToReleaseFolder(notesPath,rootPath){
-//    copy {
-//        from(notesPath) {
-//            include "licence.txt"
-//            include "release-notes.txt"
-//        }
-//        into rootPath
-//    }
-//}
-//
-//def copyDevelopersGuideToReleaseFolder(guidePath,documentationPath){
-//    copy {
-//        from(guidePath) {
-//            include "*Android.pdf"
-//        }
-//        into documentationPath
-//    }
-//
-//}
-//
-//def copyJavaDocToReleaseFolder(javaDocPath,documentationPath){
-//    copy {
-//        from(javaDocPath) {
-//            from "docs"
-//        }
-//        into documentationPath
-//    }
-//}
-//
-//def copySampleToReleaseFolder(standaloneSamplePath,samplePath){
-//    copy {
-//        from(standaloneSamplePath) {
-//            from "KantarSifoSampleApp"
-//        }
-//        into samplePath
-//    }
-//}
-//
-//def copySRCToStandaloneSampleProject(srcPath,standaloneSampleSourcePath){
-//    copy {
-//        from(srcPath) {
-//            from "src"
-//        }
-//        into standaloneSampleSourcePath
-//    }
-//}
-//
-//task zipReleaseFolder(type: Zip){
-//    from project.rootDir.path + "/Kantar-Sifo-Mobile-Analytics-Android-SDK-${version}"
-//    include '*'
-//    include '*/*' //to include contents of a folder present inside Reports directory
-//    archiveName "/Kantar-Sifo-Mobile-Analytics-Android-SDK-${version}" + '.zip'
-//    destinationDir(file(project.rootDir.path))
-//}
-//
-//
-//afterEvaluate {
-//
-//    copyAARToReleaseFolder.dependsOn assembleRelease
-//    copyAARToReleaseFolder.dependsOn assembleDebug
-//
-//    assembleRelease.doLast {
-//        copyAARToReleaseFolder.execute()
-//    }
-//
-//    assembleDebug.doLast {
-//        copyAARToReleaseFolder.execute()
-//    }
-//}
-//
