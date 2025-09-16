@@ -4,17 +4,19 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
-import kotlinx.android.synthetic.main.activity_native.*
 import se.kantarsifo.mobileanalytics.framework.TSMobileAnalytics
-import se.kantarsifo.mobileanalytics.sampleapp.R
 import se.kantarsifo.mobileanalytics.sampleapp.base.BaseActivity
+import se.kantarsifo.mobileanalytics.sampleapp.databinding.ActivityNativeBinding
 import se.kantarsifo.mobileanalytics.sampleapp.util.TagInfo
 
 class NativeActivity : BaseActivity() {
 
+    lateinit var binding: ActivityNativeBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_native)
+        binding = ActivityNativeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         init()
     }
 
@@ -29,8 +31,8 @@ class NativeActivity : BaseActivity() {
         }
 
         val adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items)
-        list.adapter = adapter
-        list.setOnItemClickListener { parent, _, position, _ ->
+        binding.list.adapter = adapter
+        binding.list.setOnItemClickListener { parent, _, position, _ ->
             sendTag(parent.getItemAtPosition(position) as String)
         }
     }

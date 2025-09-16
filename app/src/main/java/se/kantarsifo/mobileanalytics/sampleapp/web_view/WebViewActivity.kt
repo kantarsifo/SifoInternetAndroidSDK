@@ -5,17 +5,19 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.webkit.WebViewClient
-import kotlinx.android.synthetic.main.activity_web.*
 import se.kantarsifo.mobileanalytics.framework.TSMobileAnalytics
-import se.kantarsifo.mobileanalytics.sampleapp.R
 import se.kantarsifo.mobileanalytics.sampleapp.base.BaseActivity
+import se.kantarsifo.mobileanalytics.sampleapp.databinding.ActivityWebBinding
 
 class WebViewActivity : BaseActivity() {
 
+    lateinit var binding: ActivityWebBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_web)
-        TSMobileAnalytics.instance?.activateCookies(webview)
+        binding = ActivityWebBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        TSMobileAnalytics.instance?.activateCookies(binding.webview)
         init()
     }
 
@@ -28,17 +30,17 @@ class WebViewActivity : BaseActivity() {
     }
 
     private fun initList() {
-        list.setOnItemClickListener { parent, _, position, _ ->
+        binding.list.setOnItemClickListener { parent, _, position, _ ->
             val url = parent.getItemAtPosition(position) as String
-            webview.loadUrl(url)
+            binding.webview.loadUrl(url)
         }
     }
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun initWebView() {
-        webview.webViewClient = WebViewClient()
-        webview.settings.javaScriptEnabled = true
-        webview.settings.javaScriptCanOpenWindowsAutomatically = true
+        binding.webview.webViewClient = WebViewClient()
+        binding.webview.settings.javaScriptEnabled = true
+        binding.webview.settings.javaScriptCanOpenWindowsAutomatically = true
     }
 
     companion object {

@@ -6,11 +6,11 @@ import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.os.Handler
 import androidx.activity.result.ActivityResultLauncher
-import kotlinx.android.synthetic.main.activity_initialization.*
 import se.kantarsifo.mobileanalytics.framework.TSMobileAnalytics
 import se.kantarsifo.mobileanalytics.framework.TWAModel
 import se.kantarsifo.mobileanalytics.framework.TagStringsAndValues
 import se.kantarsifo.mobileanalytics.sampleapp.base.BaseActivity
+import se.kantarsifo.mobileanalytics.sampleapp.databinding.ActivityInitializationBinding
 import se.kantarsifo.mobileanalytics.sampleapp.native_view.NativeActivity
 import se.kantarsifo.mobileanalytics.sampleapp.util.Constants
 import se.kantarsifo.mobileanalytics.sampleapp.util.PublicSharedPreferences
@@ -20,9 +20,12 @@ import se.kantarsifo.mobileanalytics.sampleapp.web_view.WebViewActivity
 
 class InitializationActivity : BaseActivity() {
 
+    private lateinit var binding: ActivityInitializationBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_initialization)
+        binding = ActivityInitializationBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         init()
     }
 
@@ -42,25 +45,25 @@ class InitializationActivity : BaseActivity() {
     }
 
     private fun initEditTexts() {
-        cpIdET.afterTextChanged { destroyCurrentFramework() }
-        appNameET.afterTextChanged { destroyCurrentFramework() }
+        binding.cpIdET.afterTextChanged { destroyCurrentFramework() }
+        binding.appNameET.afterTextChanged { destroyCurrentFramework() }
     }
 
     private fun initCheckBoxes() {
-        panelistOnly.onCheckedChanged { destroyCurrentFramework() }
-        logEnabled.onCheckedChanged { destroyCurrentFramework() }
-        isWebViewBased.onCheckedChanged { destroyCurrentFramework() }
+        binding.panelistOnly.onCheckedChanged { destroyCurrentFramework() }
+        binding.logEnabled.onCheckedChanged { destroyCurrentFramework() }
+        binding.isWebViewBased.onCheckedChanged { destroyCurrentFramework() }
     }
 
     private fun initButtons() {
         updateInitButtonColor()
-        initialize_button.setOnClickListener {
+        binding.initializeButton.setOnClickListener {
             onInitFrameworkClicked()
         }
-        destroy_button.setOnClickListener { destroyCurrentFramework() }
-        btn_webview.setOnClickListener { onWebViewClicked() }
-        btn_native.setOnClickListener { onNativeClicked() }
-        twa_native.setOnClickListener {  onTWAClicked() }
+        binding.destroyButton.setOnClickListener { destroyCurrentFramework() }
+        binding.btnWebview.setOnClickListener { onWebViewClicked() }
+        binding.btnNative.setOnClickListener { onNativeClicked() }
+        binding.twaNative.setOnClickListener {  onTWAClicked() }
     }
 
     private fun onInitFrameworkClicked() {
@@ -77,11 +80,11 @@ class InitializationActivity : BaseActivity() {
        TSMobileAnalytics.createInstance(
                 this,
                 TSMobileAnalytics.Builder()
-                        .setCpId(cpIdET.text.toString())
-                        .setApplicationName(appNameET.text.toString())
-                        .setPanelistTrackingOnly(panelistOnly.isChecked)
-                        .setIsWebViewBased(isWebViewBased.isChecked)
-                        .setLogPrintsActivated(logEnabled.isChecked)
+                        .setCpId(binding.cpIdET.text.toString())
+                        .setApplicationName(binding.appNameET.text.toString())
+                        .setPanelistTrackingOnly(binding.panelistOnly.isChecked)
+                        .setIsWebViewBased(binding.isWebViewBased.isChecked)
+                        .setLogPrintsActivated(binding.logEnabled.isChecked)
                         .setTWAInfo(TWAModel(url = "https://www.mediafacts.se/").apply {
                             extraParams.apply {
                                put("customCustomerParam","foo")
@@ -93,15 +96,15 @@ class InitializationActivity : BaseActivity() {
 
     private fun updateInitButtonColor() {
         if (TSMobileAnalytics.instance != null) {
-            initialize_button.background.colorFilter = PorterDuffColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY)
+            binding.initializeButton.background.colorFilter = PorterDuffColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY)
         } else {
-            initialize_button.background.clearColorFilter()
+            binding.initializeButton.background.clearColorFilter()
         }
     }
 
     private fun paramsAreValid(): Boolean {
-        val cpId = cpIdET.text.toString()
-        val appName = appNameET.text.toString()
+        val cpId = binding.cpIdET.text.toString()
+        val appName = binding.appNameET.text.toString()
         return if (cpId.isEmpty() || appName.isEmpty()) {
             showToast("cpId and application name cannot be empty")
             false
@@ -153,40 +156,40 @@ class InitializationActivity : BaseActivity() {
 
     private fun setSuccessAndFailureTexts() {
         TSMobileAnalytics.instance?.let {
-            success_request.text = getString(R.string.success_requests, it.nbrOfSuccessfulRequests)
-            fail_request.text = getString(R.string.failed_requests, it.nbrOfFailedRequests)
+            binding.successRequest.text = getString(R.string.success_requests, it.nbrOfSuccessfulRequests)
+            binding.failRequest.text = getString(R.string.failed_requests, it.nbrOfFailedRequests)
         }
     }
 
     private fun resetSuccessAndFailureTexts() {
-        success_request.text = getString(R.string.success_requests, 0)
-        fail_request.text = getString(R.string.failed_requests, 0)
+        binding.successRequest.text = getString(R.string.success_requests, 0)
+        binding.failRequest.text = getString(R.string.failed_requests, 0)
     }
 
     private fun getPreferenceSetup() {
         PublicSharedPreferences.getDefaults(Constants.CPID_PREFERENCE, this)?.let { setCpIdOnEditText(it) }
         PublicSharedPreferences.getDefaults(Constants.APP_NAME_PREFERENCE, this)?.let { setAppNameOnEditText(it) }
-        panelistOnly.isChecked = PublicSharedPreferences.getBoolean(Constants.PANELIST_TRACKING_ONLY_PREFERENCE, this)
-        logEnabled.isChecked = PublicSharedPreferences.getBoolean(Constants.LOG_ENABLED_PREFERENCE, this)
-        isWebViewBased.isChecked = PublicSharedPreferences.getBoolean(Constants.IS_WEB_VIEW_BASED_PREFERENCE, this)
+        binding.panelistOnly.isChecked = PublicSharedPreferences.getBoolean(Constants.PANELIST_TRACKING_ONLY_PREFERENCE, this)
+        binding.logEnabled.isChecked = PublicSharedPreferences.getBoolean(Constants.LOG_ENABLED_PREFERENCE, this)
+        binding.isWebViewBased.isChecked = PublicSharedPreferences.getBoolean(Constants.IS_WEB_VIEW_BASED_PREFERENCE, this)
     }
 
     private fun setPreferenceSetup() {
-        PublicSharedPreferences.setDefaults(Constants.CPID_PREFERENCE, cpIdET.text.toString(), this)
-        PublicSharedPreferences.setDefaults(Constants.APP_NAME_PREFERENCE, appNameET.text.toString(), this)
-        PublicSharedPreferences.setBool(Constants.LOG_ENABLED_PREFERENCE, logEnabled.isChecked, this)
-        PublicSharedPreferences.setBool(Constants.PANELIST_TRACKING_ONLY_PREFERENCE, panelistOnly.isChecked, this)
-        PublicSharedPreferences.setBool(Constants.IS_WEB_VIEW_BASED_PREFERENCE, isWebViewBased.isChecked, this)
+        PublicSharedPreferences.setDefaults(Constants.CPID_PREFERENCE, binding.cpIdET.text.toString(), this)
+        PublicSharedPreferences.setDefaults(Constants.APP_NAME_PREFERENCE, binding.appNameET.text.toString(), this)
+        PublicSharedPreferences.setBool(Constants.LOG_ENABLED_PREFERENCE, binding.logEnabled.isChecked, this)
+        PublicSharedPreferences.setBool(Constants.PANELIST_TRACKING_ONLY_PREFERENCE, binding.panelistOnly.isChecked, this)
+        PublicSharedPreferences.setBool(Constants.IS_WEB_VIEW_BASED_PREFERENCE, binding.isWebViewBased.isChecked, this)
     }
 
     private fun setCpIdOnEditText(cpId: String) {
-        cpIdET.setText(cpId)
-        cpIdET.setSelection(cpId.length)
+        binding.cpIdET.setText(cpId)
+        binding.cpIdET.setSelection(cpId.length)
     }
 
     private fun setAppNameOnEditText(appName: String) {
-        appNameET.setText(appName)
-        appNameET.setSelection(appName.length)
+        binding.appNameET.setText(appName)
+        binding.appNameET.setSelection(appName.length)
     }
 
 }
