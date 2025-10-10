@@ -2,9 +2,8 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'maven-publish'
 
-group='myGroups'
-
-version = "4.2.2"
+group = (findProperty("group") ?: "com.github.kantarsifo")
+version = (findProperty("version") ?: "LOCAL").toString()
 
 
 android {
@@ -39,6 +38,13 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
 }
 
 dependencies {
@@ -55,6 +61,24 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1'
     api("com.google.androidbrowserhelper:androidbrowserhelper:2.5.0")
 
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                groupId = project.group.toString()
+                artifactId = "SifoInternetAndroidSDK"
+                version = project.version.toString()
+                from components.release
+                pom {
+                    name = "Sifo Internet Android SDK"
+                    description = "Kantar Sifo Internet Android SDK"
+                    url = "https://github.com/kantarsifo/SifoInternetAndroidSDK"
+                }
+            }
+        }
+    }
 }
 
 
