@@ -15,6 +15,11 @@ using Kantar Sifo’s services. The SDK zip file contains three folders:
 
 RELEASE NOTES:
 
+v4.2.3 2025-10-09
+
+- Fixed the publishing issue with version 4.2.2 by switching to the Maven Publish plugin, reading `group` and `version` from Gradle properties and publishing only the release variant with accompanying sources and javadoc jars.
+- Added a `jitpack.yml` to pin the build to JDK 17 so that the Android Gradle plugin works correctly.
+
 v4.2.1 2024-02-19
 
 - Bug fix memory leak where activity was retained during library initialization
