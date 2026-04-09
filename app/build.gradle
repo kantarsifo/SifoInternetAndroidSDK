@@ -5,7 +5,7 @@ version = "4.0.4"
 
 android {
     namespace 'se.kantarsifo.mobileanalytics.sampleapp'
-    compileSdk 34
+    compileSdk 36
     defaultConfig {
         applicationId "se.kantarsifo.mobileanalytics.sampleapp"
         minSdkVersion 21
@@ -48,9 +48,9 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':libmobiletagging')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.7.1'
     implementation "androidx.preference:preference-ktx:1.2.1"
-    implementation 'com.google.android.material:material:1.12.0'
+    implementation 'com.google.android.material:material:1.13.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
 
     testImplementation 'junit:junit:4.13.2'

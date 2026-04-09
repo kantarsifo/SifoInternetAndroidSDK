@@ -30,7 +30,7 @@ class TSMConfigUtil {
             }
 
             try {
-                version = packageInfo.versionName
+                version = packageInfo.versionName!!
             val url = URL("${TagStringsAndValues.BASE_CONFIG_URL}/App/GetBaseConfig?currentConfigHash=$md5&sdkversion=$version&appname=$appName")
             (url.openConnection() as? HttpURLConnection)?.run {
                 doInput = true

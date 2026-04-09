@@ -15,6 +15,20 @@ using Kantar Sifo’s services. The SDK zip file contains three folders:
 
 RELEASE NOTES:
 
+v4.2.4 2026-04-09
+
+- Updated compileSdk from 34 to 36 for both the SDK module and sample app module.
+- Updated sample app dependencies:
+  - androidx.appcompat:appcompat to 1.7.1
+  - com.google.android.material:material to 1.13.0
+- Updated TSMConfigUtil to enforce a non-null app version name when building the base-config request URL.
+- Aligned SDK dependency versions to remain compatible with AGP 8.7.2 and minSdk 21:
+  - androidx.activity:activity-ktx to 1.9.3
+  - androidx.lifecycle:lifecycle-common-java8 to 2.8.7
+  - org.jetbrains.kotlinx:kotlinx-coroutines-core to 1.8.1
+  - org.jetbrains.kotlinx:kotlinx-coroutines-android to 1.8.1
+  - com.google.androidbrowserhelper:androidbrowserhelper to 2.5.0
+
 v4.2.3 2025-10-09
 
 - Fixed the publishing issue with version 4.2.2 by switching to the Maven Publish plugin, reading `group` and `version` from Gradle properties and publishing only the release variant with accompanying sources and javadoc jars.
