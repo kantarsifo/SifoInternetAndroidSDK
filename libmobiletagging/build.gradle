@@ -8,7 +8,7 @@ version = (findProperty("version") ?: "LOCAL").toString()
 
 android {
     namespace "se.kantarsifo.mobileanalytics.framework"
-    compileSdk 34
+    compileSdk 36
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 34
