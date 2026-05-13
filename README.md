@@ -1,26 +1,26 @@
-![](https://www.kantarsifo.se/sites/all/themes/sifo/images/Kantar_Sifo_Small_Logo_CMYK.png "")
+![](https://www.kantarsifo.se/sites/all/themes/sifo/images/Kantar_Sifo_Small_Logo_CMYK.png)
 
 # Developer's Guide
 
 ### Kantar Sifo Mobile Analytics SDK for Android
 
 - **[Overview](#overview)**
-    - [What’s new?](#whats-new)
-    - [SDK contents](#sdk-contents)
+  - [What’s new?](#whats-new)
+  - [SDK contents](#sdk-contents)
 
 - **[Getting started](#getting-started)**
-    - [Basic parameters](#basic-parameters)
-    - [Integration with Sifo Internet app](#integration-with-sifo-internet-app)
+  - [Basic parameters](#basic-parameters)
+  - [Integration with Sifo Internet app](#integration-with-sifo-internet-app)
 
 - **[Code implementation](#code-implementation)**
-    - [Basic functionality](#basic-functionality)
-    - [Implementation steps ](#implementation-steps)
-        - [Native apps](#native-apps)
-        - [Options](#options)
-        - [Hybrid apps](#hybrid-apps)
-    - [Debugging](#debugging)
-    - [Threads](#threads)
-    - [String encoding](#string-encoding)
+  - [Basic functionality](#basic-functionality)
+  - [Implementation steps ](#implementation-steps)
+    - [Native apps](#native-apps)
+    - [Options](#options)
+    - [Hybrid apps](#hybrid-apps)
+  - [Debugging](#debugging)
+  - [Threads](#threads)
+  - [String encoding](#string-encoding)
 
 - **[FAQ](#faq)**
 - **[Update strategy](#update-strategy)**
@@ -171,7 +171,7 @@ TSMobileAnalytics.createInstance(
         .setIsWebViewBased(boolean) // optional, default value is false
         .build()
 )
-```  
+```
 
 **Java**
 
@@ -206,7 +206,7 @@ view or page that should be tagged:
 TSMobileAnalytics.instance?.sendTag(category)
 or
 TSMobileAnalytics.instance?.sendTag(category, contentID)
-```  
+```
 
 **Java**
 
@@ -231,7 +231,7 @@ use an array of Strings to specify your category structure:
 ```kotlin
 val categoryArray = arrayOf("News", "Sports", "Football")
 TSMobileAnalytics.instance?.sendTag(categoryArray, contentID)
-```  
+```
 
 **Java**
 
@@ -264,7 +264,7 @@ In the **onCreate**() method of any Activity with a WebView that should utilize 
 
 ```kotlin
 TSMobileAnalytics.instance?.activateCookies()
-```  
+```
 
 **Java**
 
@@ -310,10 +310,10 @@ TSMobileAnalytics.createInstance(
             extraParams.apply {
                 put("customCustomerParam", "foo")
             }
-        }) // optional 
+        }) // optional
         .build()
 )
-``` 
+```
 
 **How do you launch the trusted web activity**
 
@@ -341,6 +341,211 @@ code in a separate thread.
 Strings sent to the server will be encoded using UTF-8. If the String given to the framework
 contains characters that are not supported by this encoding, these characters will not be stored
 correctly in the statistics.
+
+## React Native
+
+This section covers integrating the Sifo Android SDK into a React Native project. Two setups are described: **bare React Native** (CLI) and **Expo**. All steps are Android-only.
+
+### Bare React Native
+
+#### 1. Add the dependency
+
+The SDK is distributed via JitPack. Open `android/build.gradle` and add the JitPack repository:
+
+```groovy
+allprojects {
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+
+Then add the SDK to `android/app/build.gradle`:
+
+```groovy
+dependencies {
+    implementation 'com.github.kantarsifo:SifoInternetAndroidSDK:4.2.2'
+}
+```
+
+If your `minSdkVersion` is below 24, also add to `android/app/build.gradle`:
+
+```groovy
+android {
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+```
+
+#### 2. Create the native module
+
+Create two files to expose the SDK to React Native's JavaScript layer.
+
+**`android/app/src/main/java/com/yourapp/SifoModule.kt`:**
+
+```kotlin
+package com.yourapp
+
+import android.app.Activity
+import com.facebook.react.bridge.ReactApplicationContext
+import com.facebook.react.bridge.ReactContextBaseJavaModule
+import com.facebook.react.bridge.ReactMethod
+import com.facebook.react.bridge.ReadableArray
+import se.kantarsifo.mobileanalytics.framework.TSMobileAnalytics
+
+class SifoModule(private val reactContext: ReactApplicationContext) :
+    ReactContextBaseJavaModule(reactContext) {
+
+    override fun getName() = "SifoModule"
+
+    @ReactMethod
+    fun sendTag(categories: ReadableArray, contentID: String) {
+        val cats = Array(categories.size()) { categories.getString(it) }
+        TSMobileAnalytics.instance?.sendTag(cats, contentID)
+    }
+}
+```
+
+**`android/app/src/main/java/com/yourapp/SifoPackage.kt`:**
+
+```kotlin
+package com.yourapp
+
+import com.facebook.react.ReactPackage
+import com.facebook.react.bridge.NativeModule
+import com.facebook.react.bridge.ReactApplicationContext
+import com.facebook.react.uimanager.ViewManager
+
+class SifoPackage : ReactPackage {
+    override fun createNativeModules(reactContext: ReactApplicationContext): List<NativeModule> =
+        listOf(SifoModule(reactContext))
+
+    override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> =
+        emptyList()
+}
+```
+
+#### 3. Register the package
+
+Open `android/app/src/main/java/com/yourapp/MainApplication.kt` and add `SifoPackage` to the package list:
+
+```kotlin
+override fun getPackages(): List<ReactPackage> =
+    PackageList(this).packages.apply {
+        add(SifoPackage())
+    }
+```
+
+#### 4. Initialize in MainActivity
+
+The SDK requires a `ComponentActivity` reference, so initialize it in `MainActivity.kt`:
+
+```kotlin
+import se.kantarsifo.mobileanalytics.framework.TSMobileAnalytics
+
+class MainActivity : ReactActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        TSMobileAnalytics.createInstance(
+            this,
+            TSMobileAnalytics.Builder()
+                .setCpId("YOUR_CPID")
+                .setApplicationName("YourAppName")
+                .setPanelistTrackingOnly(true)
+                .build()
+        )
+    }
+}
+```
+
+> **Note:** Initialize only once, in your root activity. The SDK can then be accessed anywhere else in the app via `TSMobileAnalytics.instance`.
+
+#### 5. Send tags from JavaScript
+
+```js
+// utils/analytics.js
+import { NativeModules, Platform } from "react-native";
+
+const { SifoModule } = NativeModules;
+
+export function trackView(categories, contentID) {
+  if (Platform.OS === "android" && SifoModule) {
+    SifoModule.sendTag(categories, contentID);
+  }
+}
+```
+
+Call it whenever a new screen or piece of content is shown:
+
+```js
+import { useEffect } from "react";
+import { trackView } from "../utils/analytics";
+
+export default function ArticleScreen({ article }) {
+  useEffect(() => {
+    trackView(["news", article.section], article.id);
+  }, [article.id]);
+}
+```
+
+---
+
+### Expo
+
+#### 1. Run prebuild
+
+```bash
+npx expo prebuild
+```
+
+This generates the `android/` folder. All steps below take place inside it.
+
+#### 2. Add the dependency
+
+Add JitPack to `android/build.gradle`:
+
+```groovy
+allprojects {
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+
+Add the SDK to `android/app/build.gradle`:
+
+```groovy
+dependencies {
+    implementation 'com.github.kantarsifo:SifoInternetAndroidSDK:4.2.2'
+}
+```
+
+#### 3. Create the native module files
+
+Create the same `SifoModule.kt` and `SifoPackage.kt` files as in the bare React Native section above, placing them in `android/app/src/main/java/com/yourapp/`.
+
+#### 4. Register the package
+
+Open `android/app/src/main/java/com/yourapp/MainApplication.kt` and add `SifoPackage()` to the package list, same as step 3 in the bare workflow above.
+
+#### 5. Initialize in MainActivity
+
+Open `android/app/src/main/java/com/yourapp/MainActivity.kt` and add the `onCreate` initialization, same as step 4 in the bare workflow above.
+
+#### 6. Send tags from JavaScript
+
+Same as the bare React Native section — see **Send tags from JavaScript** above.
+
+#### 7. Build
+
+```bash
+eas build --platform android
+# or for local builds:
+npx expo run:android
+```
 
 # FAQ
 
@@ -412,7 +617,7 @@ To check if initialisation has taken place and to do so if it has not.
   ComponentActivity. How shall we handle this?**
   See the solution in this
   link: https://stackoverflow.com/questions/54915164/why-are-there-2-different-componentactivity-classes
-- **What do I need to do to verify my integrate  Trusted Web Activity? Contact Kantar**
+- **What do I need to do to verify my integrate Trusted Web Activity? Contact Kantar**
 
 # Update strategy
 
@@ -458,7 +663,7 @@ class MainActivity : Activity() {
     }
 
 }
-```  
+```
 
 **Java**
 
@@ -517,6 +722,6 @@ correctly stored in the analytics databases.
 
 Please send any questions or feedback to:
 
-[SwedishInternetSDK@kantar.com](mailto:SwedishInternetSDK@kantar.com)  +46 (0)701 842 372
+[SwedishInternetSDK@kantar.com](mailto:SwedishInternetSDK@kantar.com) +46 (0)701 842 372
 
-[info@kantarsifo.com](mailto:info@kantarsifo.com)  +46 (0)8 507 420 00
+[info@kantarsifo.com](mailto:info@kantarsifo.com) +46 (0)8 507 420 00
